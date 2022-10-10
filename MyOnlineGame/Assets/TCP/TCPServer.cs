@@ -11,6 +11,7 @@ public class TCPServer : MonoBehaviour
 {
     private Thread _t1;
     private Thread _t2;
+    private Thread _t3;
     Socket client;
     int recv;
     // Start is called before the first frame update
@@ -18,11 +19,13 @@ public class TCPServer : MonoBehaviour
     bool serverCreated=false;
     public bool PrepareToSend = false;
     byte[] data;
-    public string text;
+    public string outputText;
+    public string inputText;
     void Start()
     {
         _t1 = new Thread(createServer);
-        _t2 = new Thread(sendAndRecibeFunction);
+        _t2 = new Thread(send);
+        _t3 = new Thread(recieve);
         data = new byte[1024];
     }
     void createServer()
@@ -41,24 +44,32 @@ public class TCPServer : MonoBehaviour
         serverCreated = true;
         Debug.Log("Connected with {0} at port {1}");
     }
-    void sendAndRecibeFunction()
+    void send()
     {
         while (true)
         {
-            
-            //recv = client.Receive(data);
-            //if (recv == 0)
-            //    break;
-            //Debug.Log(Encoding.ASCII.GetString(data, 0, recv));
             if (PrepareToSend)
             {
-                data = Encoding.ASCII.GetBytes(text);
-                client.Send(data, text.Length, SocketFlags.None);
+                data = Encoding.ASCII.GetBytes(outputText);
+                client.Send(data, outputText.Length, SocketFlags.None);
                 PrepareToSend = false;
             }
-            
+
         }
     }
+    void recieve()
+    {
+        while (true)
+        {
+
+            recv = client.Receive(data);
+
+            inputText = Encoding.ASCII.GetString(data, 0, recv);
+            Debug.Log(inputText);
+        }
+    }
+
+
     // Update is called once per frame
     void Update()
     {
@@ -74,6 +85,10 @@ public class TCPServer : MonoBehaviour
             if (!_t2.IsAlive)
             {
                 _t2.Start();
+            }
+            if (!_t3.IsAlive)
+            {
+                _t3.Start();
             }
         }
 

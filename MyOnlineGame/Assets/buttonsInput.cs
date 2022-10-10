@@ -12,6 +12,7 @@ public class buttonsInput : MonoBehaviour
     public GameObject TCPserver;
     public GameObject TCPclient;
     string inputText;
+    string conectionType="-";
     // Start is called before the first frame update
     void Start()
     {
@@ -40,15 +41,38 @@ public class buttonsInput : MonoBehaviour
     }
     void ServerTaskOnClick()
     {
-        TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
+        
+        if (conectionType == "-")
+        {
+            conectionType = "server";
+            TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
+        }
+        
     }
     void ClientTaskOnClick()
     {
-        TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
+        
+        if (conectionType == "-")
+        {
+            conectionType = "client";
+            TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
+        }
     }
     void SendTaskOnClick()
     {
-        TCPserver.GetComponent<TCPServer>().text= inputText;
-        TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
+        switch (conectionType)
+        {
+            case "server":
+                inputText = "server: " + inputText;
+                TCPserver.GetComponent<TCPServer>().outputText = inputText;
+                TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
+                break;
+            case "client":
+                inputText = "cliente: " + inputText;
+                TCPclient.GetComponent<TCPClient>().outputText = inputText;
+                TCPclient.GetComponent<TCPClient>().PrepareToSend = true;
+                break;
+        }
+        
     }
 }

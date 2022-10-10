@@ -11,18 +11,22 @@ public class TCPClient : MonoBehaviour
 {
     private Thread _t1;
     private Thread _t2;
+    private Thread _t3;
     Socket server;
     IPEndPoint ipep;
     int recv;
     byte[] data;
     public bool ToCreateclient = false;
     bool clientCreated = false;
-    string text;
+    public string inputText;
+    public string outputText;
+    public bool PrepareToSend = false;
     // Start is called before the first frame update
     void Start()
     {
         _t1 = new Thread(CreateClient);
-        _t2 = new Thread(sendAndRecibeFunction);
+        _t2 = new Thread(send);
+        _t3 = new Thread(receive);
         data = new byte[1024];
 
     }
@@ -36,6 +40,7 @@ public class TCPClient : MonoBehaviour
 
         try
         {
+            clientCreated = true;
             server.Connect(ipep);
         }
         catch (SocketException e)
@@ -44,24 +49,30 @@ public class TCPClient : MonoBehaviour
             Debug.Log(e.ToString());
             return;
         }
-        clientCreated = true;
+        
     }
-    void sendAndRecibeFunction()
+    void send()
     {
         while (true)
         {
-
-            recv = server.Receive(data);
-            text = Encoding.ASCII.GetString(data, 0, recv);
-            Debug.Log(text);
-            //if (PrepareToSend)
-            //{
-            //    data = Encoding.ASCII.GetBytes(text);
-            //    client.Send(data, recv, SocketFlags.None);
-            //    PrepareToSend = false;
-            //}
+            if (PrepareToSend)
+            {
+                data = Encoding.ASCII.GetBytes(outputText);
+                server.Send(data, outputText.Length, SocketFlags.None);
+                PrepareToSend = false;
+            }
 
         }
+    }
+    void receive()
+    {
+        while (true)
+        {
+            recv = server.Receive(data);
+            inputText = Encoding.ASCII.GetString(data, 0, recv);
+            Debug.Log(inputText);
+        }
+
     }
     // Update is called once per frame
     void Update()
@@ -78,6 +89,10 @@ public class TCPClient : MonoBehaviour
             if (!_t2.IsAlive)
             {
                 _t2.Start();
+            }
+            if (!_t3.IsAlive)
+            {
+                _t3.Start();
             }
         }
     }
