@@ -6,11 +6,11 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
-
 public class TCP : MonoBehaviour
 {
     // Start is called before the first frame update
-
+    private Thread _t1;
+    private Thread _t2;
     bool conectionCreated = false;
     Socket server;
     IPEndPoint ipep;
@@ -22,7 +22,10 @@ public class TCP : MonoBehaviour
     void Start()
     {
         data = new byte[1024];
+        _t1 = new Thread(setServerStartConection);
+        _t2 = new Thread(setClientStartConection);
     }
+    
     void setClientStartConection()
     {
         //meter IP del otro
@@ -30,7 +33,7 @@ public class TCP : MonoBehaviour
 
 
         server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
+        Debug.Log("hola2");
 
         try
         {
@@ -38,16 +41,16 @@ public class TCP : MonoBehaviour
         }
         catch (SocketException e)
         {
-            Console.WriteLine("Unable to connect to server.");
-            Console.WriteLine(e.ToString());
+            Debug.Log("Unable to connect to server.");
+            Debug.Log(e.ToString());
             return;
         }
 
 
         int recv = server.Receive(data);
         stringData = Encoding.ASCII.GetString(data, 0, recv);
-        Console.WriteLine(stringData);
-
+        Debug.Log(stringData);
+        conectionCreated = true;
     }
     void setServerStartConection()
     {
@@ -57,44 +60,53 @@ public class TCP : MonoBehaviour
         Socket newsock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         newsock.Bind(ipep);
-
+        Debug.Log("hola1");
         newsock.Listen(10);
-        Console.WriteLine("Waiting for a client...");
+        Debug.Log("Waiting for a client...");
         client = newsock.Accept();
         IPEndPoint clientep = (IPEndPoint)client.RemoteEndPoint;
 
-        Console.WriteLine("Connected with {0} at port {1}", clientep.Address, clientep.Port);
+        Debug.Log("Connected with {0} at port {1}");
 
         string welcome = "Welcome to my test server";
         data = Encoding.ASCII.GetBytes(welcome);
         client.Send(data, data.Length, SocketFlags.None);
-
+        conectionCreated = true;
     }
     // Update is called once per frame
     void Update()
     {
         int recv;
+        if (Input.GetKey(KeyCode.S))
+        {
+            conectionType = "server";
+        }
         switch (conectionType)
         {
             case "server":
                 if (!conectionCreated)
                 {
-                    setServerStartConection();
+                    //if (!_t1.IsAlive)
+                    //    _t1.Start();
+                    ////setServerStartConection();
+                    //if (!_t2.IsAlive)
+                    //    _t2.Start();
+                    //setClientStartConection();
                 }
-                recv = client.Receive(data);
-                if (recv == 0)
-                    break;
+                //recv = client.Receive(data);
+                //if (recv == 0)
+                //    break;
 
-                Console.WriteLine(Encoding.ASCII.GetString(data, 0, recv));
+                //Console.WriteLine(Encoding.ASCII.GetString(data, 0, recv));
 
-                client.Send(data, recv, SocketFlags.None);
+                //client.Send(data, recv, SocketFlags.None);
 
                 break;
             case "client":
 
                 if (!conectionCreated)
                 {
-                    setClientStartConection();
+                    
                 }
                 input = Console.ReadLine();
                 if (input == "exit")
@@ -109,19 +121,19 @@ public class TCP : MonoBehaviour
 
 
 
-        try
-        {
-            server.Connect(ipep);
-        }
-        catch (SocketException e)
-        {
-            Console.WriteLine("Unable to connect to server.");
-            Console.WriteLine(e.ToString());
-            return;
-        }
+        //try
+        //{
+        //    server.Connect(ipep);
+        //}
+        //catch (SocketException e)
+        //{
+        //    Console.WriteLine("Unable to connect to server.");
+        //    Console.WriteLine(e.ToString());
+        //    return;
+        //}
 
-        recv = server.Receive(data);
-        stringData = Encoding.ASCII.GetString(data, 0, recv);
-        Console.WriteLine(stringData);
+        //recv = server.Receive(data);
+        //stringData = Encoding.ASCII.GetString(data, 0, recv);
+        //Console.WriteLine(stringData);
     }
 }
