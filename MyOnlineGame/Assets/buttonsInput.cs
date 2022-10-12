@@ -52,7 +52,7 @@ public class buttonsInput : MonoBehaviour
         {
             conectionType = "server";
             if (change.isTCP) TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
-            //else UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
+            else UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
 
             changeTypeObject.SetActive(false);
         }
@@ -83,8 +83,8 @@ public class buttonsInput : MonoBehaviour
                 }
                 else
                 {
-                    //UDPserver.GetComponent<UDP_Server>().outputText = inputText;
-                    //UDPserver.GetComponent<UDP_Server>().PrepareToSend = true;
+                    UDPserver.GetComponent<UDP_Server>().outputText = inputText;
+                    UDPserver.GetComponent<UDP_Server>().PrepareToSend = true;
                 }
                 break;
             case "client":

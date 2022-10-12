@@ -18,15 +18,16 @@ public class UDP_Client : MonoBehaviour
     byte[] data;
     public bool ToCreateClient = false;
     bool clientCreated = false;
+    public bool PrepareToSend = false;
     public string inputText;
     public string outputText;
-    public bool PrepareToSend = false;
-
+    IPEndPoint sender;
+    EndPoint Remote;
     void Start()
     {
         _t1 = new Thread(CreateClient);
-        _t1 = new Thread(send);
-        _t1 = new Thread(receive);
+        _t2 = new Thread(send);
+        _t3 = new Thread(receive);
         data = new byte[1024];
     }
 
@@ -36,6 +37,22 @@ public class UDP_Client : MonoBehaviour
 
         server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         Debug.Log("hola2");
+
+        string welcome = "Hello, are you there?";
+        data = Encoding.ASCII.GetBytes(welcome);
+        server.SendTo(data, data.Length, SocketFlags.None, ipep);
+
+        sender = new IPEndPoint(IPAddress.Any, 0);
+        Remote = (EndPoint)(sender);
+
+        clientCreated = true;
+
+        //server.Connect(ipep);
+        data = new byte[1024];
+        recv = server.ReceiveFrom(data, ref Remote);
+
+        Debug.Log(Remote.ToString());
+        Debug.Log(Encoding.ASCII.GetString(data, 0, recv));
     }
 
     void send()
@@ -45,7 +62,7 @@ public class UDP_Client : MonoBehaviour
             if (PrepareToSend)
             {
                 data = Encoding.ASCII.GetBytes(outputText);
-                server.SendTo(data, data.Length, SocketFlags.None, ipep);
+                server.SendTo(data, outputText.Length, SocketFlags.None, Remote);
                 PrepareToSend = false;
             }
         }
@@ -55,8 +72,6 @@ public class UDP_Client : MonoBehaviour
     {
         while (true)
         {
-            IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
-            EndPoint Remote = (EndPoint)ipep;
             recv = server.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
             Debug.Log(inputText);
