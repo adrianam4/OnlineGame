@@ -3,45 +3,91 @@ using System.Net.Sockets;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using System;
 
 public class UDP_Client : MonoBehaviour
 {
+    private Thread _t1;
+    private Thread _t2;
+    private Thread _t3;
+    Socket server;
+    IPEndPoint ipep;
+    int recv;
+    byte[] data;
+    public bool ToCreateClient = false;
+    bool clientCreated = false;
+    public string inputText;
+    public string outputText;
+    public bool PrepareToSend = false;
+
     void Start()
     {
-        byte[] data = new byte[1024];
-        string input, stringData;
-        IPEndPoint ipep = new IPEndPoint(IPAddress.Parse("10.0.103.33"), 1234);
-
-        Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
-        string welcome = "Hello, how you doing...";
-        data = Encoding.ASCII.GetBytes(welcome);
-        server.SendTo(data, data.Length, SocketFlags.None, ipep);
-
-        IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
-        EndPoint Remote = (EndPoint)sender;
-
+        _t1 = new Thread(CreateClient);
+        _t1 = new Thread(send);
+        _t1 = new Thread(receive);
         data = new byte[1024];
-        int recv = server.ReceiveFrom(data, ref Remote);
+    }
 
-        Debug.Log("Message received from:");
-        Debug.Log(Remote.ToString());
-        Debug.Log(Encoding.ASCII.GetString(data, 0, recv));
+    void CreateClient()
+    {
+        ipep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9050);
 
-        //while (true)
-        //{
-        //    input = Console.ReadLine();
-        //    if (input == "exit")
-        //        break;
-        //    server.SendTo(Encoding.ASCII.GetBytes(input), Remote);
-        //    data = new byte[1024];
-        //    recv = server.ReceiveFrom(data, ref Remote);
-        //    stringData = Encoding.ASCII.GetString(data, 0, recv);
-        //    Console.WriteLine(stringData);
-        //}
-        Console.WriteLine("Stopping client");
+        server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        Debug.Log("hola2");
+    }
+
+    void send()
+    {
+        while (true)
+        {
+            if (PrepareToSend)
+            {
+                data = Encoding.ASCII.GetBytes(outputText);
+                server.SendTo(data, data.Length, SocketFlags.None, ipep);
+                PrepareToSend = false;
+            }
+        }
+    }
+
+    void receive()
+    {
+        while (true)
+        {
+            IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
+            EndPoint Remote = (EndPoint)ipep;
+            recv = server.ReceiveFrom(data, ref Remote);
+            inputText = Encoding.ASCII.GetString(data, 0, recv);
+            Debug.Log(inputText);
+        }
+    }
+
+    private void Update()
+    {
+        if (ToCreateClient && !clientCreated)
+        {
+            if (!_t1.IsAlive)
+            {
+                _t1.Start();
+            }
+        }
+        if (clientCreated)
+        {
+            if (!_t2.IsAlive)
+            {
+                _t2.Start();
+            }
+            if (!_t3.IsAlive)
+            {
+                _t3.Start();
+            }
+        }
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("Stopping client");
         server.Close();
     }
 }

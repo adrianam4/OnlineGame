@@ -32,13 +32,13 @@ public class UDP_Server : MonoBehaviour
         data = Encoding.ASCII.GetBytes(welcome);
         newsock.SendTo(data, data.Length, SocketFlags.None, Remote);
 
-        //while (true)
-        //{
-        //    data = new byte[1024];
-        //    recv = newsock.ReceiveFrom(data, ref Remote);
+        while (true)
+        {
+            data = new byte[1024];
+            recv = newsock.ReceiveFrom(data, ref Remote);
 
-        //    Debug.Log(Encoding.ASCII.GetString(data, 0, recv));
-        //    newsock.SendTo(data, recv, SocketFlags.None, Remote);
-        //}
+            Debug.Log(Encoding.ASCII.GetString(data, 0, recv));
+            newsock.SendTo(data, recv, SocketFlags.None, Remote);
+        }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Net.Sockets;
 
 public class buttonsInput : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class buttonsInput : MonoBehaviour
     public GameObject inputBox;
     public GameObject TCPserver;
     public GameObject TCPclient;
+    public GameObject UDPserver;
+    public GameObject UDPclient;
     public GameObject changeTypeObject;
     Change_Type change;
     string inputText;
@@ -49,7 +52,8 @@ public class buttonsInput : MonoBehaviour
         {
             conectionType = "server";
             if (change.isTCP) TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
-            else //TODO
+            //else UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
+
             changeTypeObject.SetActive(false);
         }
         
@@ -61,7 +65,8 @@ public class buttonsInput : MonoBehaviour
         {
             conectionType = "client";
             if (change.isTCP) TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
-            else //TODO
+            else UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
+
             changeTypeObject.SetActive(false);
         }
     }
@@ -78,7 +83,8 @@ public class buttonsInput : MonoBehaviour
                 }
                 else
                 {
-                    //TODO
+                    //UDPserver.GetComponent<UDP_Server>().outputText = inputText;
+                    //UDPserver.GetComponent<UDP_Server>().PrepareToSend = true;
                 }
                 break;
             case "client":
@@ -90,7 +96,8 @@ public class buttonsInput : MonoBehaviour
                 }
                 else
                 {
-                    //TODO
+                    UDPclient.GetComponent<UDP_Client>().outputText = inputText;
+                    UDPclient.GetComponent<UDP_Client>().PrepareToSend = true;
                 }
                 break;
         }
