@@ -11,11 +11,14 @@ public class buttonsInput : MonoBehaviour
     public GameObject inputBox;
     public GameObject TCPserver;
     public GameObject TCPclient;
+    public GameObject changeTypeObject;
+    Change_Type change;
     string inputText;
     string conectionType="-";
     // Start is called before the first frame update
     void Start()
     {
+        change = changeTypeObject.GetComponent<Change_Type>();
         Button SB = serverbutton.GetComponent<Button>();
         Button CS = clientbutton.GetComponent<Button>();
         Button SendButton = sendbutton.GetComponent<Button>();
@@ -45,7 +48,9 @@ public class buttonsInput : MonoBehaviour
         if (conectionType == "-")
         {
             conectionType = "server";
-            TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
+            if (change.isTCP) TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
+            else //TODO
+            changeTypeObject.SetActive(false);
         }
         
     }
@@ -55,7 +60,9 @@ public class buttonsInput : MonoBehaviour
         if (conectionType == "-")
         {
             conectionType = "client";
-            TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
+            if (change.isTCP) TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
+            else //TODO
+            changeTypeObject.SetActive(false);
         }
     }
     void SendTaskOnClick()
@@ -64,13 +71,27 @@ public class buttonsInput : MonoBehaviour
         {
             case "server":
                 inputText = "server: " + inputText;
-                TCPserver.GetComponent<TCPServer>().outputText = inputText;
-                TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
+                if (change.isTCP)
+                {
+                    TCPserver.GetComponent<TCPServer>().outputText = inputText;
+                    TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
+                }
+                else
+                {
+                    //TODO
+                }
                 break;
             case "client":
                 inputText = "cliente: " + inputText;
-                TCPclient.GetComponent<TCPClient>().outputText = inputText;
-                TCPclient.GetComponent<TCPClient>().PrepareToSend = true;
+                if (change.isTCP)
+                {
+                    TCPclient.GetComponent<TCPClient>().outputText = inputText;
+                    TCPclient.GetComponent<TCPClient>().PrepareToSend = true;
+                }
+                else
+                {
+                    //TODO
+                }
                 break;
         }
         

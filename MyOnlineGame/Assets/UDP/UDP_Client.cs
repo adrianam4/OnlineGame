@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class UDP_Client
+public class UDP_Client : MonoBehaviour
 {
-    public static void Start()
+    void Start()
     {
         byte[] data = new byte[1024];
         string input, stringData;

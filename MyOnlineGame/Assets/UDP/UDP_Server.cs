@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class UDP_Server
+public class UDP_Server : MonoBehaviour
 {
-    public static void Start()
+    void Start()
     {
         int recv;
         byte[] data = new byte[1024];
