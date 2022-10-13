@@ -23,6 +23,8 @@ public class UDP_Client : MonoBehaviour
     public string outputText;
     IPEndPoint sender;
     EndPoint Remote;
+    bool doReceive = true;
+    bool doSend = true;
     void Start()
     {
         _t1 = new Thread(CreateClient);
@@ -49,20 +51,20 @@ public class UDP_Client : MonoBehaviour
 
         //server.Connect(ipep);
         data = new byte[1024];
-        recv = server.ReceiveFrom(data, ref Remote);
+        //recv = server.ReceiveFrom(data, ref Remote);
 
-        Debug.Log(Remote.ToString());
-        Debug.Log(Encoding.ASCII.GetString(data, 0, recv));
+        //Debug.Log(Remote.ToString());
+        //Debug.Log(Encoding.ASCII.GetString(data, 0, recv));
     }
 
     void send()
     {
-        while (true)
+        while (doSend)
         {
             if (PrepareToSend)
             {
                 data = Encoding.ASCII.GetBytes(outputText);
-                server.SendTo(data, outputText.Length, SocketFlags.None, Remote);
+                server.SendTo(data, data.Length, SocketFlags.None, ipep);
                 PrepareToSend = false;
             }
         }
@@ -70,7 +72,7 @@ public class UDP_Client : MonoBehaviour
 
     void receive()
     {
-        while (true)
+        while (doReceive)
         {
             recv = server.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
@@ -91,10 +93,12 @@ public class UDP_Client : MonoBehaviour
         {
             if (!_t2.IsAlive)
             {
+                _t2 = new Thread(send);
                 _t2.Start();
             }
             if (!_t3.IsAlive)
             {
+                _t3 = new Thread(receive);
                 _t3.Start();
             }
         }

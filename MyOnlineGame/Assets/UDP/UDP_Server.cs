@@ -9,9 +9,9 @@ using System.Threading;
 
 public class UDP_Server : MonoBehaviour
 {
-    private Thread _t1;
-    private Thread _t2;
-    private Thread _t3;
+    private Thread UDPCreateServer;
+    private Thread UDPSend;
+    private Thread UDPRecieve;
     Socket client;
     int recv;
     // Start is called before the first frame update
@@ -23,11 +23,13 @@ public class UDP_Server : MonoBehaviour
     public string inputText;
     IPEndPoint sender;
     EndPoint Remote;
+    bool doReceive = true;
+    bool doSend = true;
     void Start()
     {
-        _t1 = new Thread(createServer);
-        _t2 = new Thread(send);
-        _t3 = new Thread(receive);
+        UDPCreateServer = new Thread(createServer);
+        UDPSend = new Thread(send);
+        UDPRecieve = new Thread(receive);
         data = new byte[1024];
     }
 
@@ -35,17 +37,17 @@ public class UDP_Server : MonoBehaviour
     {
         IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 9050);
 
-        Socket newsock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-        newsock.Bind(ipep);
+        client.Bind(ipep);
         Debug.Log("Waiting for a client...");
 
         sender = new IPEndPoint(IPAddress.Any, 0);
         Remote = (EndPoint)(sender);
 
-        recv = newsock.ReceiveFrom(data, ref Remote);
-        Debug.Log(Remote.ToString());
-        Debug.Log(Encoding.ASCII.GetString(data,0,recv));
+        //recv = newsock.ReceiveFrom(data, ref Remote);
+        //Debug.Log(Remote.ToString());
+        //Debug.Log(Encoding.ASCII.GetString(data,0,recv));
         //client = newsock.Accept();
 
         serverCreated = true;
@@ -53,12 +55,12 @@ public class UDP_Server : MonoBehaviour
 
     void send()
     {
-        while (true)
+        while (doSend)
         {
             if (PrepareToSend)
             {
                 data = Encoding.ASCII.GetBytes(outputText);
-                client.SendTo(data,outputText.Length,SocketFlags.None, Remote);
+                client.SendTo(data, data.Length,SocketFlags.None, Remote);
                 PrepareToSend = false;
             }
 
@@ -67,7 +69,7 @@ public class UDP_Server : MonoBehaviour
 
     void receive()
     {
-        while (true)
+        while (doReceive)
         {
             recv = client.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
@@ -80,20 +82,22 @@ public class UDP_Server : MonoBehaviour
     {
         if (ToCreateServer && !serverCreated)
         {
-            if (!_t1.IsAlive)
+            if (!UDPCreateServer.IsAlive)
             {
-                _t1.Start();
+                UDPCreateServer.Start();
             }
         }
         if (serverCreated)
         {
-            if (!_t2.IsAlive)
+            if (!UDPSend.IsAlive)
             {
-                _t2.Start();
+                UDPSend = new Thread(send);
+                UDPSend.Start();
             }
-            if (!_t3.IsAlive)
+            if (!UDPRecieve.IsAlive)
             {
-                _t3.Start();
+                UDPRecieve = new Thread(receive);
+                UDPRecieve.Start();
             }
         }
     }

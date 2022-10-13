@@ -11,7 +11,7 @@ public class TCPServer : MonoBehaviour
 {
     private Thread _t1;
     private Thread _t2;
-    private Thread _t3;
+    private Thread recieve;
     Socket client;
     int recv;
     // Start is called before the first frame update
@@ -21,11 +21,14 @@ public class TCPServer : MonoBehaviour
     byte[] data;
     public string outputText;
     public string inputText;
+    bool doReceive = true;
+    bool doSend = true;
+
     void Start()
     {
         _t1 = new Thread(createServer);
         _t2 = new Thread(send);
-        _t3 = new Thread(recieve);
+        recieve = new Thread(Recieve);
         data = new byte[1024];
     }
     void createServer()
@@ -46,7 +49,7 @@ public class TCPServer : MonoBehaviour
     }
     void send()
     {
-        while (true)
+        while (doSend)
         {
             if (PrepareToSend)
             {
@@ -57,9 +60,9 @@ public class TCPServer : MonoBehaviour
 
         }
     }
-    void recieve()
+    void Recieve()
     {
-        while (true)
+        while (doReceive)
         {
 
             recv = client.Receive(data);
@@ -84,11 +87,13 @@ public class TCPServer : MonoBehaviour
         {
             if (!_t2.IsAlive)
             {
+                _t2 = new Thread(send);
                 _t2.Start();
             }
-            if (!_t3.IsAlive)
+            if (!recieve.IsAlive)
             {
-                _t3.Start();
+                recieve = new Thread(Recieve);
+                recieve.Start();
             }
         }
 

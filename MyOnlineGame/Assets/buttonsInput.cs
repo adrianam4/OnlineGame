@@ -47,12 +47,12 @@ public class buttonsInput : MonoBehaviour
     }
     void ServerTaskOnClick()
     {
-        
+        conectionType = "server";
+        if (change.isTCP) TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
+        else UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
         if (conectionType == "-")
         {
-            conectionType = "server";
-            if (change.isTCP) TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
-            else UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
+            
 
             changeTypeObject.SetActive(false);
         }
@@ -60,12 +60,12 @@ public class buttonsInput : MonoBehaviour
     }
     void ClientTaskOnClick()
     {
-        
+        conectionType = "client";
+        if (change.isTCP) TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
+        else UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
         if (conectionType == "-")
         {
-            conectionType = "client";
-            if (change.isTCP) TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
-            else UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
+            
 
             changeTypeObject.SetActive(false);
         }

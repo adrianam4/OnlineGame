@@ -21,6 +21,8 @@ public class TCPClient : MonoBehaviour
     public string inputText;
     public string outputText;
     public bool PrepareToSend = false;
+    bool doReceive = true;
+    bool doSend = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -53,7 +55,7 @@ public class TCPClient : MonoBehaviour
     }
     void send()
     {
-        while (true)
+        while (doSend)
         {
             if (PrepareToSend)
             {
@@ -66,7 +68,7 @@ public class TCPClient : MonoBehaviour
     }
     void receive()
     {
-        while (true)
+        while (doReceive)
         {
             recv = server.Receive(data);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
@@ -88,10 +90,12 @@ public class TCPClient : MonoBehaviour
         {
             if (!_t2.IsAlive)
             {
+                _t2 = new Thread(send);
                 _t2.Start();
             }
             if (!_t3.IsAlive)
             {
+                _t3 = new Thread(receive);
                 _t3.Start();
             }
         }
