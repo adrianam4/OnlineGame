@@ -53,6 +53,7 @@ public class TCPServer : MonoBehaviour
         {
             if (PrepareToSend)
             {
+                data = new byte[1024];
                 data = Encoding.ASCII.GetBytes(outputText);
                 client.Send(data, outputText.Length, SocketFlags.None);
                 PrepareToSend = false;
@@ -64,7 +65,7 @@ public class TCPServer : MonoBehaviour
     {
         while (doReceive)
         {
-
+            data = new byte[1024];
             recv = client.Receive(data);
 
             inputText = Encoding.ASCII.GetString(data, 0, recv);

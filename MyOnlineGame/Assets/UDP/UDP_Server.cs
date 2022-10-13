@@ -30,7 +30,7 @@ public class UDP_Server : MonoBehaviour
         UDPCreateServer = new Thread(createServer);
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
-        data = new byte[1024];
+        data = new byte[8192];
     }
 
     void createServer()
@@ -59,6 +59,7 @@ public class UDP_Server : MonoBehaviour
         {
             if (PrepareToSend)
             {
+                data = new byte[8192];
                 data = Encoding.ASCII.GetBytes(outputText);
                 client.SendTo(data, data.Length,SocketFlags.None, Remote);
                 PrepareToSend = false;
@@ -71,6 +72,7 @@ public class UDP_Server : MonoBehaviour
     {
         while (doReceive)
         {
+            data = new byte[8192];
             recv = client.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
             Debug.Log(inputText);

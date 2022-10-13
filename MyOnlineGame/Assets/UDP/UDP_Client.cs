@@ -30,12 +30,12 @@ public class UDP_Client : MonoBehaviour
         _t1 = new Thread(CreateClient);
         _t2 = new Thread(send);
         _t3 = new Thread(receive);
-        data = new byte[1024];
+        data = new byte[8192];
     }
 
     void CreateClient()
     {
-        ipep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9050);
+        ipep = new IPEndPoint(IPAddress.Parse("10.0.103.33"), 9050);
 
         server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         Debug.Log("hola2");
@@ -50,7 +50,7 @@ public class UDP_Client : MonoBehaviour
         clientCreated = true;
 
         //server.Connect(ipep);
-        data = new byte[1024];
+        data = new byte[8192];
         //recv = server.ReceiveFrom(data, ref Remote);
 
         //Debug.Log(Remote.ToString());
@@ -63,6 +63,7 @@ public class UDP_Client : MonoBehaviour
         {
             if (PrepareToSend)
             {
+                data = new byte[8192];
                 data = Encoding.ASCII.GetBytes(outputText);
                 server.SendTo(data, data.Length, SocketFlags.None, ipep);
                 PrepareToSend = false;
@@ -74,6 +75,7 @@ public class UDP_Client : MonoBehaviour
     {
         while (doReceive)
         {
+            data = new byte[8192];
             recv = server.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
             Debug.Log(inputText);
