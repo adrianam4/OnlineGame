@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using TMPro;
 
 public class TCPClient : MonoBehaviour
 {
@@ -30,11 +31,11 @@ public class TCPClient : MonoBehaviour
         _t2 = new Thread(send);
         _t3 = new Thread(receive);
         data = new byte[8192];
-
     }
     void CreateClient()
     {
-        ipep = new IPEndPoint(IPAddress.Parse("10.0.103.33"), 9050);
+        ipep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9050);
+        //ipep = new IPEndPoint(IPAddress.Parse("10.0.103.33"), 9050);
 
 
         server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

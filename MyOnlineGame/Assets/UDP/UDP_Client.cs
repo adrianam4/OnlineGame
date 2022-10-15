@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class UDP_Client : MonoBehaviour
 {
@@ -35,7 +36,8 @@ public class UDP_Client : MonoBehaviour
 
     void CreateClient()
     {
-        ipep = new IPEndPoint(IPAddress.Parse("10.0.103.33"), 9050);
+        ipep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9050);
+        //ipep = new IPEndPoint(IPAddress.Parse("10.0.103.33"), 9050);
 
         server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         Debug.Log("hola2");

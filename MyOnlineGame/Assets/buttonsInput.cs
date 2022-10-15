@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Net.Sockets;
+using TMPro;
+using System;
+using Unity.Tutorials.Core.Editor;
 
 public class buttonsInput : MonoBehaviour
 {
@@ -18,6 +21,8 @@ public class buttonsInput : MonoBehaviour
     Change_Type change;
     string inputText;
     string conectionType="-";
+    public GameObject chatObject;
+    private TextMeshProUGUI chatText;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,12 +39,18 @@ public class buttonsInput : MonoBehaviour
         var se = new InputField.EndEditEvent();
         se.AddListener(updatetext);
         input.onEndEdit = se;
+
+        chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+    void AddMessage(string newMessage)
+    {
+        chatText.text += (newMessage + "\n");
     }
     void  updatetext(string arg0)
     {
@@ -84,6 +95,7 @@ public class buttonsInput : MonoBehaviour
                     UDPserver.GetComponent<UDP_Server>().outputText = inputText;
                     UDPserver.GetComponent<UDP_Server>().PrepareToSend = true;
                 }
+                if (!inputText.IsNullOrEmpty()) AddMessage("server: " + inputText);
                 break;
             case "client":
                 
@@ -97,8 +109,8 @@ public class buttonsInput : MonoBehaviour
                     UDPclient.GetComponent<UDP_Client>().outputText = inputText;
                     UDPclient.GetComponent<UDP_Client>().PrepareToSend = true;
                 }
-                break;
+                if (!inputText.IsNullOrEmpty()) AddMessage("client: " + inputText);
+                break; 
         }
-        
     }
 }
