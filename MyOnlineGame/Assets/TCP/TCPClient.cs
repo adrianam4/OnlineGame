@@ -24,6 +24,7 @@ public class TCPClient : MonoBehaviour
     public bool PrepareToSend = false;
     bool doReceive = true;
     bool doSend = true;
+    public string ipToConnect;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,9 +35,7 @@ public class TCPClient : MonoBehaviour
     }
     void CreateClient()
     {
-        ipep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9050);
-        //ipep = new IPEndPoint(IPAddress.Parse("10.0.103.33"), 9050);
-
+        ipep = new IPEndPoint(IPAddress.Parse(ipToConnect), 9050);
 
         server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Debug.Log("hola2");
@@ -102,5 +101,16 @@ public class TCPClient : MonoBehaviour
                 _t3.Start();
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        server.Close();
+        Debug.Log("Stopping client");
+    }
+
+    public void EndTCPConnection()
+    {
+        server.Close();
     }
 }

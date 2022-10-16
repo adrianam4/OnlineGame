@@ -26,6 +26,7 @@ public class UDP_Client : MonoBehaviour
     EndPoint Remote;
     bool doReceive = true;
     bool doSend = true;
+    public string ipToConnect;
     void Start()
     {
         _t1 = new Thread(CreateClient);
@@ -36,8 +37,7 @@ public class UDP_Client : MonoBehaviour
 
     void CreateClient()
     {
-        ipep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 9050);
-        //ipep = new IPEndPoint(IPAddress.Parse("10.0.103.33"), 9050);
+        ipep = new IPEndPoint(IPAddress.Parse(ipToConnect), 9050);
 
         server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         Debug.Log("hola2");
@@ -108,6 +108,10 @@ public class UDP_Client : MonoBehaviour
         }
     }
 
+    public void EndUDPConnection()
+    {
+        server.Close();
+    }
     private void OnDisable()
     {
         Debug.Log("Stopping client");
