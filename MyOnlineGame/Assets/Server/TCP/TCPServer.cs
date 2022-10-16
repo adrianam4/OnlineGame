@@ -13,7 +13,7 @@ public class TCPServer : MonoBehaviour
     private Thread _t1;
     private Thread _t2;
     private Thread recieve;
-    Socket client;
+    public Socket client;
     int recv;
     // Start is called before the first frame update
     public bool ToCreateServer = false;

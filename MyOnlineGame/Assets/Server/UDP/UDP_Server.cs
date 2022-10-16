@@ -13,7 +13,7 @@ public class UDP_Server : MonoBehaviour
     private Thread UDPCreateServer;
     private Thread UDPSend;
     private Thread UDPRecieve;
-    Socket client;
+    public Socket client;
     int recv;
     // Start is called before the first frame update
     public bool ToCreateServer = false;

@@ -9,6 +9,7 @@ using Unity.Tutorials.Core.Editor;
 
 public class buttonsInput : MonoBehaviour
 {
+    public Text infoButton;
     public Button serverbutton;
     public Button clientbutton;
     public Button sendbutton;
@@ -23,6 +24,7 @@ public class buttonsInput : MonoBehaviour
     string conectionType="-";
     public GameObject chatObject;
     private TextMeshProUGUI chatText;
+    bool isServerOrClient = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +48,68 @@ public class buttonsInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isServerOrClient)
+        {
+            switch (conectionType)
+            {
+                case "server":
 
+                    if (change.isTCP)
+                    {
+                        
+                        if (TCPserver.GetComponent<TCPServer>().client!=null)
+                        {
+                            infoButton.text = "Client Connected";
+                        }
+                        else
+                        {
+                            infoButton.text = "No client Connected";
+                        }
+                    }
+                    else
+                    {
+                        if (UDPserver.GetComponent<UDP_Server>().client != null)
+                        {
+                            infoButton.text = "Client Connected";
+                        }
+                        else
+                        {
+                            infoButton.text = "No client Connected";
+                        }
+                    }
+                    break;
+                case "client":
+
+                    if (change.isTCP)
+                    {
+                        if (TCPclient.GetComponent<TCPClient>().server != null)
+                        {
+                            infoButton.text = "Connected to server";
+                        }
+                        else
+                        {
+                            infoButton.text = "No connected to server";
+                        }
+                    }
+                    else
+                    {
+                        if (UDPclient.GetComponent<UDP_Client>().server != null)
+                        {
+                            infoButton.text = "Connected to server";
+                        }
+                        else
+                        {
+                            infoButton.text = "No connected to server";
+                        }
+                    }
+                    if (!inputText.IsNullOrEmpty()) AddMessage("client: " + inputText);
+                    break;
+            }
+        }
+        else
+        {
+            infoButton.text = "No Connection Enabled";
+        }
     }
     void AddMessage(string newMessage)
     {
@@ -60,7 +123,10 @@ public class buttonsInput : MonoBehaviour
     {
         if (conectionType == "-")
         {
+            isServerOrClient = true;
             conectionType = "server";
+
+            
             if (change.isTCP) TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
             else UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
 
@@ -72,6 +138,7 @@ public class buttonsInput : MonoBehaviour
     {
         if (conectionType == "-")
         {
+            isServerOrClient = true;
             conectionType = "client";
             if (change.isTCP) TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
             else UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;

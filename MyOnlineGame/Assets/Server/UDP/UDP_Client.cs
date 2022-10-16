@@ -13,7 +13,7 @@ public class UDP_Client : MonoBehaviour
     private Thread _t1;
     private Thread _t2;
     private Thread _t3;
-    Socket server;
+    public Socket server;
     IPEndPoint ipep;
     int recv;
     byte[] data;
