@@ -7,6 +7,7 @@ using UnityEngine;
 using System;
 using System.Threading;
 using TMPro;
+using Unity.Tutorials.Core.Editor;
 
 public class UDP_Server : MonoBehaviour
 {
@@ -26,12 +27,23 @@ public class UDP_Server : MonoBehaviour
     EndPoint Remote;
     bool doReceive = true;
     bool doSend = true;
+    public GameObject chatObject;
+    private TextMeshProUGUI chatText;
+    private bool messageReceived = false;
     void Start()
     {
         UDPCreateServer = new Thread(createServer);
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
         data = new byte[8192];
+
+        chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
+    }
+
+    void AddMessage(string newMessage)
+    {
+        chatText.text += (newMessage + "\n");
+        messageReceived = false;
     }
 
     void createServer()
@@ -76,6 +88,7 @@ public class UDP_Server : MonoBehaviour
             data = new byte[8192];
             recv = client.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
+            messageReceived = true;
             Debug.Log(inputText);
         }
     }
@@ -83,6 +96,9 @@ public class UDP_Server : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (messageReceived && !inputText.IsNullOrEmpty())
+            AddMessage("client: " + inputText);
+
         if (ToCreateServer && !serverCreated)
         {
             if (!UDPCreateServer.IsAlive)

@@ -970,6 +970,7 @@ MonoBehaviour:
   PrepareToSend: 0
   outputText: 
   inputText: 
+  chatObject: {fileID: 347540580}
 --- !u!4 &272902322
 Transform:
   m_ObjectHideFlags: 0
@@ -1021,7 +1022,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -102.431595, y: 61.67865}
+  m_AnchoredPosition: {x: -80, y: 61.67865}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &347540582
@@ -1365,6 +1366,7 @@ MonoBehaviour:
   outputText: 
   PrepareToSend: 0
   ipToConnect: 127.0.0.1
+  chatObject: {fileID: 347540580}
 --- !u!4 &763543005
 Transform:
   m_ObjectHideFlags: 0
@@ -1413,6 +1415,7 @@ MonoBehaviour:
   PrepareToSend: 0
   outputText: 
   inputText: 
+  chatObject: {fileID: 347540580}
 --- !u!4 &775020147
 Transform:
   m_ObjectHideFlags: 0
@@ -1584,6 +1587,7 @@ MonoBehaviour:
   inputText: 
   outputText: 
   ipToConnect: 127.0.0.1
+  chatObject: {fileID: 347540580}
 --- !u!4 &830329815
 Transform:
   m_ObjectHideFlags: 0
@@ -2150,8 +2154,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -90.03647, y: -4.1642456}
-  m_SizeDelta: {x: -20, y: -13}
+  m_AnchoredPosition: {x: -63.518234, y: -10.832123}
+  m_SizeDelta: {x: -73.03647, y: -26.335754}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1202062498
 MonoBehaviour:
@@ -2497,7 +2501,6 @@ MonoBehaviour:
   UDPserver: {fileID: 272902320}
   UDPclient: {fileID: 830329813}
   changeTypeObject: {fileID: 1246378461}
-  chatObject: {fileID: 347540580}
 --- !u!4 &1321546855
 Transform:
   m_ObjectHideFlags: 0
@@ -2548,8 +2551,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 38, y: -4.1642456}
-  m_SizeDelta: {x: -20, y: -13}
+  m_AnchoredPosition: {x: 0.5, y: -10.832123}
+  m_SizeDelta: {x: 55, y: -26.335754}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1564069034
 MonoBehaviour:

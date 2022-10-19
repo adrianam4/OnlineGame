@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 using TMPro;
+using Unity.Tutorials.Core.Editor;
 
 public class TCPClient : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class TCPClient : MonoBehaviour
     bool doReceive = true;
     bool doSend = true;
     public string ipToConnect;
+    public GameObject chatObject;
+    private TextMeshProUGUI chatText;
+    private bool messageReceived = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +36,16 @@ public class TCPClient : MonoBehaviour
         _t2 = new Thread(send);
         _t3 = new Thread(receive);
         data = new byte[8192];
+
+        chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
+
+    void AddMessage(string newMessage)
+    {
+        chatText.text += (newMessage + "\n");
+        messageReceived = false;
+    }
+
     void CreateClient()
     {
         ipep = new IPEndPoint(IPAddress.Parse(ipToConnect), 9050);
@@ -74,6 +87,7 @@ public class TCPClient : MonoBehaviour
             data = new byte[8192];
             recv = server.Receive(data);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
+            messageReceived = true;
             Debug.Log(inputText);
         }
 
@@ -81,6 +95,9 @@ public class TCPClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (messageReceived && !inputText.IsNullOrEmpty())
+            AddMessage("server: " + inputText);
+
         if (ToCreateclient && !clientCreated)
         {
             if (!_t1.IsAlive)

@@ -22,8 +22,6 @@ public class buttonsInput : MonoBehaviour
     Change_Type change;
     string inputText;
     string conectionType="-";
-    public GameObject chatObject;
-    private TextMeshProUGUI chatText;
     bool isServerOrClient = false;
     // Start is called before the first frame update
     void Start()
@@ -41,8 +39,6 @@ public class buttonsInput : MonoBehaviour
         var se = new InputField.EndEditEvent();
         se.AddListener(updatetext);
         input.onEndEdit = se;
-
-        chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -102,7 +98,6 @@ public class buttonsInput : MonoBehaviour
                             infoButton.text = "No connected to server";
                         }
                     }
-                    if (!inputText.IsNullOrEmpty()) AddMessage("client: " + inputText);
                     break;
             }
         }
@@ -111,10 +106,7 @@ public class buttonsInput : MonoBehaviour
             infoButton.text = "No Connection Enabled";
         }
     }
-    void AddMessage(string newMessage)
-    {
-        chatText.text += (newMessage + "\n");
-    }
+
     void  updatetext(string arg0)
     {
         inputText = arg0;
@@ -162,7 +154,6 @@ public class buttonsInput : MonoBehaviour
                     UDPserver.GetComponent<UDP_Server>().outputText = inputText;
                     UDPserver.GetComponent<UDP_Server>().PrepareToSend = true;
                 }
-                if (!inputText.IsNullOrEmpty()) AddMessage("server: " + inputText);
                 break;
             case "client":
                 
@@ -176,7 +167,6 @@ public class buttonsInput : MonoBehaviour
                     UDPclient.GetComponent<UDP_Client>().outputText = inputText;
                     UDPclient.GetComponent<UDP_Client>().PrepareToSend = true;
                 }
-                if (!inputText.IsNullOrEmpty()) AddMessage("client: " + inputText);
                 break; 
         }
     }
