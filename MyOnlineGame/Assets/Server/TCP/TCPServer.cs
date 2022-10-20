@@ -43,8 +43,6 @@ public class TCPServer : MonoBehaviour
     void AddMessage(string newMessage)
     {
         chatText.text += (newMessage + "\n");
-        messageReceived = false;
-        messageSent = false;
     }
 
     void createServer()
@@ -71,8 +69,9 @@ public class TCPServer : MonoBehaviour
             {
                 byte[] data2;
                 data2 = new byte[8192];
-                data2 = Encoding.ASCII.GetBytes(outputText);
-                client.Send(data2, outputText.Length, SocketFlags.None);
+                string tmp = "server: " + outputText;
+                data2 = Encoding.ASCII.GetBytes(tmp);
+                client.Send(data2, tmp.Length, SocketFlags.None);
                 messageSent = true;
                 PrepareToSend = false;
             }
@@ -97,10 +96,16 @@ public class TCPServer : MonoBehaviour
     void Update()
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
-            AddMessage("client: " + inputText);
+        {
+            AddMessage(inputText);
+            messageReceived = false;
+        }
 
         if (messageSent && !outputText.IsNullOrEmpty())
-            AddMessage(clientTCP.username + ": " + outputText);
+        {
+            AddMessage("server: " + outputText);
+            messageSent = false;
+        }
 
         if (ToCreateServer&& !serverCreated)
         {

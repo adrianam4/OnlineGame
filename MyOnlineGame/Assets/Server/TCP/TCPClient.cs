@@ -44,8 +44,6 @@ public class TCPClient : MonoBehaviour
     void AddMessage(string newMessage)
     {
         chatText.text += (newMessage + "\n");
-        messageReceived = false;
-        messageSent = false;
     }
 
     void CreateClient()
@@ -76,8 +74,9 @@ public class TCPClient : MonoBehaviour
             {
                 byte[] data2;
                 data2 = new byte[8192];
-                data2 = Encoding.ASCII.GetBytes(outputText);
-                server.Send(data2, outputText.Length, SocketFlags.None);
+                string tmp = username + ": " + outputText;
+                data2 = Encoding.ASCII.GetBytes(tmp);
+                server.Send(data2, tmp.Length, SocketFlags.None);
                 messageSent = true;
                 PrepareToSend = false;
             }
@@ -101,10 +100,16 @@ public class TCPClient : MonoBehaviour
     void Update()
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
-            AddMessage("server: " + inputText);
+        {
+            AddMessage(inputText);
+            messageReceived = false;
+        }
 
         if (messageSent && !outputText.IsNullOrEmpty())
+        {
             AddMessage(username + ": " + outputText);
+            messageSent = false;
+        }
 
         if (ToCreateclient && !clientCreated)
         {

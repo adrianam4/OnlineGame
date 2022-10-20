@@ -44,8 +44,6 @@ public class UDP_Server : MonoBehaviour
     void AddMessage(string newMessage)
     {
         chatText.text += (newMessage + "\n");
-        messageReceived = false;
-        messageSent = false;
     }
 
     void createServer()
@@ -76,7 +74,8 @@ public class UDP_Server : MonoBehaviour
             {
                 byte[] data2;
                 data2 = new byte[8192];
-                data2 = Encoding.ASCII.GetBytes(outputText);
+                string tmp = "server: " + outputText;
+                data2 = Encoding.ASCII.GetBytes(tmp);
                 client.SendTo(data2, data2.Length,SocketFlags.None, Remote);
                 messageSent = true;
                 PrepareToSend = false;
@@ -102,10 +101,17 @@ public class UDP_Server : MonoBehaviour
     void Update()
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
-            AddMessage(clientUDP.username + ": " + inputText);
+        {
+            AddMessage(inputText);
+            messageReceived = false;
+        }
+
 
         if (messageSent && !outputText.IsNullOrEmpty())
+        {
             AddMessage("server: " + outputText);
+            messageSent = false;
+        }
 
         if (ToCreateServer && !serverCreated)
         {
