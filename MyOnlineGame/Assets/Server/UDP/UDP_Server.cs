@@ -20,7 +20,6 @@ public class UDP_Server : MonoBehaviour
     public bool ToCreateServer = false;
     bool serverCreated = false;
     public bool PrepareToSend = false;
-    byte[] data;
     public string outputText;
     public string inputText;
     IPEndPoint sender;
@@ -30,12 +29,13 @@ public class UDP_Server : MonoBehaviour
     public GameObject chatObject;
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
+    private bool messageSent = false;
     void Start()
     {
         UDPCreateServer = new Thread(createServer);
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
-        data = new byte[8192];
+        //data = new byte[8192];
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -44,6 +44,7 @@ public class UDP_Server : MonoBehaviour
     {
         chatText.text += (newMessage + "\n");
         messageReceived = false;
+        messageSent = false;
     }
 
     void createServer()
@@ -72,9 +73,11 @@ public class UDP_Server : MonoBehaviour
         {
             if (PrepareToSend)
             {
-                data = new byte[8192];
-                data = Encoding.ASCII.GetBytes(outputText);
-                client.SendTo(data, data.Length,SocketFlags.None, Remote);
+                byte[] data2;
+                data2 = new byte[8192];
+                data2 = Encoding.ASCII.GetBytes(outputText);
+                client.SendTo(data2, data2.Length,SocketFlags.None, Remote);
+                messageSent = true;
                 PrepareToSend = false;
             }
 
@@ -85,6 +88,7 @@ public class UDP_Server : MonoBehaviour
     {
         while (doReceive)
         {
+            byte[] data;
             data = new byte[8192];
             recv = client.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
@@ -98,6 +102,9 @@ public class UDP_Server : MonoBehaviour
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
             AddMessage("client: " + inputText);
+
+        if (messageSent && !outputText.IsNullOrEmpty())
+            AddMessage("server: " + outputText);
 
         if (ToCreateServer && !serverCreated)
         {

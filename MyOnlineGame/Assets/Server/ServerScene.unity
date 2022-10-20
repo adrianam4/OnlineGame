@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1515829, g: 0.15147191, b: 0.19517085, a: 1}
+  m_IndirectSpecularColor: {r: 0.15158603, g: 0.15147693, b: 0.1951764, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -292,11 +292,11 @@ RectTransform:
   m_Children:
   - {fileID: 1733260897}
   - {fileID: 1234531724}
-  - {fileID: 797669328}
-  - {fileID: 69967961}
   - {fileID: 1246378462}
   - {fileID: 40118031}
   - {fileID: 1035440564}
+  - {fileID: 797669328}
+  - {fileID: 69967961}
   - {fileID: 837315542}
   - {fileID: 1858706886}
   - {fileID: 1043195576}
@@ -511,7 +511,7 @@ RectTransform:
   - {fileID: 557698354}
   - {fileID: 2120921715}
   m_Father: {fileID: 34401288}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -688,7 +688,7 @@ RectTransform:
   - {fileID: 1564069033}
   - {fileID: 1202062497}
   m_Father: {fileID: 34401288}
-  m_RootOrder: 3
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1546,7 +1546,7 @@ RectTransform:
   m_Children:
   - {fileID: 178846872}
   m_Father: {fileID: 34401288}
-  m_RootOrder: 2
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1713,7 +1713,7 @@ RectTransform:
   m_Children:
   - {fileID: 46901355}
   m_Father: {fileID: 34401288}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2355,7 +2355,7 @@ RectTransform:
   m_Children:
   - {fileID: 1701483579}
   m_Father: {fileID: 34401288}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3168,7 +3168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 505, y: 573}
+  m_AnchoredPosition: {x: 540, y: 575}
   m_SizeDelta: {x: 725.6401, y: 184.2655}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2066437465
@@ -3204,7 +3204,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &2066437466
 CanvasRenderer:
   m_ObjectHideFlags: 0

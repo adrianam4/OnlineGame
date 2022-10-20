@@ -17,7 +17,6 @@ public class UDP_Client : MonoBehaviour
     public Socket server;
     IPEndPoint ipep;
     int recv;
-    byte[] data;
     public bool ToCreateClient = false;
     bool clientCreated = false;
     public bool PrepareToSend = false;
@@ -31,12 +30,13 @@ public class UDP_Client : MonoBehaviour
     public GameObject chatObject;
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
+    private bool messageSent = false;
     void Start()
     {
         _t1 = new Thread(CreateClient);
         _t2 = new Thread(send);
         _t3 = new Thread(receive);
-        data = new byte[8192];
+        //data = new byte[8192];
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -45,6 +45,7 @@ public class UDP_Client : MonoBehaviour
     {
         chatText.text += (newMessage + "\n");
         messageReceived = false;
+        messageSent = false;
     }
 
     void CreateClient()
@@ -55,6 +56,7 @@ public class UDP_Client : MonoBehaviour
         Debug.Log("hola2");
 
         string welcome = "Hello, are you there?";
+        byte[] data;
         data = Encoding.ASCII.GetBytes(welcome);
         server.SendTo(data, data.Length, SocketFlags.None, ipep);
 
@@ -64,7 +66,7 @@ public class UDP_Client : MonoBehaviour
         clientCreated = true;
 
         //server.Connect(ipep);
-        data = new byte[8192];
+        //data = new byte[8192];
         //recv = server.ReceiveFrom(data, ref Remote);
 
         //Debug.Log(Remote.ToString());
@@ -77,9 +79,11 @@ public class UDP_Client : MonoBehaviour
         {
             if (PrepareToSend)
             {
-                data = new byte[8192];
-                data = Encoding.ASCII.GetBytes(outputText);
-                server.SendTo(data, data.Length, SocketFlags.None, ipep);
+                byte[] data2;
+                data2 = new byte[8192];
+                data2 = Encoding.ASCII.GetBytes(outputText);
+                server.SendTo(data2, data2.Length, SocketFlags.None, ipep);
+                messageSent = true;
                 PrepareToSend = false;
             }
         }
@@ -89,8 +93,11 @@ public class UDP_Client : MonoBehaviour
     {
         while (doReceive)
         {
+            byte[] data;
             data = new byte[8192];
             recv = server.ReceiveFrom(data, ref Remote);
+            Debug.Log(data.Length);
+            Debug.Log(recv);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
             messageReceived = true;
             Debug.Log(inputText);
@@ -101,6 +108,9 @@ public class UDP_Client : MonoBehaviour
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
             AddMessage("server: " + inputText);
+
+        if (messageSent && !outputText.IsNullOrEmpty())
+            AddMessage("client: " + outputText);
 
         if (ToCreateClient && !clientCreated)
         {

@@ -20,7 +20,6 @@ public class TCPServer : MonoBehaviour
     public bool ToCreateServer = false;
     bool serverCreated=false;
     public bool PrepareToSend = false;
-    byte[] data;
     public string outputText;
     public string inputText;
     bool doReceive = true;
@@ -28,13 +27,14 @@ public class TCPServer : MonoBehaviour
     public GameObject chatObject;
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
+    private bool messageSent = false;
 
     void Start()
     {
         _t1 = new Thread(createServer);
         _t2 = new Thread(send);
         recieve = new Thread(Recieve);
-        data = new byte[1024];
+        //data = new byte[8192];
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -43,6 +43,7 @@ public class TCPServer : MonoBehaviour
     {
         chatText.text += (newMessage + "\n");
         messageReceived = false;
+        messageSent = false;
     }
 
     void createServer()
@@ -67,9 +68,11 @@ public class TCPServer : MonoBehaviour
         {
             if (PrepareToSend)
             {
-                data = new byte[1024];
-                data = Encoding.ASCII.GetBytes(outputText);
-                client.Send(data, outputText.Length, SocketFlags.None);
+                byte[] data2;
+                data2 = new byte[8192];
+                data2 = Encoding.ASCII.GetBytes(outputText);
+                client.Send(data2, outputText.Length, SocketFlags.None);
+                messageSent = true;
                 PrepareToSend = false;
             }
 
@@ -79,7 +82,8 @@ public class TCPServer : MonoBehaviour
     {
         while (doReceive)
         {
-            data = new byte[1024];
+            byte[] data;
+            data = new byte[8192];
             recv = client.Receive(data);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
             messageReceived = true;
@@ -93,6 +97,9 @@ public class TCPServer : MonoBehaviour
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
             AddMessage("client: " + inputText);
+
+        if (messageSent && !outputText.IsNullOrEmpty())
+            AddMessage("server: " + outputText);
 
         if (ToCreateServer&& !serverCreated)
         {
