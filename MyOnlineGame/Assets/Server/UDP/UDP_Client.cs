@@ -27,6 +27,7 @@ public class UDP_Client : MonoBehaviour
     bool doReceive = true;
     bool doSend = true;
     public string ipToConnect;
+    public string username;
     public GameObject chatObject;
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
@@ -110,7 +111,7 @@ public class UDP_Client : MonoBehaviour
             AddMessage("server: " + inputText);
 
         if (messageSent && !outputText.IsNullOrEmpty())
-            AddMessage("client: " + outputText);
+            AddMessage(username + ": " + outputText);
 
         if (ToCreateClient && !clientCreated)
         {
@@ -133,14 +134,12 @@ public class UDP_Client : MonoBehaviour
             }
         }
     }
-
-    public void EndUDPConnection()
-    {
-        server.Close();
-    }
     private void OnDisable()
     {
-        Debug.Log("Stopping client");
-        server.Close();
+        if (server != null)
+        {
+            server.Close();
+            Debug.Log("Stopping client");
+        }
     }
 }

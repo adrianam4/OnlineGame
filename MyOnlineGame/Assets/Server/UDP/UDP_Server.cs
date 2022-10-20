@@ -22,6 +22,7 @@ public class UDP_Server : MonoBehaviour
     public bool PrepareToSend = false;
     public string outputText;
     public string inputText;
+    public UDP_Client clientUDP;
     IPEndPoint sender;
     EndPoint Remote;
     bool doReceive = true;
@@ -101,7 +102,7 @@ public class UDP_Server : MonoBehaviour
     void Update()
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
-            AddMessage("client: " + inputText);
+            AddMessage(clientUDP.username + ": " + inputText);
 
         if (messageSent && !outputText.IsNullOrEmpty())
             AddMessage("server: " + outputText);

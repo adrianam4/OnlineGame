@@ -24,6 +24,7 @@ public class TCPServer : MonoBehaviour
     public string inputText;
     bool doReceive = true;
     bool doSend = true;
+    public TCPClient clientTCP;
     public GameObject chatObject;
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
@@ -99,7 +100,7 @@ public class TCPServer : MonoBehaviour
             AddMessage("client: " + inputText);
 
         if (messageSent && !outputText.IsNullOrEmpty())
-            AddMessage("server: " + outputText);
+            AddMessage(clientTCP.username + ": " + outputText);
 
         if (ToCreateServer&& !serverCreated)
         {

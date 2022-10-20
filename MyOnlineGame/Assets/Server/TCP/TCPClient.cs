@@ -25,6 +25,7 @@ public class TCPClient : MonoBehaviour
     bool doReceive = true;
     bool doSend = true;
     public string ipToConnect;
+    public string username;
     public GameObject chatObject;
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
@@ -103,7 +104,7 @@ public class TCPClient : MonoBehaviour
             AddMessage("server: " + inputText);
 
         if (messageSent && !outputText.IsNullOrEmpty())
-            AddMessage("client: " + outputText);
+            AddMessage(username + ": " + outputText);
 
         if (ToCreateclient && !clientCreated)
         {
@@ -129,12 +130,10 @@ public class TCPClient : MonoBehaviour
 
     private void OnDisable()
     {
-        server.Close();
-        Debug.Log("Stopping client");
-    }
-
-    public void EndTCPConnection()
-    {
-        server.Close();
+        if (server != null)
+        {
+            server.Close();
+            Debug.Log("Stopping client");
+        }
     }
 }
