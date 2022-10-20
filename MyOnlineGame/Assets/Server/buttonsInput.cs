@@ -53,9 +53,9 @@ public class buttonsInput : MonoBehaviour
                     if (change.isTCP)
                     {
                         
-                        if (TCPserver.GetComponent<TCPServer>().client!=null)
+                        if (TCPserver.GetComponent<TCPServer>().NumOfClientsConnected>0)
                         {
-                            infoButton.text = "Client Connected";
+                            infoButton.text = TCPserver.GetComponent<TCPServer>().NumOfClientsConnected+ " Clients Connected";
                         }
                         else
                         {
