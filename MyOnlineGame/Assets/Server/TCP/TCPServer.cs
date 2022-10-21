@@ -84,7 +84,7 @@ public class TCPServer : MonoBehaviour
                 Debug.Log(clientsList.Count);
                 for (int a = 0; a < clientsList.Count; a++)
                 {
-                    clientsList[a].Send(data2, outputText.Length, SocketFlags.None);
+                    clientsList[a].Send(data2, tmp.Length, SocketFlags.None);
                 }
                 messageSent = true;
                 PrepareToSend = false;
@@ -107,7 +107,7 @@ public class TCPServer : MonoBehaviour
         {
             if (a != b)
             {
-                clientsList[b].Send(data2, outputText.Length, SocketFlags.None);
+                clientsList[b].Send(data2, tmp.Length, SocketFlags.None);
             }          
         }
     }
