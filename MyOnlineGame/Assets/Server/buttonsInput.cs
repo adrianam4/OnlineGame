@@ -64,9 +64,9 @@ public class buttonsInput : MonoBehaviour
                     }
                     else
                     {
-                        if (UDPserver.GetComponent<UDP_Server>().client != null)
+                        if (UDPserver.GetComponent<UDP_Server>().NumOfClientsConnected > 0)
                         {
-                            infoButton.text = "Client Connected";
+                            infoButton.text = TCPserver.GetComponent<TCPServer>().NumOfClientsConnected + " Clients Connected";
                         }
                         else
                         {
