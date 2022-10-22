@@ -10,9 +10,9 @@ using Unity.Tutorials.Core.Editor;
 public class buttonsInput : MonoBehaviour
 {
     public Text infoButton;
-    public Button serverButton;
-    public Button clientButton;
-    public Button sendButton;
+    public Button serverbutton;
+    public Button clientbutton;
+    public Button sendbutton;
     public GameObject inputBox;
     public GameObject TCPserver;
     public GameObject TCPclient;
@@ -27,16 +27,17 @@ public class buttonsInput : MonoBehaviour
     void Start()
     {
         change = changeTypeObject.GetComponent<Change_Type>();
-        Button SB = serverButton.GetComponent<Button>();
-        Button CS = clientButton.GetComponent<Button>();
-        Button SendButton = sendButton.GetComponent<Button>();
+        Button SB = serverbutton.GetComponent<Button>();
+        Button CS = clientbutton.GetComponent<Button>();
+        Button SendButton = sendbutton.GetComponent<Button>();
         SB.onClick.AddListener(ServerTaskOnClick);
         CS.onClick.AddListener(ClientTaskOnClick);
         SendButton.onClick.AddListener(SendTaskOnClick);
 
+
         var input = inputBox.GetComponent<InputField>();
         var se = new InputField.EndEditEvent();
-        se.AddListener(UpdateText);
+        se.AddListener(updatetext);
         input.onEndEdit = se;
     }
 
@@ -106,38 +107,37 @@ public class buttonsInput : MonoBehaviour
         }
     }
 
-    void  UpdateText(string arg0)
+    void  updatetext(string arg0)
     {
         inputText = arg0;
     }
-
     void ServerTaskOnClick()
     {
         if (conectionType == "-")
         {
             isServerOrClient = true;
             conectionType = "server";
+
             
             if (change.isTCP) TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
-            else UDPserver.GetComponent<UDP_Server>().toCreateServer = true;
+            else UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
 
             changeTypeObject.SetActive(false);
         }
+        
     }
-
     void ClientTaskOnClick()
     {
         if (conectionType == "-")
         {
             isServerOrClient = true;
             conectionType = "client";
-            if (change.isTCP) TCPclient.GetComponent<TCPClient>().toCreateclient = true;
-            else UDPclient.GetComponent<UDP_Client>().toCreateClient = true;
+            if (change.isTCP) TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
+            else UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
 
             changeTypeObject.SetActive(false);
         }
     }
-
     void SendTaskOnClick()
     {
         switch (conectionType)
@@ -152,7 +152,7 @@ public class buttonsInput : MonoBehaviour
                 else
                 {
                     UDPserver.GetComponent<UDP_Server>().outputText = inputText;
-                    UDPserver.GetComponent<UDP_Server>().prepareToSend = true;
+                    UDPserver.GetComponent<UDP_Server>().PrepareToSend = true;
                 }
                 break;
             case "client":
@@ -160,12 +160,12 @@ public class buttonsInput : MonoBehaviour
                 if (change.isTCP)
                 {
                     TCPclient.GetComponent<TCPClient>().outputText = inputText;
-                    TCPclient.GetComponent<TCPClient>().prepareToSend = true;
+                    TCPclient.GetComponent<TCPClient>().PrepareToSend = true;
                 }
                 else
                 {
                     UDPclient.GetComponent<UDP_Client>().outputText = inputText;
-                    UDPclient.GetComponent<UDP_Client>().prepareToSend = true;
+                    UDPclient.GetComponent<UDP_Client>().PrepareToSend = true;
                 }
                 break; 
         }

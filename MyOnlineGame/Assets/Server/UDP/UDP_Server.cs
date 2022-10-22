@@ -16,26 +16,28 @@ public class UDP_Server : MonoBehaviour
     private Thread UDPRecieve;
     public Socket client;
     int recv;
-    public bool toCreateServer = false;
+    // Start is called before the first frame update
+    public bool ToCreateServer = false;
     bool serverCreated = false;
-    public bool prepareToSend = false;
+    public bool PrepareToSend = false;
     public string outputText;
     public string inputText;
     public UDP_Client clientUDP;
     IPEndPoint sender;
-    EndPoint remote;
+    EndPoint Remote;
     bool doReceive = true;
     bool doSend = true;
     public GameObject chatObject;
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
     private bool messageSent = false;
-
     void Start()
     {
-        UDPCreateServer = new Thread(CreateServer);
-        UDPSend = new Thread(Send);
-        UDPRecieve = new Thread(Receive);
+        UDPCreateServer = new Thread(createServer);
+        UDPSend = new Thread(send);
+        UDPRecieve = new Thread(receive);
+        //data = new byte[8192];
+
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
@@ -44,7 +46,7 @@ public class UDP_Server : MonoBehaviour
         chatText.text += (newMessage + "\n");
     }
 
-    void CreateServer()
+    void createServer()
     {
         IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 9050);
 
@@ -54,40 +56,48 @@ public class UDP_Server : MonoBehaviour
         Debug.Log("Waiting for a client...");
 
         sender = new IPEndPoint(IPAddress.Any, 0);
-        remote = (EndPoint)(sender);
+        Remote = (EndPoint)(sender);
+
+        //recv = newsock.ReceiveFrom(data, ref Remote);
+        //Debug.Log(Remote.ToString());
+        //Debug.Log(Encoding.ASCII.GetString(data,0,recv));
+        //client = newsock.Accept();
+
         serverCreated = true;
-        Debug.Log("Connected with {0} at port {1}");
     }
 
-    void Send()
+    void send()
     {
         while (doSend)
         {
-            if (prepareToSend)
+            if (PrepareToSend)
             {
-                byte[] data2 = new byte[8192];
+                byte[] data2;
+                data2 = new byte[8192];
                 string tmp = "server: " + outputText;
                 data2 = Encoding.ASCII.GetBytes(tmp);
-                client.SendTo(data2, data2.Length,SocketFlags.None, remote);
+                client.SendTo(data2, data2.Length,SocketFlags.None, Remote);
                 messageSent = true;
-                prepareToSend = false;
+                PrepareToSend = false;
             }
 
         }
     }
 
-    void Receive()
+    void receive()
     {
         while (doReceive)
         {
-            byte[] data = new byte[8192];
-            recv = client.ReceiveFrom(data, ref remote);
+            byte[] data;
+            data = new byte[8192];
+            recv = client.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
             messageReceived = true;
             Debug.Log(inputText);
         }
     }
 
+    // Update is called once per frame
     void Update()
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
@@ -96,13 +106,14 @@ public class UDP_Server : MonoBehaviour
             messageReceived = false;
         }
 
+
         if (messageSent && !outputText.IsNullOrEmpty())
         {
             AddMessage("server: " + outputText);
             messageSent = false;
         }
 
-        if (toCreateServer && !serverCreated)
+        if (ToCreateServer && !serverCreated)
         {
             if (!UDPCreateServer.IsAlive)
             {
@@ -113,12 +124,12 @@ public class UDP_Server : MonoBehaviour
         {
             if (!UDPSend.IsAlive)
             {
-                UDPSend = new Thread(Send);
+                UDPSend = new Thread(send);
                 UDPSend.Start();
             }
             if (!UDPRecieve.IsAlive)
             {
-                UDPRecieve = new Thread(Receive);
+                UDPRecieve = new Thread(receive);
                 UDPRecieve.Start();
             }
         }

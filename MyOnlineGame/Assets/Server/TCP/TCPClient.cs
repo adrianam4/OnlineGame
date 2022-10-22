@@ -17,11 +17,11 @@ public class TCPClient : MonoBehaviour
     public Socket server;
     IPEndPoint ipep;
     int recv;
-    public bool toCreateclient = false;
+    public bool ToCreateclient = false;
     bool clientCreated = false;
     public string inputText;
     public string outputText;
-    public bool prepareToSend = false;
+    public bool PrepareToSend = false;
     bool doReceive = true;
     bool doSend = true;
     public string ipToConnect;
@@ -30,12 +30,13 @@ public class TCPClient : MonoBehaviour
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
     private bool messageSent = false;
-
+    // Start is called before the first frame update
     void Start()
     {
         _t1 = new Thread(CreateClient);
-        _t2 = new Thread(Send);
-        _t3 = new Thread(Receive);
+        _t2 = new Thread(send);
+        _t3 = new Thread(receive);
+        //data = new byte[8192];
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -48,7 +49,9 @@ public class TCPClient : MonoBehaviour
     void CreateClient()
     {
         ipep = new IPEndPoint(IPAddress.Parse(ipToConnect), 9050);
+
         server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        Debug.Log("hola2");
 
         try
         {
@@ -63,29 +66,29 @@ public class TCPClient : MonoBehaviour
         }
         
     }
-
-    void Send()
+    void send()
     {
         while (doSend)
         {
-            if (prepareToSend)
+            if (PrepareToSend)
             {
-                byte[] data2 = new byte[8192];
+                byte[] data2;
+                data2 = new byte[8192];
                 string tmp = username + ": " + outputText;
                 data2 = Encoding.ASCII.GetBytes(tmp);
                 server.Send(data2, tmp.Length, SocketFlags.None);
                 messageSent = true;
-                prepareToSend = false;
+                PrepareToSend = false;
             }
 
         }
     }
-
-    void Receive()
+    void receive()
     {
         while (doReceive)
         {
-            byte[] data = new byte[8192];
+            byte[] data;
+            data = new byte[8192];
             recv = server.Receive(data);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
             messageReceived = true;
@@ -93,7 +96,7 @@ public class TCPClient : MonoBehaviour
         }
 
     }
-
+    // Update is called once per frame
     void Update()
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
@@ -108,7 +111,7 @@ public class TCPClient : MonoBehaviour
             messageSent = false;
         }
 
-        if (toCreateclient && !clientCreated)
+        if (ToCreateclient && !clientCreated)
         {
             if (!_t1.IsAlive)
             {
@@ -119,12 +122,12 @@ public class TCPClient : MonoBehaviour
         {
             if (!_t2.IsAlive)
             {
-                _t2 = new Thread(Send);
+                _t2 = new Thread(send);
                 _t2.Start();
             }
             if (!_t3.IsAlive)
             {
-                _t3 = new Thread(Receive);
+                _t3 = new Thread(receive);
                 _t3.Start();
             }
         }
