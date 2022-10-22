@@ -55,7 +55,6 @@ public class TCPServer : MonoBehaviour
         ToCreateServer = false;
         while (true)
         {
-            Debug.Log("hola1");
             newsock.Listen(10);
             Debug.Log("Waiting for a client...");
 

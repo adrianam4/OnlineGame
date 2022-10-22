@@ -1372,7 +1372,7 @@ MonoBehaviour:
   outputText: 
   PrepareToSend: 0
   ipToConnect: 127.0.0.1
-  username: messi
+  username: client
   chatObject: {fileID: 347540580}
 --- !u!4 &763543005
 Transform:
@@ -1596,7 +1596,7 @@ MonoBehaviour:
   inputText: 
   outputText: 
   ipToConnect: 127.0.0.1
-  username: 
+  username: client
   chatObject: {fileID: 347540580}
 --- !u!4 &830329815
 Transform:
