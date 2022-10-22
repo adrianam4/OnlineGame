@@ -969,8 +969,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2fb77f7d4ed255478938b9467dbf706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toCreateServer: 0
-  prepareToSend: 0
+  ToCreateServer: 0
+  PrepareToSend: 0
   outputText: 
   inputText: 
   clientUDP: {fileID: 830329814}
@@ -1367,10 +1367,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ece5d3752255ba40b2df8c25bddfb04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toCreateclient: 0
+  ToCreateclient: 0
   inputText: 
   outputText: 
-  prepareToSend: 0
+  PrepareToSend: 0
   ipToConnect: 127.0.0.1
   username: messi
   chatObject: {fileID: 347540580}
@@ -1591,8 +1591,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 675824b6c338de044a64ee06ed811c8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toCreateClient: 0
-  prepareToSend: 0
+  ToCreateClient: 0
+  PrepareToSend: 0
   inputText: 
   outputText: 
   ipToConnect: 127.0.0.1
@@ -1972,7 +1972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e447b3d91f27444bcd398aebabca7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textField: {fileID: 0}
+  TextField: {fileID: 557698351}
   TCPClient: {fileID: 763543003}
   UDPClient: {fileID: 830329813}
 --- !u!114 &1035440566
@@ -2834,10 +2834,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTCP: 0
   thisButton: {fileID: 1246378461}
-  UDPServer: {fileID: 272902320}
-  UDPClient: {fileID: 830329813}
-  TCPServer: {fileID: 775020145}
-  TCPClient: {fileID: 763543003}
+  udpServer: {fileID: 272902320}
+  udpClient: {fileID: 830329813}
+  tcpServer: {fileID: 775020145}
+  tcpClient: {fileID: 763543003}
 --- !u!1 &1321546853
 GameObject:
   m_ObjectHideFlags: 0
@@ -2868,9 +2868,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoButton: {fileID: 2066437465}
-  serverButton: {fileID: 1733260900}
-  clientButton: {fileID: 1234531721}
-  sendButton: {fileID: 797669325}
+  serverbutton: {fileID: 1733260900}
+  clientbutton: {fileID: 1234531721}
+  sendbutton: {fileID: 797669325}
   inputBox: {fileID: 69967960}
   TCPserver: {fileID: 775020145}
   TCPclient: {fileID: 763543003}
