@@ -15,10 +15,7 @@ public class UDP_Server : MonoBehaviour
     private Thread UDPSend;
     private Thread UDPRecieve;
     public Socket client;
-    private List<Thread> recieveList;
-    private List<EndPoint> endPoints;
     int recv;
-    public int NumOfClientsConnected;
     // Start is called before the first frame update
     public bool ToCreateServer = false;
     bool serverCreated = false;
@@ -27,6 +24,7 @@ public class UDP_Server : MonoBehaviour
     public string inputText;
     public UDP_Client clientUDP;
     IPEndPoint sender;
+    EndPoint Remote;
     bool doReceive = true;
     bool doSend = true;
     public GameObject chatObject;
@@ -39,10 +37,8 @@ public class UDP_Server : MonoBehaviour
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
         //data = new byte[8192];
-        endPoints=new List<EndPoint>();
-        recieveList = new List<Thread>();
+
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
-        NumOfClientsConnected = 0;
     }
 
     void AddMessage(string newMessage)
@@ -52,30 +48,22 @@ public class UDP_Server : MonoBehaviour
 
     void createServer()
     {
-        serverCreated = true;
         IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 9050);
 
         client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        
-        client.Bind(ipep);
-        while (true)
-        {
-            string aux;
 
-        
-            Debug.Log("Waiting for a client...");
-        
-            sender = new IPEndPoint(IPAddress.Any, 0);
-            endPoints.Add((EndPoint)(sender));
-            recieveList.Add(new Thread(receive));
-            byte[] data;
-            data = new byte[8192];
-            EndPoint auxiliar = endPoints[NumOfClientsConnected];
-            recv = client.ReceiveFrom(data, ref auxiliar);
-            aux = Encoding.ASCII.GetString(data, 0, recv);
-            Debug.Log(aux);
-            NumOfClientsConnected++;
-        }
+        client.Bind(ipep);
+        Debug.Log("Waiting for a client...");
+
+        sender = new IPEndPoint(IPAddress.Any, 0);
+        Remote = (EndPoint)(sender);
+
+        //recv = newsock.ReceiveFrom(data, ref Remote);
+        //Debug.Log(Remote.ToString());
+        //Debug.Log(Encoding.ASCII.GetString(data,0,recv));
+        //client = newsock.Accept();
+
+        serverCreated = true;
     }
 
     void send()
@@ -88,50 +76,22 @@ public class UDP_Server : MonoBehaviour
                 data2 = new byte[8192];
                 string tmp = "server: " + outputText;
                 data2 = Encoding.ASCII.GetBytes(tmp);
-                for (int a = 0; a < NumOfClientsConnected; a++)
-                {
-                    client.SendTo(data2, data2.Length,SocketFlags.None, endPoints[a]);
-                }
+                client.SendTo(data2, data2.Length,SocketFlags.None, Remote);
                 messageSent = true;
                 PrepareToSend = false;
             }
 
         }
     }
-    void removeClient(int a)
-    {
-        endPoints.Remove(endPoints[a]);
-        NumOfClientsConnected--;
-    }
-    void sendToAllClients(string message, int a)
-    {
-        byte[] data2;
-        data2 = new byte[8192];
-        string tmp = message;
-        data2 = Encoding.ASCII.GetBytes(tmp);
-        for (int b = 0; b < NumOfClientsConnected; b++)
-        {
-            if (a != b)
-            {
-                client.SendTo(data2, data2.Length, SocketFlags.None, endPoints[a]);
-            }
-        }
-    }
-    void receive(object a)
+
+    void receive()
     {
         while (doReceive)
         {
             byte[] data;
             data = new byte[8192];
-            EndPoint ep= endPoints[(int)a];
-            recv = client.ReceiveFrom(data, ref ep);
-            if (recv == 0)
-            {
-                removeClient((int)a);
-                break;
-            }
+            recv = client.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
-            sendToAllClients(inputText, (int)a);
             messageReceived = true;
             Debug.Log(inputText);
         }
@@ -167,14 +127,10 @@ public class UDP_Server : MonoBehaviour
                 UDPSend = new Thread(send);
                 UDPSend.Start();
             }
-            for (int a = 0; a < NumOfClientsConnected; a++)
+            if (!UDPRecieve.IsAlive)
             {
-
-                if (!recieveList[a].IsAlive)
-                {
-                    recieveList[a] = new Thread(receive);
-                    recieveList[a].Start(a);
-                }
+                UDPRecieve = new Thread(receive);
+                UDPRecieve.Start();
             }
         }
     }

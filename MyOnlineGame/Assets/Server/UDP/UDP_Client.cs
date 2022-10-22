@@ -54,7 +54,7 @@ public class UDP_Client : MonoBehaviour
         server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         Debug.Log("hola2");
 
-        string welcome = "ToConnect";
+        string welcome = "Hello, are you there?";
         byte[] data;
         data = Encoding.ASCII.GetBytes(welcome);
         server.SendTo(data, data.Length, SocketFlags.None, ipep);
