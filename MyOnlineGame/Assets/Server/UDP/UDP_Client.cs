@@ -17,13 +17,13 @@ public class UDP_Client : MonoBehaviour
     public Socket server;
     IPEndPoint ipep;
     int recv;
-    public bool ToCreateClient = false;
+    public bool toCreateClient = false;
     bool clientCreated = false;
-    public bool PrepareToSend = false;
+    public bool prepareToSend = false;
     public string inputText;
     public string outputText;
     IPEndPoint sender;
-    EndPoint Remote;
+    EndPoint remote;
     bool doReceive = true;
     bool doSend = true;
     public string ipToConnect;
@@ -32,12 +32,12 @@ public class UDP_Client : MonoBehaviour
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
     private bool messageSent = false;
+
     void Start()
     {
         _t1 = new Thread(CreateClient);
-        _t2 = new Thread(send);
-        _t3 = new Thread(receive);
-        //data = new byte[8192];
+        _t2 = new Thread(Send);
+        _t3 = new Thread(Receive);
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -52,50 +52,35 @@ public class UDP_Client : MonoBehaviour
         ipep = new IPEndPoint(IPAddress.Parse(ipToConnect), 9050);
 
         server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        Debug.Log("hola2");
-
-        string welcome = "Hello, are you there?";
-        byte[] data;
-        data = Encoding.ASCII.GetBytes(welcome);
-        server.SendTo(data, data.Length, SocketFlags.None, ipep);
 
         sender = new IPEndPoint(IPAddress.Any, 0);
-        Remote = (EndPoint)(sender);
+        remote = (EndPoint)(sender);
 
         clientCreated = true;
-
-        //server.Connect(ipep);
-        //data = new byte[8192];
-        //recv = server.ReceiveFrom(data, ref Remote);
-
-        //Debug.Log(Remote.ToString());
-        //Debug.Log(Encoding.ASCII.GetString(data, 0, recv));
     }
 
-    void send()
+    void Send()
     {
         while (doSend)
         {
-            if (PrepareToSend)
+            if (prepareToSend)
             {
-                byte[] data2;
-                data2 = new byte[8192];
+                byte[] data2 = new byte[8192];
                 string tmp = username + ": " + outputText;
                 data2 = Encoding.ASCII.GetBytes(tmp);
                 server.SendTo(data2, data2.Length, SocketFlags.None, ipep);
                 messageSent = true;
-                PrepareToSend = false;
+                prepareToSend = false;
             }
         }
     }
 
-    void receive()
+    void Receive()
     {
         while (doReceive)
         {
-            byte[] data;
-            data = new byte[8192];
-            recv = server.ReceiveFrom(data, ref Remote);
+            byte[] data = new byte[8192];
+            recv = server.ReceiveFrom(data, ref remote);
             Debug.Log(data.Length);
             Debug.Log(recv);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
@@ -118,7 +103,7 @@ public class UDP_Client : MonoBehaviour
             messageSent = false;
         }
 
-        if (ToCreateClient && !clientCreated)
+        if (toCreateClient && !clientCreated)
         {
             if (!_t1.IsAlive)
             {
@@ -129,16 +114,17 @@ public class UDP_Client : MonoBehaviour
         {
             if (!_t2.IsAlive)
             {
-                _t2 = new Thread(send);
+                _t2 = new Thread(Send);
                 _t2.Start();
             }
             if (!_t3.IsAlive)
             {
-                _t3 = new Thread(receive);
+                _t3 = new Thread(Receive);
                 _t3.Start();
             }
         }
     }
+
     private void OnDisable()
     {
         if (server != null)
