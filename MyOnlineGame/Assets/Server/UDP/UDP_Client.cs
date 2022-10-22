@@ -32,12 +32,12 @@ public class UDP_Client : MonoBehaviour
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
     private bool messageSent = false;
+
     void Start()
     {
         _t1 = new Thread(CreateClient);
         _t2 = new Thread(send);
         _t3 = new Thread(receive);
-        //data = new byte[8192];
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -63,13 +63,6 @@ public class UDP_Client : MonoBehaviour
         Remote = (EndPoint)(sender);
 
         clientCreated = true;
-
-        //server.Connect(ipep);
-        //data = new byte[8192];
-        //recv = server.ReceiveFrom(data, ref Remote);
-
-        //Debug.Log(Remote.ToString());
-        //Debug.Log(Encoding.ASCII.GetString(data, 0, recv));
     }
 
     void send()
@@ -139,6 +132,7 @@ public class UDP_Client : MonoBehaviour
             }
         }
     }
+
     private void OnDisable()
     {
         if (server != null)

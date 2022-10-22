@@ -16,7 +16,6 @@ public class UDP_Server : MonoBehaviour
     private Thread UDPRecieve;
     public Socket client;
     int recv;
-    // Start is called before the first frame update
     public bool ToCreateServer = false;
     bool serverCreated = false;
     public bool PrepareToSend = false;
@@ -36,7 +35,6 @@ public class UDP_Server : MonoBehaviour
         UDPCreateServer = new Thread(createServer);
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
-        //data = new byte[8192];
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -49,7 +47,6 @@ public class UDP_Server : MonoBehaviour
     void createServer()
     {
         IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 9050);
-
         client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
         client.Bind(ipep);
@@ -57,11 +54,6 @@ public class UDP_Server : MonoBehaviour
 
         sender = new IPEndPoint(IPAddress.Any, 0);
         Remote = (EndPoint)(sender);
-
-        //recv = newsock.ReceiveFrom(data, ref Remote);
-        //Debug.Log(Remote.ToString());
-        //Debug.Log(Encoding.ASCII.GetString(data,0,recv));
-        //client = newsock.Accept();
 
         serverCreated = true;
     }
@@ -97,7 +89,6 @@ public class UDP_Server : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (messageReceived && !inputText.IsNullOrEmpty())

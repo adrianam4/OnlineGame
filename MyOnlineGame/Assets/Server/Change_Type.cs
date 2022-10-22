@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class Change_Type : MonoBehaviour
 {
-    // Start is called before the first frame update
     public bool isTCP;
     public GameObject thisButton;
     public GameObject udpServer;

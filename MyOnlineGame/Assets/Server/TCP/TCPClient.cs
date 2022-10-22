@@ -30,13 +30,12 @@ public class TCPClient : MonoBehaviour
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
     private bool messageSent = false;
-    // Start is called before the first frame update
+
     void Start()
     {
         _t1 = new Thread(CreateClient);
         _t2 = new Thread(send);
         _t3 = new Thread(receive);
-        //data = new byte[8192];
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -66,6 +65,7 @@ public class TCPClient : MonoBehaviour
         }
         
     }
+
     void send()
     {
         while (doSend)
@@ -83,6 +83,7 @@ public class TCPClient : MonoBehaviour
 
         }
     }
+
     void receive()
     {
         while (doReceive)
@@ -96,7 +97,7 @@ public class TCPClient : MonoBehaviour
         }
 
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (messageReceived && !inputText.IsNullOrEmpty())

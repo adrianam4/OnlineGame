@@ -8,17 +8,6 @@ public class setIP : MonoBehaviour
     public GameObject TextField;
     public GameObject TCPClient;
     public GameObject UDPClient;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void SetIP()
     {

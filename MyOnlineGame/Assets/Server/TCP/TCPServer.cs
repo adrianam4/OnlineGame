@@ -17,7 +17,6 @@ public class TCPServer : MonoBehaviour
     private List<Socket> clientsList;
     int recv;
     public int NumOfClientsConnected;
-    // Start is called before the first frame update
     public bool ToCreateServer = false;
     bool serverCreated=false;
     public bool PrepareToSend = false;
@@ -38,7 +37,6 @@ public class TCPServer : MonoBehaviour
         _t2 = new Thread(send);
         clientsList = new List<Socket>();
         recieveList = new List<Thread>();
-        //data = new byte[8192];
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -57,8 +55,6 @@ public class TCPServer : MonoBehaviour
         ToCreateServer = false;
         while (true)
         {
-
-
             Debug.Log("hola1");
             newsock.Listen(10);
             Debug.Log("Waiting for a client...");
@@ -71,6 +67,7 @@ public class TCPServer : MonoBehaviour
             Debug.Log("Connected with {0} at port {1}");
         }
     }
+
     void send()
     {
         while (doSend)
@@ -92,11 +89,13 @@ public class TCPServer : MonoBehaviour
 
         }
     }
+
     void removeClient(int a)
     {
         clientsList.Remove(clientsList[a]);
         NumOfClientsConnected--;
     }
+
     void sendToAllClients(string message,int a)
     {
         byte[] data2;
@@ -111,6 +110,7 @@ public class TCPServer : MonoBehaviour
             }          
         }
     }
+
     void Recieve(object a)
     {
         while (doReceive)
@@ -130,8 +130,6 @@ public class TCPServer : MonoBehaviour
         }
     }
 
-
-    // Update is called once per frame
     void Update()
     {
         if (messageReceived && !inputText.IsNullOrEmpty())

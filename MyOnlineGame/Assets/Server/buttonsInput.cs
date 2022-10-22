@@ -23,7 +23,7 @@ public class buttonsInput : MonoBehaviour
     string inputText;
     string conectionType="-";
     bool isServerOrClient = false;
-    // Start is called before the first frame update
+
     void Start()
     {
         change = changeTypeObject.GetComponent<Change_Type>();
@@ -41,7 +41,6 @@ public class buttonsInput : MonoBehaviour
         input.onEndEdit = se;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isServerOrClient)
@@ -111,6 +110,7 @@ public class buttonsInput : MonoBehaviour
     {
         inputText = arg0;
     }
+
     void ServerTaskOnClick()
     {
         if (conectionType == "-")
@@ -126,6 +126,7 @@ public class buttonsInput : MonoBehaviour
         }
         
     }
+
     void ClientTaskOnClick()
     {
         if (conectionType == "-")
@@ -138,6 +139,7 @@ public class buttonsInput : MonoBehaviour
             changeTypeObject.SetActive(false);
         }
     }
+
     void SendTaskOnClick()
     {
         switch (conectionType)
