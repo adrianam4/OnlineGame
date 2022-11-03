@@ -65,7 +65,7 @@ public class UDP_Server : MonoBehaviour
     {
         while (doSend)
         {
-            data.GetComponent<DataSerialization>().Serialize();
+            
             if (PrepareToSend)
             {
                 client.SendTo(sendData, sendData.Length,SocketFlags.None, Remote);
@@ -113,6 +113,7 @@ public class UDP_Server : MonoBehaviour
         }
         if (serverCreated)
         {
+            data.GetComponent<DataSerialization>().Serialize();
             if (!UDPSend.IsAlive)
             {
                 UDPSend = new Thread(send);
