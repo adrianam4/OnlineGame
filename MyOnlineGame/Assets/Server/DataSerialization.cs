@@ -13,6 +13,7 @@ public class DataSerialization : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         newRotation=Quaternion.identity;
         newPosition = new Vector3();
         byte[] data = new byte[100];
