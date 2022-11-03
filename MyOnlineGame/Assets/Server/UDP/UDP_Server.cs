@@ -38,7 +38,7 @@ public class UDP_Server : MonoBehaviour
         UDPCreateServer = new Thread(createServer);
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
-        data = GameObject.Find("Data");
+        
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
@@ -91,6 +91,7 @@ public class UDP_Server : MonoBehaviour
 
     void Update()
     {
+        data = GameObject.Find("Data");
         if (messageReceived && !inputText.IsNullOrEmpty())
         {
             AddMessage(inputText);
