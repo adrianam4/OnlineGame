@@ -32,8 +32,10 @@ public class UDP_Server : MonoBehaviour
     private bool messageReceived = false;
     private bool messageSent = false;
     public GameObject data;
+    public bool sceneChanged;
     void Start()
     {
+        sceneChanged = false;
         DontDestroyOnLoad(gameObject);
         UDPCreateServer = new Thread(createServer);
         UDPSend = new Thread(send);
@@ -91,7 +93,11 @@ public class UDP_Server : MonoBehaviour
 
     void Update()
     {
-        data = GameObject.Find("Data");
+        if (sceneChanged)
+        {
+            data = GameObject.Find("Data");
+        }
+        
         if (messageReceived && !inputText.IsNullOrEmpty())
         {
             AddMessage(inputText);
@@ -114,6 +120,7 @@ public class UDP_Server : MonoBehaviour
         }
         if (serverCreated)
         {
+            if(sceneChanged)
             data.GetComponent<DataSerialization>().Serialize();
             if (!UDPSend.IsAlive)
             {
