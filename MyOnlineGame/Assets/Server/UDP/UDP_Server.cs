@@ -30,6 +30,8 @@ public class UDP_Server : MonoBehaviour
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
     private bool messageSent = false;
+    public byte[] sendData;
+
     void Start()
     {
         UDPCreateServer = new Thread(createServer);
@@ -64,11 +66,10 @@ public class UDP_Server : MonoBehaviour
         {
             if (PrepareToSend)
             {
-                byte[] data2;
-                data2 = new byte[8192];
+                
                 string tmp = "server: " + outputText;
-                data2 = Encoding.ASCII.GetBytes(tmp);
-                client.SendTo(data2, data2.Length,SocketFlags.None, Remote);
+                sendData = Encoding.ASCII.GetBytes(tmp);
+                client.SendTo(sendData, sendData.Length,SocketFlags.None, Remote);
                 messageSent = true;
                 PrepareToSend = false;
             }
