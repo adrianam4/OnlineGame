@@ -35,7 +35,6 @@ public class UDP_Client : MonoBehaviour
     public GameObject data;
     void Start()
     {
-        DontDestroyOnLoad(this);
         _t1 = new Thread(CreateClient);
         _t2 = new Thread(send);
         _t3 = new Thread(receive);
