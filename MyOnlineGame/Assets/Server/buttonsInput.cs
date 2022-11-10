@@ -23,11 +23,9 @@ public class buttonsInput : MonoBehaviour
     string inputText;
     string conectionType="-";
     bool isServerOrClient = false;
-    
+
     void Start()
     {
-       
-        DontDestroyOnLoad(this);
         change = changeTypeObject.GetComponent<Change_Type>();
         Button SB = serverbutton.GetComponent<Button>();
         Button CS = clientbutton.GetComponent<Button>();
@@ -48,7 +46,6 @@ public class buttonsInput : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            UDPserver.GetComponent<UDP_Server>().sceneChanged = true;
             SceneManager.LoadScene("SampleScene");
         }
         if (isServerOrClient)
@@ -134,10 +131,10 @@ public class buttonsInput : MonoBehaviour
             else
             {
                 UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
-                
+                DontDestroyOnLoad(UDPserver);
             }
-            DontDestroyOnLoad(UDPserver);
-
+            
+             
 
             changeTypeObject.SetActive(false);
         }
@@ -159,9 +156,9 @@ public class buttonsInput : MonoBehaviour
             else
             {
                 UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
+                DontDestroyOnLoad(UDPclient);
+            } 
                 
-            }
-            DontDestroyOnLoad(UDPclient);
 
             changeTypeObject.SetActive(false);
         }
