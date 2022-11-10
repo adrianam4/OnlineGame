@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using TMPro;
 using System;
 using Unity.Tutorials.Core.Editor;
-using UnityEngine.SceneManagement;
+
 public class buttonsInput : MonoBehaviour
 {
     public Text infoButton;
@@ -43,11 +43,6 @@ public class buttonsInput : MonoBehaviour
 
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
         if (isServerOrClient)
         {
             switch (conectionType)
@@ -124,17 +119,8 @@ public class buttonsInput : MonoBehaviour
             conectionType = "server";
 
             
-            if (change.isTCP){
-                TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
-                DontDestroyOnLoad(TCPserver);
-            }
-            else
-            {
-                UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
-                DontDestroyOnLoad(UDPserver);
-            }
-            
-             
+            if (change.isTCP) TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
+            else UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
 
             changeTypeObject.SetActive(false);
         }
@@ -147,18 +133,8 @@ public class buttonsInput : MonoBehaviour
         {
             isServerOrClient = true;
             conectionType = "client";
-            if (change.isTCP)
-            { 
-                TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
-                DontDestroyOnLoad(TCPclient);
-            }
-
-            else
-            {
-                UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
-                DontDestroyOnLoad(UDPclient);
-            } 
-                
+            if (change.isTCP) TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
+            else UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
 
             changeTypeObject.SetActive(false);
         }

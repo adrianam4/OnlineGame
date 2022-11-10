@@ -19,7 +19,6 @@ public class UDP_Server : MonoBehaviour
     public bool ToCreateServer = false;
     bool serverCreated = false;
     public bool PrepareToSend = false;
-    public byte[] sendData;
     public string outputText;
     public string inputText;
     public UDP_Client clientUDP;
@@ -33,7 +32,6 @@ public class UDP_Server : MonoBehaviour
     private bool messageSent = false;
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
         UDPCreateServer = new Thread(createServer);
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
@@ -66,7 +64,11 @@ public class UDP_Server : MonoBehaviour
         {
             if (PrepareToSend)
             {
-                client.SendTo(sendData, sendData.Length,SocketFlags.None, Remote);
+                byte[] data2;
+                data2 = new byte[8192];
+                string tmp = "server: " + outputText;
+                data2 = Encoding.ASCII.GetBytes(tmp);
+                client.SendTo(data2, data2.Length,SocketFlags.None, Remote);
                 messageSent = true;
                 PrepareToSend = false;
             }
