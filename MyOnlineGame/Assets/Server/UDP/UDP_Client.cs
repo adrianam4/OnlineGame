@@ -32,7 +32,7 @@ public class UDP_Client : MonoBehaviour
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
     private bool messageSent = false;
-    public GameObject serializator;
+
     void Start()
     {
         _t1 = new Thread(CreateClient);
@@ -89,7 +89,6 @@ public class UDP_Client : MonoBehaviour
                 inputText = Encoding.ASCII.GetString(data, 0, recv);
                 messageReceived = true;
                 Debug.Log(inputText);
-                serializator.GetComponent<DataSerialization>().Deserialize(data);
             }
         }
     }
