@@ -4,13 +4,16 @@ using UnityEngine;
 using System.IO;
 public class DataSerialization : MonoBehaviour
 {
-    MemoryStream stream;
+    static MemoryStream stream;
     public GameObject player;
     GameObject UDPServer;
+    GameObject UDPClient;
     Vector3 newPosition;
     Quaternion newRotation;
     public GameObject Player2;
     byte[] data;
+    Vector3 player_position;
+    private bool deserialized = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,32 +22,41 @@ public class DataSerialization : MonoBehaviour
         data = new byte[100];
         UDPServer = GameObject.Find("UDPServer");
     }
-    void Serialize()
+
+    public byte[] Serialize()
     {
         stream = new MemoryStream();
         BinaryWriter writer = new BinaryWriter(stream);
 
-        writer.Write(player.transform.position.x);
-        writer.Write(player.transform.position.y);
-        UDPServer.GetComponent<UDP_Server>().sendData = stream.ToArray();
-        UDPServer.GetComponent<UDP_Server>().PrepareToSend = true;
+        writer.Write(player_position.x);
+        writer.Write(player_position.y);
+        Debug.Log("Player Position Serialized" + player_position.x + "/// " + player_position.y);
+        return stream.ToArray();
+        //UDPServer.GetComponent<UDP_Server>().sendData = stream.ToArray();
+        //UDPServer.GetComponent<UDP_Server>().PrepareToSend = true;
     }
-    void Deserialize()
+
+    public void Deserialize(byte[] data)
     {
-        stream.Write(data);
+        stream = new MemoryStream();
+        stream.Write(data, 0, data.Length);
         BinaryReader reader = new BinaryReader(stream);
         stream.Seek(0, SeekOrigin.Begin);
         float newPositionX = reader.ReadSingle();
+        Debug.Log("position x: " + newPositionX);
         float newPositionY = reader.ReadSingle();
+        Debug.Log("position y: " + newPositionY);
 
         newPosition.Set(newPositionX, newPositionY, 0);
-        Player2.transform.SetPositionAndRotation(newPosition, newRotation);
-
+        deserialized = true;
     }
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
-
+        if (deserialized)
+        {
+            Player2.transform.SetPositionAndRotation(newPosition, newRotation);
+            deserialized = false;
+        }
+        player_position.Set(player.transform.position.x, player.transform.position.y, 0);
     }
 }

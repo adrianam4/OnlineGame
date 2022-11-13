@@ -31,7 +31,9 @@ public class UDP_Server : MonoBehaviour
     private bool messageReceived = false;
     private bool messageSent = false;
     public byte[] sendData;
-
+    public GameObject serializator;
+    DataSerialization dataserialization;
+    bool makeSend = false;
     void Start()
     {
         UDPCreateServer = new Thread(createServer);
@@ -39,6 +41,7 @@ public class UDP_Server : MonoBehaviour
         UDPRecieve = new Thread(receive);
 
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
+        dataserialization = serializator.GetComponent<DataSerialization>();
     }
 
     void AddMessage(string newMessage)
@@ -66,10 +69,11 @@ public class UDP_Server : MonoBehaviour
         {
             if (PrepareToSend)
             {
-                
-                string tmp = "server: " + outputText;
-                sendData = Encoding.ASCII.GetBytes(tmp);
-                client.SendTo(sendData, sendData.Length,SocketFlags.None, Remote);
+
+                sendData = dataserialization.Serialize();
+                //string tmp = "server: " + outputText;
+                //sendData = Encoding.ASCII.GetBytes(tmp);
+                client.SendTo(sendData, sendData.Length, SocketFlags.None, Remote);
                 messageSent = true;
                 PrepareToSend = false;
             }
@@ -86,7 +90,7 @@ public class UDP_Server : MonoBehaviour
             recv = client.ReceiveFrom(data, ref Remote);
             inputText = Encoding.ASCII.GetString(data, 0, recv);
             messageReceived = true;
-            Debug.Log(inputText);
+            //Debug.Log(inputText);
         }
     }
 
@@ -98,7 +102,15 @@ public class UDP_Server : MonoBehaviour
             messageReceived = false;
         }
 
+        if (Input.GetKey("p"))
+        {
+            makeSend = true;
 
+        }
+        if (makeSend)
+        {
+            PrepareToSend = true;
+        }
         if (messageSent && !outputText.IsNullOrEmpty())
         {
             AddMessage("server: " + outputText);
