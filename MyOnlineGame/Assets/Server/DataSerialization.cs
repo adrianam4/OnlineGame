@@ -4,9 +4,10 @@ using UnityEngine;
 using System.IO;
 public class DataSerialization : MonoBehaviour
 {
-    MemoryStream stream;
+    static MemoryStream stream;
     public GameObject player;
     GameObject UDPServer;
+    GameObject UDPClient;
     Vector3 newPosition;
     Quaternion newRotation;
     public GameObject Player2;
@@ -19,32 +20,33 @@ public class DataSerialization : MonoBehaviour
         data = new byte[100];
         UDPServer = GameObject.Find("UDPServer");
     }
-    void Serialize()
+
+    public byte[] Serialize()
     {
         stream = new MemoryStream();
         BinaryWriter writer = new BinaryWriter(stream);
 
         writer.Write(player.transform.position.x);
         writer.Write(player.transform.position.y);
-        UDPServer.GetComponent<UDP_Server>().sendData = stream.ToArray();
-        UDPServer.GetComponent<UDP_Server>().PrepareToSend = true;
+        Debug.Log("Player Position Serialized");
+
+        return stream.ToArray();
+        //UDPServer.GetComponent<UDP_Server>().sendData = stream.ToArray();
+        //UDPServer.GetComponent<UDP_Server>().PrepareToSend = true;
     }
-    void Deserialize()
+
+    public void Deserialize(byte[] data)
     {
-        stream.Write(data);
+        stream = new MemoryStream();
+        stream.Write(data, 0, data.Length);
         BinaryReader reader = new BinaryReader(stream);
         stream.Seek(0, SeekOrigin.Begin);
-        float newPositionX = reader.ReadSingle();
-        float newPositionY = reader.ReadSingle();
+        double newPositionX = reader.ReadDouble();
+        Debug.Log("position x: " + newPositionX);
+        double newPositionY = reader.ReadDouble();
+        Debug.Log("position y: " + newPositionY);
 
-        newPosition.Set(newPositionX, newPositionY, 0);
+        newPosition.Set((float)newPositionX, (float)newPositionY, 0);
         Player2.transform.SetPositionAndRotation(newPosition, newRotation);
-
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
-
     }
 }

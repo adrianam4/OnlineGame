@@ -31,6 +31,7 @@ public class UDP_Server : MonoBehaviour
     private bool messageReceived = false;
     private bool messageSent = false;
     public byte[] sendData;
+    public GameObject serializator;
 
     void Start()
     {
@@ -66,9 +67,9 @@ public class UDP_Server : MonoBehaviour
         {
             if (PrepareToSend)
             {
-                
-                string tmp = "server: " + outputText;
-                sendData = Encoding.ASCII.GetBytes(tmp);
+                sendData = serializator.GetComponent<DataSerialization>().Serialize();
+                //string tmp = "server: " + outputText;
+                //sendData = Encoding.ASCII.GetBytes(tmp);
                 client.SendTo(sendData, sendData.Length,SocketFlags.None, Remote);
                 messageSent = true;
                 PrepareToSend = false;
@@ -84,9 +85,9 @@ public class UDP_Server : MonoBehaviour
             byte[] data;
             data = new byte[8192];
             recv = client.ReceiveFrom(data, ref Remote);
-            inputText = Encoding.ASCII.GetString(data, 0, recv);
+            //inputText = Encoding.ASCII.GetString(data, 0, recv);
             messageReceived = true;
-            Debug.Log(inputText);
+            //Debug.Log(inputText);
         }
     }
 
