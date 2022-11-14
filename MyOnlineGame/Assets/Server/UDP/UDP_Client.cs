@@ -67,8 +67,9 @@ public class UDP_Client : MonoBehaviour
             {
                 byte[] data2;
                 data2 = new byte[8192];
-                string tmp = username + ": " + outputText;
-                data2 = Encoding.ASCII.GetBytes(tmp);
+                data2 = dataserialization.Serialize();
+                //string tmp = username + ": " + outputText;
+                //data2 = Encoding.ASCII.GetBytes(tmp);
                 server.SendTo(data2, data2.Length, SocketFlags.None, ipep);
                 messageSent = true;
                 PrepareToSend = false;

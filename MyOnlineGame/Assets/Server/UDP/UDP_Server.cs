@@ -87,10 +87,16 @@ public class UDP_Server : MonoBehaviour
         {
             byte[] data;
             data = new byte[8192];
+
             recv = client.ReceiveFrom(data, ref Remote);
-            inputText = Encoding.ASCII.GetString(data, 0, recv);
-            messageReceived = true;
-            //Debug.Log(inputText);
+
+            if (recv > 0)
+            {
+                inputText = Encoding.ASCII.GetString(data, 0, recv);
+                messageReceived = true;
+                Debug.Log(inputText);
+                dataserialization.Deserialize(data);
+            }
         }
     }
 
