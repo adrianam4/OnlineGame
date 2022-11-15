@@ -111,9 +111,8 @@ public class buttonsInput : MonoBehaviour
 
         if(UDPserver.GetComponent<UDP_Server>().client != null)
         {
-            GameObject canvas;
-            canvas = GameObject.Find("Canvas");
-            canvas.SetActive(false);
+            GameObject.Find("Canvas").SetActive(false);
+            GameObject.Find("Player").SetActive(true);
         }
         
     }
