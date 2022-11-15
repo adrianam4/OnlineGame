@@ -48,7 +48,7 @@ public class TCPServer : MonoBehaviour
 
     void createServer()
     {
-        IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 9050);
+        IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 9000);
         Socket newsock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         newsock.Bind(ipep);

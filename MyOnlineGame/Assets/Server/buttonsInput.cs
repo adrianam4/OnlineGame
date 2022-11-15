@@ -129,9 +129,9 @@ public class buttonsInput : MonoBehaviour
             isServerOrClient = true;
             conectionType = "server";
 
+            UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
+            TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
             
-            if (change.isTCP) TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
-            else UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
 
             changeTypeObject.SetActive(false);
         }
@@ -144,8 +144,9 @@ public class buttonsInput : MonoBehaviour
         {
             isServerOrClient = true;
             conectionType = "client";
-            if (change.isTCP) TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
-            else UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
+            UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
+            TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
+            
 
             changeTypeObject.SetActive(false);
         }

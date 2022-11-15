@@ -47,7 +47,7 @@ public class TCPClient : MonoBehaviour
 
     void CreateClient()
     {
-        ipep = new IPEndPoint(IPAddress.Parse(ipToConnect), 9050);
+        ipep = new IPEndPoint(IPAddress.Parse(ipToConnect), 9000);
         server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         try
