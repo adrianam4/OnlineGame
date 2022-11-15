@@ -20,6 +20,7 @@ public class buttonsInput : MonoBehaviour
     public GameObject UDPserver;
     public GameObject UDPclient;
     public GameObject changeTypeObject;
+    public GameObject player;
     Change_Type change;
     string inputText;
     string conectionType="-";
@@ -109,10 +110,10 @@ public class buttonsInput : MonoBehaviour
     void playTaskOnClick()
     {
 
-        if(UDPserver.GetComponent<UDP_Server>().client != null)
+        if(UDPserver.GetComponent<UDP_Server>().client != null || UDPclient.GetComponent<UDP_Client>().server != null)
         {
             GameObject.Find("Canvas").SetActive(false);
-            GameObject.Find("Player").SetActive(true);
+            player.SetActive(true);
         }
         
     }
