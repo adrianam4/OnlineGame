@@ -6448,7 +6448,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -364.63348, y: -224.87149, z: -5.723718}
+  m_LocalPosition: {x: -365.43497, y: -224.5937, z: -5.723718}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -115063,7 +115063,7 @@ MonoBehaviour:
   inputText: 
   outputText: 
   PrepareToSend: 0
-  ipToConnect: 127.0.0.1
+  ipToConnect: 192.168.48.14
   username: client
   chatObject: {fileID: 347540580}
 --- !u!4 &763543005
@@ -115466,7 +115466,7 @@ MonoBehaviour:
   PrepareToSend: 0
   inputText: 
   outputText: 
-  ipToConnect: 127.0.0.1
+  ipToConnect: 192.168.48.14
   username: client
   chatObject: {fileID: 347540580}
   serializator: {fileID: 1483677829}
@@ -124989,6 +124989,7 @@ MonoBehaviour:
   UDPserver: {fileID: 272902320}
   UDPclient: {fileID: 830329813}
   changeTypeObject: {fileID: 1246378461}
+  player: {fileID: 838423049}
 --- !u!4 &1321546855
 Transform:
   m_ObjectHideFlags: 0
@@ -126901,8 +126902,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e26745f9a1f89c47bf48efc583bcd6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  Player2: {fileID: 0}
+  player: {fileID: 838423049}
+  Player2: {fileID: 1233169742}
 --- !u!1 &1490919484
 GameObject:
   m_ObjectHideFlags: 0
@@ -134325,7 +134326,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.4967742, y: 1}
+    m_SensorSize: {x: 2.0279396, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

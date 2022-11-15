@@ -24,6 +24,7 @@ public class buttonsInput : MonoBehaviour
     string inputText;
     string conectionType="-";
     bool isServerOrClient = false;
+    public GameObject player;
 
     void Start()
     {
@@ -109,10 +110,10 @@ public class buttonsInput : MonoBehaviour
     void playTaskOnClick()
     {
 
-        if(UDPserver.GetComponent<UDP_Server>().client != null)
+        if(UDPserver.GetComponent<UDP_Server>().client != null || UDPclient.GetComponent<UDP_Client>().server != null)
         {
             GameObject.Find("Canvas").SetActive(false);
-            GameObject.Find("Player").SetActive(true);
+            player.SetActive(true);
         }
         
     }
@@ -156,31 +157,13 @@ public class buttonsInput : MonoBehaviour
     {
         switch (conectionType)
         {
-            case "server":
-                
-                if (change.isTCP)
-                {
-                    TCPserver.GetComponent<TCPServer>().outputText = inputText;
-                    TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
-                }
-                else
-                {
-                    UDPserver.GetComponent<UDP_Server>().outputText = inputText;
-                    UDPserver.GetComponent<UDP_Server>().PrepareToSend = true;
-                }
+            case "server":  
+                TCPserver.GetComponent<TCPServer>().outputText = inputText;
+                TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
                 break;
             case "client":
-                
-                if (change.isTCP)
-                {
-                    TCPclient.GetComponent<TCPClient>().outputText = inputText;
-                    TCPclient.GetComponent<TCPClient>().PrepareToSend = true;
-                }
-                else
-                {
-                    UDPclient.GetComponent<UDP_Client>().outputText = inputText;
-                    UDPclient.GetComponent<UDP_Client>().PrepareToSend = true;
-                }
+                TCPclient.GetComponent<TCPClient>().outputText = inputText;
+                TCPclient.GetComponent<TCPClient>().PrepareToSend = true;
                 break; 
         }
     }
