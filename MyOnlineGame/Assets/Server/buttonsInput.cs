@@ -13,6 +13,7 @@ public class buttonsInput : MonoBehaviour
     public Button serverbutton;
     public Button clientbutton;
     public Button sendbutton;
+    public Button playButton;
     public GameObject inputBox;
     public GameObject TCPserver;
     public GameObject TCPclient;
@@ -33,7 +34,7 @@ public class buttonsInput : MonoBehaviour
         SB.onClick.AddListener(ServerTaskOnClick);
         CS.onClick.AddListener(ClientTaskOnClick);
         SendButton.onClick.AddListener(SendTaskOnClick);
-
+        playButton.onClick.AddListener(playTaskOnClick);
 
         var input = inputBox.GetComponent<InputField>();
         var se = new InputField.EndEditEvent();
@@ -104,6 +105,17 @@ public class buttonsInput : MonoBehaviour
         {
             infoButton.text = "No Connection Enabled";
         }
+    }
+    void playTaskOnClick()
+    {
+
+        if(UDPserver.GetComponent<UDP_Server>().client != null)
+        {
+            GameObject canvas;
+            canvas = GameObject.Find("Canvas");
+            canvas.SetActive(false);
+        }
+        
     }
 
     void  updatetext(string arg0)

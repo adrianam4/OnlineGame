@@ -16,7 +16,7 @@ public class Change_Type : MonoBehaviour
 
     void Start()
     {
-        isTCP = true;
+        isTCP = false;
         Button _button = thisButton.GetComponent<Button>();
         _button.onClick.AddListener(ChangeType);
     }
