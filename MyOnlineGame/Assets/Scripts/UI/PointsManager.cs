@@ -7,6 +7,7 @@ public class PointsManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public int playerPoints = 0;
+    public int player1Points = 0;
     public GameObject playerPointsUI;
     private TextMeshProUGUI textPointsUI;
     void Start()
