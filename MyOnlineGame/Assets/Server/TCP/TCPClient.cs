@@ -29,6 +29,7 @@ public class TCPClient : MonoBehaviour
     private TextMeshProUGUI chatText;
     private bool messageReceived = false;
     private bool messageSent = false;
+    public GameObject player;
 
     void Start()
     {
@@ -102,7 +103,9 @@ public class TCPClient : MonoBehaviour
             if (inputText == "server: StartGame")
             {
                 GameObject.Find("Canvas").SetActive(false);
+                player.SetActive(true);
                 GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;
+
             }
             AddMessage(inputText);
             messageReceived = false;

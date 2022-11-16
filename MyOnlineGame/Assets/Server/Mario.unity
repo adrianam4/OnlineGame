@@ -6137,7 +6137,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -366.07776, y: -224.71466, z: -5.723718}
+  m_LocalPosition: {x: -366.1192, y: -224.6969, z: -5.723718}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -114856,9 +114856,10 @@ MonoBehaviour:
   inputText: 
   outputText: 
   PrepareToSend: 0
-  ipToConnect: 192.168.48.14
+  ipToConnect: 192.168.48.4
   username: client
   chatObject: {fileID: 347540580}
+  player: {fileID: 838423049}
 --- !u!4 &763543005
 Transform:
   m_ObjectHideFlags: 0
@@ -115280,7 +115281,7 @@ MonoBehaviour:
   PrepareToSend: 0
   inputText: 
   outputText: 
-  ipToConnect: 192.168.48.14
+  ipToConnect: 192.168.48.4
   username: client
   chatObject: {fileID: 347540580}
   serializator: {fileID: 1483677829}
@@ -134384,7 +134385,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.0649202, y: 1}
+    m_SensorSize: {x: 2.050905, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
