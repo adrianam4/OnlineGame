@@ -33,7 +33,7 @@ public class UDP_Server : MonoBehaviour
     public byte[] sendData;
     public GameObject serializator;
     DataSerialization dataserialization;
-    bool makeSend = false;
+    public bool makeSend = false;
     void Start()
     {
         UDPCreateServer = new Thread(createServer);
@@ -108,11 +108,7 @@ public class UDP_Server : MonoBehaviour
             messageReceived = false;
         }
 
-        if (Input.GetKey("p"))
-        {
-            makeSend = true;
-
-        }
+        
         if (makeSend)
         {
             PrepareToSend = true;

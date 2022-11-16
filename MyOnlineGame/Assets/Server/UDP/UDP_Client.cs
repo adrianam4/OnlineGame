@@ -34,7 +34,7 @@ public class UDP_Client : MonoBehaviour
     private bool messageSent = false;
     public GameObject serializator;
     DataSerialization dataserialization;
-    bool makeSend = false;
+    public bool makeSend = false;
 
     void Start()
     {
@@ -110,12 +110,6 @@ public class UDP_Client : MonoBehaviour
         {
             AddMessage(username + ": " + outputText);
             messageSent = false;
-        }
-
-        if (Input.GetKey("p"))
-        {
-            makeSend = true;
-
         }
         if (makeSend)
         {

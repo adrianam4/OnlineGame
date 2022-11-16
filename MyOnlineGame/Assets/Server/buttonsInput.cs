@@ -114,6 +114,8 @@ public class buttonsInput : MonoBehaviour
         {
             GameObject.Find("Canvas").SetActive(false);
             player.SetActive(true);
+            UDPserver.GetComponent<UDP_Server>().makeSend = true;
+            UDPclient.GetComponent<UDP_Client>().makeSend = true;
         }
         
     }
