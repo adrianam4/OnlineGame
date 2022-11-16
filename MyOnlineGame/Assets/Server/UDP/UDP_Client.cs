@@ -7,7 +7,6 @@ using System.Threading;
 using UnityEngine;
 using System;
 using TMPro;
-using Unity.Tutorials.Core.Editor;
 
 public class UDP_Client : MonoBehaviour
 {
@@ -100,13 +99,13 @@ public class UDP_Client : MonoBehaviour
 
     private void Update()
     {
-        if (messageReceived && !inputText.IsNullOrEmpty())
+        if (messageReceived && inputText.Length > 0)
         {
             AddMessage(inputText);
             messageReceived = false;
         }
 
-        if (messageSent && !outputText.IsNullOrEmpty())
+        if (messageSent && outputText.Length > 0)
         {
             AddMessage(username + ": " + outputText);
             messageSent = false;

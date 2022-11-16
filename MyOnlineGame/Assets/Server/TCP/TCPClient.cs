@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 using TMPro;
-using Unity.Tutorials.Core.Editor;
 
 public class TCPClient : MonoBehaviour
 {
@@ -98,7 +97,7 @@ public class TCPClient : MonoBehaviour
 
     void Update()
     {
-        if (messageReceived && !inputText.IsNullOrEmpty())
+        if (messageReceived && inputText.Length > 0)
         {
             if (inputText == "server: StartGame")
             {
@@ -110,7 +109,7 @@ public class TCPClient : MonoBehaviour
             
         }
 
-        if (messageSent && !outputText.IsNullOrEmpty())
+        if (messageSent && outputText.Length > 0)
         {
             AddMessage(username + ": " + outputText);
             messageSent = false;

@@ -7,7 +7,6 @@ using UnityEngine;
 using System;
 using System.Threading;
 using TMPro;
-using Unity.Tutorials.Core.Editor;
 
 public class UDP_Server : MonoBehaviour
 {
@@ -102,7 +101,7 @@ public class UDP_Server : MonoBehaviour
 
     void Update()
     {
-        if (messageReceived && !inputText.IsNullOrEmpty())
+        if (messageReceived && inputText.Length > 0)
         {
             AddMessage(inputText);
             messageReceived = false;
@@ -113,7 +112,7 @@ public class UDP_Server : MonoBehaviour
         {
             PrepareToSend = true;
         }
-        if (messageSent && !outputText.IsNullOrEmpty())
+        if (messageSent && outputText.Length > 0)
         {
             AddMessage("server: " + outputText);
             messageSent = false;

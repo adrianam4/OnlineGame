@@ -5,7 +5,6 @@ using UnityEngine;
 using System.Net.Sockets;
 using TMPro;
 using System;
-using Unity.Tutorials.Core.Editor;
 
 public class buttonsInput : MonoBehaviour
 {

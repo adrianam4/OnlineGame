@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 using TMPro;
-using Unity.Tutorials.Core.Editor;
+using UnityEngine.UIElements;
 
 public class TCPServer : MonoBehaviour
 {
@@ -131,13 +131,13 @@ public class TCPServer : MonoBehaviour
 
     void Update()
     {
-        if (messageReceived && !inputText.IsNullOrEmpty())
+        if (messageReceived && inputText.Length > 0)
         {
             AddMessage(inputText);
             messageReceived = false;
         }
 
-        if (messageSent && !outputText.IsNullOrEmpty())
+        if (messageSent && outputText.Length > 0)
         {
             AddMessage("server: " + outputText);
             messageSent = false;
