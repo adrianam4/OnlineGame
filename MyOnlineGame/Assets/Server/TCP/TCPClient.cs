@@ -100,8 +100,14 @@ public class TCPClient : MonoBehaviour
     {
         if (messageReceived && !inputText.IsNullOrEmpty())
         {
+            if (inputText == "server: StartGame")
+            {
+                GameObject.Find("Canvas").SetActive(false);
+                GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;
+            }
             AddMessage(inputText);
             messageReceived = false;
+            
         }
 
         if (messageSent && !outputText.IsNullOrEmpty())

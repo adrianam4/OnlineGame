@@ -112,10 +112,15 @@ public class buttonsInput : MonoBehaviour
 
         if(UDPserver.GetComponent<UDP_Server>().client != null || UDPclient.GetComponent<UDP_Client>().server != null)
         {
+            
+
+            TCPserver.GetComponent<TCPServer>().outputText = "StartGame";
+            TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
+
+            UDPserver.GetComponent<UDP_Server>().makeSend = true;
+
             GameObject.Find("Canvas").SetActive(false);
             player.SetActive(true);
-            UDPserver.GetComponent<UDP_Server>().makeSend = true;
-            UDPclient.GetComponent<UDP_Client>().makeSend = true;
         }
         
     }
@@ -149,7 +154,7 @@ public class buttonsInput : MonoBehaviour
             conectionType = "client";
             UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
             TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
-            
+            GameObject.Find("CHAT/Canvas/PlayButton").SetActive(false);
 
             changeTypeObject.SetActive(false);
         }
