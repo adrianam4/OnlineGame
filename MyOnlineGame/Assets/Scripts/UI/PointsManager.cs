@@ -10,6 +10,7 @@ public class PointsManager : MonoBehaviour
     public int player1Points = 0;
     public GameObject playerPointsUI;
     public GameObject player1PointsUI;
+    public GameObject coinUI;
     private TextMeshProUGUI textPointsUI;
     private TextMeshProUGUI textPoints1UI;
     void Start()
@@ -24,6 +25,7 @@ public class PointsManager : MonoBehaviour
         {
             playerPoints++;
             textPointsUI.text = "x" + playerPoints;
+            Instantiate(coinUI, Vector3.zero, Quaternion.identity);
         }
     }
     private void Update()

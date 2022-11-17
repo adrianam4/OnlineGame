@@ -30,6 +30,7 @@ public class TCPClient : MonoBehaviour
     private bool messageReceived = false;
     private bool messageSent = false;
     public GameObject player;
+    public GameObject levelCanvas;
 
     void Start()
     {
@@ -104,6 +105,7 @@ public class TCPClient : MonoBehaviour
             {
                 GameObject.Find("Canvas").SetActive(false);
                 player.SetActive(true);
+                levelCanvas.SetActive(true);
                 GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;
 
             }

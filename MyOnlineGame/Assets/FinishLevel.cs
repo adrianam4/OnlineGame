@@ -1,3 +1,4 @@
+using Platformer.Mechanics;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,7 +12,6 @@ public class FinishLevel : MonoBehaviour
     public GameObject player;
     public GameObject player1;
     public GameObject resultText;
-    //public GameObject fadeObject;
 
     private PointsManager pointsManager;
     private Animator playerAnimator;
@@ -34,7 +34,6 @@ public class FinishLevel : MonoBehaviour
             if (finishCounter >= 10 || Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene("Mario");
-                //StartCoroutine(Fading());
             }
         }
     }
@@ -66,13 +65,7 @@ public class FinishLevel : MonoBehaviour
                 resultText.GetComponent<TextMeshProUGUI>().text = "TIE!" + "\n" + "PRESS 'SPACE' TO RESTART";
             }
             finishPlay = true;
+            player.GetComponent<PlayerController>().enabled = false;
         }
     }
-
-    //IEnumerator Fading()
-    //{
-    //    fadeObject.GetComponent<Animator>().SetBool("Fade", true);
-    //    yield return new WaitUntil(() => fadeObject.GetComponent<Image>().color.a == 1);
-    //    SceneManager.LoadScene("Mario");
-    //}
 }
