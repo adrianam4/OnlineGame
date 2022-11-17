@@ -25,6 +25,9 @@ public class DataSerialization : MonoBehaviour
     Vector3 auxiliar;
     public int type = -1;
     Vector3 enemyAuxiliar;
+
+    public bool enemyDown = false;
+    public int enemyDownId = -1;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,7 +55,7 @@ public class DataSerialization : MonoBehaviour
         writer.Write(myCoinDestroyed);
         writer.Write(mycoinId);
 
-        if (id == 0)
+        if (id == 0)//server
         {
             writer.Write(rootObjects.Count);
             for(int i = 0; i < rootObjects.Count; i++)
@@ -63,6 +66,15 @@ public class DataSerialization : MonoBehaviour
                 writer.Write(rootObjects[i].z);
             }
             rootObjects.Clear();
+        }
+        else//client
+        {
+            
+                writer.Write(enemyDown);
+            
+                writer.Write(enemyDownId);
+            
+            
         }
         return stream.ToArray();
     }
@@ -79,11 +91,10 @@ public class DataSerialization : MonoBehaviour
         Debug.Log("position y: " + newPositionY);
         pointsManager.player1Points = reader.ReadInt32();
         otherCoinDestroyed = reader.ReadBoolean();
-        if (otherCoinDestroyed)
-        {
-            othercoinId = reader.ReadInt32();
-        }
-        if (id == 1)
+
+        othercoinId = reader.ReadInt32();
+        
+        if (id == 1)//client
         {
             int numOfEneemies= reader.ReadInt32();
             for (int i = 0;i < numOfEneemies; i++)
@@ -94,6 +105,13 @@ public class DataSerialization : MonoBehaviour
                 auxiliar.Set(ID, x, y);
                 rootObjects.Add(auxiliar);
             }
+        }
+        else//server
+        {
+            enemyDown = reader.ReadBoolean();
+
+            enemyDownId = reader.ReadInt32();
+            
         }
         newPosition.Set(newPositionX, newPositionY, 0);
         deserialized = true;
@@ -119,10 +137,28 @@ public class DataSerialization : MonoBehaviour
                             enemyAuxiliar.Set(rootObjects[counter].y, rootObjects[counter].z, 1);
                             enemies.transform.GetChild(a).transform.SetPositionAndRotation(enemyAuxiliar, newRotation);
                         }
+                        counter++;
                     }
 
                 }
                 rootObjects.Clear();
+            }
+            else
+            {
+                GameObject enemies = GameObject.Find("LEVEL/Enemies");
+
+                for (int a = 0; a < enemies.transform.childCount; a++)
+                {
+                    if (enemies.transform.GetChild(a).name == "Enemy")
+                    {
+                        if (enemyDownId == enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id)
+                        {
+                            enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().MakeDead();
+                            
+                        }
+                    }
+                    
+                }
             }
             
         }

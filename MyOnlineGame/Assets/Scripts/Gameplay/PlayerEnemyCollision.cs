@@ -30,7 +30,14 @@ namespace Platformer.Gameplay
                     enemyHealth.Decrement();
                     if (!enemyHealth.IsAlive)
                     {
+
                         Schedule<EnemyDeath>().enemy = enemy;
+                        GameObject auxiliar = GameObject.Find("CHAT/Data");
+                        if (auxiliar.GetComponent<DataSerialization>().type == 1)
+                        {
+                            auxiliar.GetComponent<DataSerialization>().enemyDown = true;
+                            auxiliar.GetComponent<DataSerialization>().enemyDownId = enemy.id;
+                        }
                         player.Bounce(2);
                     }
                     else
@@ -41,6 +48,12 @@ namespace Platformer.Gameplay
                 else
                 {
                     Schedule<EnemyDeath>().enemy = enemy;
+                    GameObject auxiliar = GameObject.Find("CHAT/Data");
+                    if (auxiliar.GetComponent<DataSerialization>().type == 1)
+                    {
+                        auxiliar.GetComponent<DataSerialization>().enemyDown = true;
+                        auxiliar.GetComponent<DataSerialization>().enemyDownId = enemy.id;
+                    }
                     player.Bounce(2);
                 }
             }
