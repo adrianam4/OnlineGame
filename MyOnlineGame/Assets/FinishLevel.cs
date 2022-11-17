@@ -12,6 +12,7 @@ public class FinishLevel : MonoBehaviour
     public GameObject player;
     public GameObject player1;
     public GameObject resultText;
+    public GameObject fadePrefab;
 
     private PointsManager pointsManager;
     private Animator playerAnimator;
@@ -33,7 +34,8 @@ public class FinishLevel : MonoBehaviour
             finishCounter += Time.deltaTime;
             if (finishCounter >= 10 || Input.GetKeyDown(KeyCode.Space))
             {
-                SceneManager.LoadScene("Mario");
+                Instantiate(fadePrefab,Vector3.zero,Quaternion.identity);
+                StartCoroutine(FadeTransition());
             }
         }
     }
@@ -67,5 +69,11 @@ public class FinishLevel : MonoBehaviour
             finishPlay = true;
             player.GetComponent<PlayerController>().enabled = false;
         }
+    }
+
+    IEnumerator FadeTransition()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Mario");
     }
 }
