@@ -15,6 +15,7 @@ public class DataSerialization : MonoBehaviour
     byte[] data;
     Vector3 player_position;
     private bool deserialized = false;
+    private PointsManager pointsManager;
 
     bool coinDestroyed = false;
     int coinId = -1;
@@ -28,6 +29,7 @@ public class DataSerialization : MonoBehaviour
         UDPServer = GameObject.Find("UDPServer");
         rootObjects = new List<GameObject>();
         coins = GameObject.Find("LEVEL/Tokens");
+        pointsManager = player.GetComponent<PointsManager>();
     }
 
     public byte[] Serialize()
@@ -37,6 +39,7 @@ public class DataSerialization : MonoBehaviour
 
         writer.Write(player_position.x);
         writer.Write(player_position.y);
+        writer.Write(pointsManager.player1Points);
         Debug.Log("Player Position Serialized" + player_position.x + "/// " + player_position.y);
         writer.Write(coinDestroyed);
         writer.Write(coinId);
@@ -56,6 +59,7 @@ public class DataSerialization : MonoBehaviour
         Debug.Log("position x: " + newPositionX);
         float newPositionY = reader.ReadSingle();
         Debug.Log("position y: " + newPositionY);
+        pointsManager.player1Points = reader.ReadInt32();
         coinDestroyed = reader.ReadBoolean();
         if (coinDestroyed)
         {
