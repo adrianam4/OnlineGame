@@ -109,7 +109,7 @@ public class buttonsInput : MonoBehaviour
     void playTaskOnClick()
     {
 
-        if(UDPserver.GetComponent<UDP_Server>().client != null || UDPclient.GetComponent<UDP_Client>().server != null)
+        if(TCPserver.GetComponent<TCPServer>().serverCreated)
         {
             
 
@@ -135,7 +135,7 @@ public class buttonsInput : MonoBehaviour
         {
             isServerOrClient = true;
             conectionType = "server";
-
+            GameObject.Find("CHAT/Data").GetComponent<DataSerialization>().type = 0;
             UDPserver.GetComponent<UDP_Server>().ToCreateServer = true;
             TCPserver.GetComponent<TCPServer>().ToCreateServer = true;
             
@@ -152,6 +152,25 @@ public class buttonsInput : MonoBehaviour
             isServerOrClient = true;
             conectionType = "client";
             UDPclient.GetComponent<UDP_Client>().ToCreateClient = true;
+            GameObject.Find("CHAT/Data").GetComponent<DataSerialization>().type = 1;
+
+
+            GameObject enemies = GameObject.Find("LEVEL/Enemies");
+
+
+            for (int a = 0; a < enemies.transform.childCount; a++)
+            {
+                if (enemies.transform.GetChild(a).name == "Enemy")
+                {
+                    enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().path=null;
+                    
+                }
+
+            }
+
+
+
+
             TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
             GameObject.Find("CHAT/Canvas/PlayButton").SetActive(false);
 

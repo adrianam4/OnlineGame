@@ -70,7 +70,7 @@ public class UDP_Client : MonoBehaviour
             {
                 byte[] data2;
                 data2 = new byte[8192];
-                data2 = dataserialization.Serialize();
+                data2 = dataserialization.Serialize(1);
                 //string tmp = username + ": " + outputText;
                 //data2 = Encoding.ASCII.GetBytes(tmp);
                 server.SendTo(data2, data2.Length, SocketFlags.None, ipep);
@@ -97,7 +97,7 @@ public class UDP_Client : MonoBehaviour
                     inputText = Encoding.ASCII.GetString(data, 0, recv);
                     messageReceived = true;
                     Debug.Log(inputText);
-                    dataserialization.Deserialize(data);
+                    dataserialization.Deserialize(data,1);
                 }
                 doDeserialize = false;
             }

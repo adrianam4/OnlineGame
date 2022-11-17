@@ -21,7 +21,10 @@ public class DataSerialization : MonoBehaviour
     int othercoinId = -1;
     bool myCoinDestroyed = false;
     int mycoinId = -1;
-    List<GameObject> rootObjects;
+    public List<Vector3> rootObjects;
+    Vector3 auxiliar;
+    public int type = -1;
+    Vector3 enemyAuxiliar;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,12 +32,14 @@ public class DataSerialization : MonoBehaviour
         newPosition = new Vector3();
         data = new byte[100];
         UDPServer = GameObject.Find("UDPServer");
-        rootObjects = new List<GameObject>();
+        rootObjects = new List<Vector3>();
         coins = GameObject.Find("LEVEL/Tokens");
         pointsManager = player.GetComponent<PointsManager>();
+        auxiliar=new Vector3();
+        enemyAuxiliar = new Vector3();
     }
 
-    public byte[] Serialize()
+    public byte[] Serialize(int id)
     {
         stream = new MemoryStream();
         BinaryWriter writer = new BinaryWriter(stream);
@@ -47,10 +52,22 @@ public class DataSerialization : MonoBehaviour
         writer.Write(myCoinDestroyed);
         writer.Write(mycoinId);
 
+        if (id == 0)
+        {
+            writer.Write(rootObjects.Count);
+            for(int i = 0; i < rootObjects.Count; i++)
+            {
+
+                writer.Write(rootObjects[i].x);
+                writer.Write(rootObjects[i].y);
+                writer.Write(rootObjects[i].z);
+            }
+            rootObjects.Clear();
+        }
         return stream.ToArray();
     }
 
-    public void Deserialize(byte[] data)
+    public void Deserialize(byte[] data,int id)
     {
         stream = new MemoryStream();
         stream.Write(data, 0, data.Length);
@@ -66,6 +83,18 @@ public class DataSerialization : MonoBehaviour
         {
             othercoinId = reader.ReadInt32();
         }
+        if (id == 1)
+        {
+            int numOfEneemies= reader.ReadInt32();
+            for (int i = 0;i < numOfEneemies; i++)
+            {
+                float ID=reader.ReadSingle();
+                float x=reader.ReadSingle();
+                float y =reader.ReadSingle();
+                auxiliar.Set(ID, x, y);
+                rootObjects.Add(auxiliar);
+            }
+        }
         newPosition.Set(newPositionX, newPositionY, 0);
         deserialized = true;
     }
@@ -75,6 +104,26 @@ public class DataSerialization : MonoBehaviour
         {
             Player2.transform.SetPositionAndRotation(newPosition, newRotation);
             deserialized = false;
+
+            if(type == 1)
+            {
+                GameObject enemies = GameObject.Find("LEVEL/Enemies");
+
+                int counter = 0;
+                for (int a = 0; a < enemies.transform.childCount; a++)
+                {
+                    if (enemies.transform.GetChild(a).name == "Enemy")
+                    {
+                        if(rootObjects[counter].x== enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id)
+                        {
+                            enemyAuxiliar.Set(rootObjects[counter].y, rootObjects[counter].z, 1);
+                            enemies.transform.GetChild(a).transform.SetPositionAndRotation(enemyAuxiliar, newRotation);
+                        }
+                    }
+
+                }
+                rootObjects.Clear();
+            }
             
         }
         if (otherCoinDestroyed)

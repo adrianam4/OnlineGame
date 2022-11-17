@@ -18,7 +18,7 @@ public class TCPServer : MonoBehaviour
     int recv;
     public int NumOfClientsConnected;
     public bool ToCreateServer = false;
-    bool serverCreated=false;
+    public bool serverCreated=false;
     public bool PrepareToSend = false;
     public string outputText;
     public string inputText;

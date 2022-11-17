@@ -36,12 +36,13 @@ public class UDP_Server : MonoBehaviour
     private bool doSerialize = true;
     private bool doDeserialize = true;
     private float time = 0;
+    Vector3 auxiliar;
     void Start()
     {
         UDPCreateServer = new Thread(createServer);
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
-
+        auxiliar = new Vector3();
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
         dataserialization = serializator.GetComponent<DataSerialization>();
     }
@@ -72,9 +73,7 @@ public class UDP_Server : MonoBehaviour
             if (PrepareToSend && doSerialize)
             {
 
-                sendData = dataserialization.Serialize();
-                //string tmp = "server: " + outputText;
-                //sendData = Encoding.ASCII.GetBytes(tmp);
+                sendData = dataserialization.Serialize(0);
                 client.SendTo(sendData, sendData.Length, SocketFlags.None, Remote);
                 messageSent = true;
                 PrepareToSend = false;
@@ -100,19 +99,36 @@ public class UDP_Server : MonoBehaviour
                     inputText = Encoding.ASCII.GetString(data, 0, recv);
                     messageReceived = true;
                     Debug.Log(inputText);
-                    dataserialization.Deserialize(data);
+                    dataserialization.Deserialize(data,0);
                 }
 
                 doDeserialize = false;
             }
         }
     }
+    void setAllEnemis()
+    {
+        GameObject enemies = GameObject.Find("LEVEL/Enemies");
+        
 
+        for (int a=0;a< enemies.transform.childCount; a++)
+        {
+            if (enemies.transform.GetChild(a).name == "Enemy")
+            {
+                auxiliar.Set(enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id, enemies.transform.GetChild(a).transform.position.x, enemies.transform.GetChild(a).transform.position.y);
+                dataserialization.rootObjects.Add(auxiliar);
+            }
+                       
+        }
+        
+        
+    }
     void Update()
     {
         time += Time.deltaTime;
         if (time >= 0.03)
         {
+            setAllEnemis();
             doSerialize = true;
             time = 0;
         }
