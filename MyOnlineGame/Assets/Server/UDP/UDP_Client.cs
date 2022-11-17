@@ -34,7 +34,9 @@ public class UDP_Client : MonoBehaviour
     public GameObject serializator;
     DataSerialization dataserialization;
     public bool makeSend = false;
-
+    private bool doSerialize = true;
+    private bool doDeserialize = true;
+    private float time = 0;
     void Start()
     {
         _t1 = new Thread(CreateClient);
@@ -64,7 +66,7 @@ public class UDP_Client : MonoBehaviour
     {
         while (doSend)
         {
-            if (PrepareToSend)
+            if (PrepareToSend && doSerialize)
             {
                 byte[] data2;
                 data2 = new byte[8192];
@@ -74,6 +76,7 @@ public class UDP_Client : MonoBehaviour
                 server.SendTo(data2, data2.Length, SocketFlags.None, ipep);
                 messageSent = true;
                 PrepareToSend = false;
+                doSerialize = false;
             }
         }
     }
@@ -82,23 +85,35 @@ public class UDP_Client : MonoBehaviour
     {
         while (doReceive)
         {
-            byte[] data;
-            data = new byte[8192];
-
-            recv = server.ReceiveFrom(data, ref Remote);
-
-            if (recv > 0)
+            if (doDeserialize)
             {
-                inputText = Encoding.ASCII.GetString(data, 0, recv);
-                messageReceived = true;
-                Debug.Log(inputText);
-                dataserialization.Deserialize(data);
+                byte[] data;
+                data = new byte[8192];
+
+                recv = server.ReceiveFrom(data, ref Remote);
+
+                if (recv > 0)
+                {
+                    inputText = Encoding.ASCII.GetString(data, 0, recv);
+                    messageReceived = true;
+                    Debug.Log(inputText);
+                    dataserialization.Deserialize(data);
+                }
+                doDeserialize = false;
             }
         }
     }
 
     private void Update()
     {
+        time += Time.deltaTime;
+        if (time >= 0.3)
+        {
+            doSerialize = true;
+            doDeserialize = true;
+            time = 0;
+        }
+
         if (messageReceived && inputText.Length > 0)
         {
             AddMessage(inputText);
