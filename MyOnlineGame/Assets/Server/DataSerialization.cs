@@ -40,8 +40,8 @@ public class DataSerialization : MonoBehaviour
         writer.Write(player_position.x);
         writer.Write(player_position.y);
         writer.Write(pointsManager.playerPoints);
-        //writer.Write(coinDestroyed);
-        //writer.Write(coinId);
+        writer.Write(coinDestroyed);
+        writer.Write(coinId);
 
         return stream.ToArray();
     }
@@ -57,11 +57,11 @@ public class DataSerialization : MonoBehaviour
         float newPositionY = reader.ReadSingle();
         Debug.Log("position y: " + newPositionY);
         pointsManager.player1Points = reader.ReadInt32();
-        //coinDestroyed = reader.ReadBoolean();
-        //if (coinDestroyed)
-        //{
-        //    coinId = reader.ReadInt16();
-        //}
+        coinDestroyed = reader.ReadBoolean();
+        if (coinDestroyed)
+        {
+            coinId = reader.ReadInt32();
+        }
         newPosition.Set(newPositionX, newPositionY, 0);
         deserialized = true;
     }
@@ -73,7 +73,7 @@ public class DataSerialization : MonoBehaviour
             deserialized = false;
             if (coinDestroyed)
             {
-                coinDestroyed = false;
+                
                 DestroyCoin();
             }
         }
@@ -87,7 +87,15 @@ public class DataSerialization : MonoBehaviour
     }
     void DestroyCoin()
     {
-        coins.transform.GetChild(coinId).gameObject.SetActive(false);
+        coinDestroyed = false;
+        for (int a = 0; a < coins.transform.childCount; a++)
+        {
+           
+            if (coinId == coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().id)
+            {
+                coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().collected = true;
+            }
+        }
 
     }
 }
