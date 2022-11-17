@@ -39,7 +39,7 @@ public class DataSerialization : MonoBehaviour
 
         writer.Write(player_position.x);
         writer.Write(player_position.y);
-        writer.Write(pointsManager.player1Points);
+        writer.Write(pointsManager.playerPoints);
         Debug.Log("Player Position Serialized" + player_position.x + "/// " + player_position.y);
         writer.Write(coinDestroyed);
         writer.Write(coinId);
