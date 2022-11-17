@@ -17,8 +17,10 @@ public class DataSerialization : MonoBehaviour
     private bool deserialized = false;
     private PointsManager pointsManager;
 
-    bool coinDestroyed = false;
-    int coinId = -1;
+    bool otherCoinDestroyed = false;
+    int othercoinId = -1;
+    bool myCoinDestroyed = false;
+    int mycoinId = -1;
     List<GameObject> rootObjects;
     // Start is called before the first frame update
     void Start()
@@ -40,8 +42,10 @@ public class DataSerialization : MonoBehaviour
         writer.Write(player_position.x);
         writer.Write(player_position.y);
         writer.Write(pointsManager.playerPoints);
-        writer.Write(coinDestroyed);
-        writer.Write(coinId);
+
+
+        writer.Write(myCoinDestroyed);
+        writer.Write(mycoinId);
 
         return stream.ToArray();
     }
@@ -57,10 +61,10 @@ public class DataSerialization : MonoBehaviour
         float newPositionY = reader.ReadSingle();
         Debug.Log("position y: " + newPositionY);
         pointsManager.player1Points = reader.ReadInt32();
-        coinDestroyed = reader.ReadBoolean();
-        if (coinDestroyed)
+        otherCoinDestroyed = reader.ReadBoolean();
+        if (otherCoinDestroyed)
         {
-            coinId = reader.ReadInt32();
+            othercoinId = reader.ReadInt32();
         }
         newPosition.Set(newPositionX, newPositionY, 0);
         deserialized = true;
@@ -71,27 +75,27 @@ public class DataSerialization : MonoBehaviour
         {
             Player2.transform.SetPositionAndRotation(newPosition, newRotation);
             deserialized = false;
-            if (coinDestroyed)
-            {
-                
-                DestroyCoin();
-            }
+            
         }
+        if (otherCoinDestroyed)
+        {
 
+            DestroyCoin();
+        }
         player_position.Set(player.transform.position.x, player.transform.position.y, 0);
     }
     public void setDestroiedCoin(int id)
     {
-        coinDestroyed = true;
-        coinId = id;
+        myCoinDestroyed = true;
+        mycoinId = id;
     }
     void DestroyCoin()
     {
-        coinDestroyed = false;
+        otherCoinDestroyed = false;
         for (int a = 0; a < coins.transform.childCount; a++)
         {
            
-            if (coinId == coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().id)
+            if (othercoinId == coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().id)
             {
                 coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().collected = true;
             }
