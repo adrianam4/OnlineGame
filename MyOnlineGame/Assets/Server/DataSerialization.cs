@@ -40,13 +40,10 @@ public class DataSerialization : MonoBehaviour
         writer.Write(player_position.x);
         writer.Write(player_position.y);
         writer.Write(pointsManager.playerPoints);
-        Debug.Log("Player Position Serialized" + player_position.x + "/// " + player_position.y);
-        writer.Write(coinDestroyed);
-        writer.Write(coinId);
+        //writer.Write(coinDestroyed);
+        //writer.Write(coinId);
 
         return stream.ToArray();
-        //UDPServer.GetComponent<UDP_Server>().sendData = stream.ToArray();
-        //UDPServer.GetComponent<UDP_Server>().PrepareToSend = true;
     }
 
     public void Deserialize(byte[] data)
@@ -60,11 +57,11 @@ public class DataSerialization : MonoBehaviour
         float newPositionY = reader.ReadSingle();
         Debug.Log("position y: " + newPositionY);
         pointsManager.player1Points = reader.ReadInt32();
-        coinDestroyed = reader.ReadBoolean();
-        if (coinDestroyed)
-        {
-            coinId = reader.ReadInt16();
-        }
+        //coinDestroyed = reader.ReadBoolean();
+        //if (coinDestroyed)
+        //{
+        //    coinId = reader.ReadInt16();
+        //}
         newPosition.Set(newPositionX, newPositionY, 0);
         deserialized = true;
     }
