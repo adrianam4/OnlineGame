@@ -107,12 +107,13 @@ public class UDP_Client : MonoBehaviour
     private void Update()
     {
         time += Time.deltaTime;
-        if (time >= 0.1)
+        if (time >= 0.03)
         {
             doSerialize = true;
-            doDeserialize = true;
+            
             time = 0;
         }
+        doDeserialize = true;
 
         if (messageReceived && inputText.Length > 0)
         {
