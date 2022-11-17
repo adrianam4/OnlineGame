@@ -111,7 +111,7 @@ public class UDP_Server : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
-        if (time >= 0.3)
+        if (time >= 0.1)
         {
             doSerialize = true;
             doDeserialize = true;
