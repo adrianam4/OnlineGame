@@ -162,7 +162,8 @@ public class buttonsInput : MonoBehaviour
             {
                 if (enemies.transform.GetChild(a).name == "Enemy")
                 {
-                    Destroy(enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>());
+                    enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().path=null;
+                    
                 }
 
             }
