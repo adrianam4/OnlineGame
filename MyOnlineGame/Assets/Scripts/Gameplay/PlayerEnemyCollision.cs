@@ -37,6 +37,8 @@ namespace Platformer.Gameplay
                         {
                             auxiliar.GetComponent<DataSerialization>().enemyDown = true;
                             auxiliar.GetComponent<DataSerialization>().enemyDownId = enemy.id;
+                            enemy.gameObject.SetActive(false);
+                                
                         }
                         player.Bounce(2);
                     }
@@ -53,6 +55,7 @@ namespace Platformer.Gameplay
                     {
                         auxiliar.GetComponent<DataSerialization>().enemyDown = true;
                         auxiliar.GetComponent<DataSerialization>().enemyDownId = enemy.id;
+                        enemy.gameObject.SetActive(false);
                     }
                     player.Bounce(2);
                 }

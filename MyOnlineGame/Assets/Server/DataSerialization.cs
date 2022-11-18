@@ -153,8 +153,11 @@ public class DataSerialization : MonoBehaviour
                     {
                         if (enemyDownId == enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id)
                         {
-                            enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().MakeDead();
+                            //enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().MakeDead();
+                            //enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().path = null;
+                            enemies.transform.GetChild(a).gameObject.SetActive(false);
                             
+
                         }
                     }
                     
