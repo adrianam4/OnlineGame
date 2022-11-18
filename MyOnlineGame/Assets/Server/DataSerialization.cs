@@ -127,17 +127,21 @@ public class DataSerialization : MonoBehaviour
             {
                 GameObject enemies = GameObject.Find("LEVEL/Enemies");
 
-                int counter = 0;
                 for (int a = 0; a < enemies.transform.childCount; a++)
                 {
                     if (enemies.transform.GetChild(a).name == "Enemy")
                     {
-                        if(rootObjects[counter].x== enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id)
+
+                        for(int b = 0; b < rootObjects.Count; b++)
                         {
-                            enemyAuxiliar.Set(rootObjects[counter].y, rootObjects[counter].z, 1);
+
+                        
+                        if(rootObjects[b].x== enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id)
+                        {
+                            enemyAuxiliar.Set(rootObjects[b].y, rootObjects[b].z, 1);
                             enemies.transform.GetChild(a).transform.SetPositionAndRotation(enemyAuxiliar, newRotation);
                         }
-                        counter++;
+                        }
                     }
 
                 }

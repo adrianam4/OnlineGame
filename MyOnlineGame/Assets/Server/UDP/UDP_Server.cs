@@ -115,8 +115,11 @@ public class UDP_Server : MonoBehaviour
         {
             if (enemies.transform.GetChild(a).name == "Enemy")
             {
-                auxiliar.Set(enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id, enemies.transform.GetChild(a).transform.position.x, enemies.transform.GetChild(a).transform.position.y);
-                dataserialization.rootObjects.Add(auxiliar);
+                if (enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().path != null){
+                    auxiliar.Set(enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id, enemies.transform.GetChild(a).transform.position.x, enemies.transform.GetChild(a).transform.position.y);
+                    dataserialization.rootObjects.Add(auxiliar);
+                }
+                
             }
                        
         }
