@@ -22,9 +22,7 @@ public class DataSerialization : MonoBehaviour
     bool myCoinDestroyed = false;
     int mycoinId = -1;
     public List<Vector3> rootObjects;
-    Vector3 auxiliar;
     public int type = -1;
-    Vector3 enemyAuxiliar;
 
     public bool enemyDown = false;
     public int enemyDownId = -1;
@@ -38,8 +36,6 @@ public class DataSerialization : MonoBehaviour
         rootObjects = new List<Vector3>();
         coins = GameObject.Find("LEVEL/Tokens");
         pointsManager = player.GetComponent<PointsManager>();
-        auxiliar=new Vector3();
-        enemyAuxiliar = new Vector3();
     }
 
     public byte[] Serialize(int id)
@@ -55,27 +51,6 @@ public class DataSerialization : MonoBehaviour
         writer.Write(myCoinDestroyed);
         writer.Write(mycoinId);
 
-        if (id == 0)//server
-        {
-            writer.Write(rootObjects.Count);
-            for(int i = 0; i < rootObjects.Count; i++)
-            {
-
-                writer.Write(rootObjects[i].x);
-                writer.Write(rootObjects[i].y);
-                writer.Write(rootObjects[i].z);
-            }
-            rootObjects.Clear();
-        }
-        else//client
-        {
-            
-                writer.Write(enemyDown);
-            
-                writer.Write(enemyDownId);
-            
-            
-        }
         return stream.ToArray();
     }
 
@@ -93,26 +68,7 @@ public class DataSerialization : MonoBehaviour
         otherCoinDestroyed = reader.ReadBoolean();
 
         othercoinId = reader.ReadInt32();
-        
-        if (id == 1)//client
-        {
-            int numOfEneemies= reader.ReadInt32();
-            for (int i = 0;i < numOfEneemies; i++)
-            {
-                float ID=reader.ReadSingle();
-                float x=reader.ReadSingle();
-                float y =reader.ReadSingle();
-                auxiliar.Set(ID, x, y);
-                rootObjects.Add(auxiliar);
-            }
-        }
-        else//server
-        {
-            enemyDown = reader.ReadBoolean();
 
-            enemyDownId = reader.ReadInt32();
-            
-        }
         newPosition.Set(newPositionX, newPositionY, 0);
         deserialized = true;
     }
@@ -122,51 +78,6 @@ public class DataSerialization : MonoBehaviour
         {
             Player2.transform.SetPositionAndRotation(newPosition, newRotation);
             deserialized = false;
-
-            if(type == 1)
-            {
-                GameObject enemies = GameObject.Find("LEVEL/Enemies");
-
-                for (int a = 0; a < enemies.transform.childCount; a++)
-                {
-                    if (enemies.transform.GetChild(a).name == "Enemy")
-                    {
-
-                        for(int b = 0; b < rootObjects.Count; b++)
-                        {
-
-                        
-                        if(rootObjects[b].x== enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id)
-                        {
-                            enemyAuxiliar.Set(rootObjects[b].y, rootObjects[b].z, 1);
-                            enemies.transform.GetChild(a).transform.SetPositionAndRotation(enemyAuxiliar, newRotation);
-                        }
-                        }
-                    }
-
-                }
-                rootObjects.Clear();
-            }
-            else
-            {
-                GameObject enemies = GameObject.Find("LEVEL/Enemies");
-
-                for (int a = 0; a < enemies.transform.childCount; a++)
-                {
-                    if (enemies.transform.GetChild(a).name == "Enemy")
-                    {
-                        if (enemyDownId == enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id)
-                        {
-                            //enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().MakeDead();
-                            //enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().path = null;
-                            enemies.transform.GetChild(a).gameObject.SetActive(false);
-                            
-
-                        }
-                    }
-                    
-                }
-            }
             
         }
         if (otherCoinDestroyed)

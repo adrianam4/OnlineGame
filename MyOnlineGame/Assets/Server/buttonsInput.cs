@@ -158,19 +158,6 @@ public class buttonsInput : MonoBehaviour
             GameObject enemies = GameObject.Find("LEVEL/Enemies");
 
 
-            for (int a = 0; a < enemies.transform.childCount; a++)
-            {
-                if (enemies.transform.GetChild(a).name == "Enemy")
-                {
-                    enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().path=null;
-                    
-                }
-
-            }
-
-
-
-
             TCPclient.GetComponent<TCPClient>().ToCreateclient = true;
             GameObject.Find("CHAT/Canvas/PlayButton").SetActive(false);
 
