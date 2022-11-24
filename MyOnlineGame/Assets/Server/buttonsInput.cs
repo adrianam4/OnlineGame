@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using System.Net;
 using TMPro;
 using System;
 
 public class buttonsInput : MonoBehaviour
 {
     public Text infoButton;
+    public Text ipInfo;
     public Button serverbutton;
     public Button clientbutton;
     public Button sendbutton;
@@ -128,11 +131,24 @@ public class buttonsInput : MonoBehaviour
     {
         inputText = arg0;
     }
-
+    public string GetLocalIPAddress()
+    {
+        var host = Dns.GetHostEntry(Dns.GetHostName());
+        foreach (var ip in host.AddressList)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                
+                return ip.ToString();
+            }
+        }
+        throw new System.Exception("No network adapters with an IPv4 address in the system!");
+    }
     void ServerTaskOnClick()
     {
         if (conectionType == "-")
         {
+            ipInfo.text="Server IP: "+GetLocalIPAddress();
             isServerOrClient = true;
             conectionType = "server";
             GameObject.Find("CHAT/Data").GetComponent<DataSerialization>().type = 0;
