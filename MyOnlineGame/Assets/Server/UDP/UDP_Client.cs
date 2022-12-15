@@ -59,11 +59,6 @@ public class UDP_Client : MonoBehaviour
         sender = new IPEndPoint(IPAddress.Any, 0);
         Remote = (EndPoint)(sender);
 
-        byte[] data3 = new byte[8192];
-        data3 = Encoding.ASCII.GetBytes("n");
-        //string tmp = username + ": " + outputText;
-        //data2 = Encoding.ASCII.GetBytes(tmp);
-        server.SendTo(data3, data3.Length, SocketFlags.None, ipep);
         clientCreated = true;
     }
 
