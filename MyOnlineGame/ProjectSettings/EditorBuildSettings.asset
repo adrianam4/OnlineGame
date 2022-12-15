@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Server/Mario.unity
+    path: Assets/Scenes/Mario.unity
     guid: d51a44495f8ad314584a02f11455d231
   m_configObjects: {}
