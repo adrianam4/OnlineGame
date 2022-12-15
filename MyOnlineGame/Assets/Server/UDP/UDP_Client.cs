@@ -10,7 +10,6 @@ using TMPro;
 
 public class UDP_Client : MonoBehaviour
 {
-    private Thread _t1;
     private Thread _t2;
     private Thread _t3;
     public Socket server;
@@ -39,7 +38,6 @@ public class UDP_Client : MonoBehaviour
     private float time = 0;
     void Start()
     {
-        _t1 = new Thread(CreateClient);
         _t2 = new Thread(send);
         _t3 = new Thread(receive);
         dataserialization = serializator.GetComponent<DataSerialization>();
@@ -58,7 +56,11 @@ public class UDP_Client : MonoBehaviour
 
         sender = new IPEndPoint(IPAddress.Any, 0);
         Remote = (EndPoint)(sender);
-
+        byte[] initialMessage;
+        initialMessage = new byte[20];
+        initialMessage=Encoding.ASCII.GetBytes("n");
+        server.SendTo(initialMessage, initialMessage.Length, SocketFlags.None, ipep);
+        
         clientCreated = true;
     }
 
@@ -133,10 +135,10 @@ public class UDP_Client : MonoBehaviour
 
         if (ToCreateClient && !clientCreated)
         {
-            if (!_t1.IsAlive)
-            {
-                _t1.Start();
-            }
+
+            CreateClient();
+
+
         }
         if (clientCreated)
         {

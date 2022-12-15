@@ -67,7 +67,7 @@ public class buttonsInput : MonoBehaviour
                     }
                     else
                     {
-                        if (UDPserver.GetComponent<UDP_Server>().client != null)
+                        if (UDPserver.GetComponent<UDP_Server>().clients.Count !=0)
                         {
                             infoButton.text = "Client Connected";
                         }
@@ -134,6 +134,7 @@ public class buttonsInput : MonoBehaviour
     public string GetLocalIPAddress()
     {
         var host = Dns.GetHostEntry(Dns.GetHostName());
+
         foreach (var ip in host.AddressList)
         {
             if (ip.AddressFamily == AddressFamily.InterNetwork)

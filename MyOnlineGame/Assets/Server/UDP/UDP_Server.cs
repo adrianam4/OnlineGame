@@ -10,10 +10,8 @@ using TMPro;
 
 public class UDP_Server : MonoBehaviour
 {
-    private Thread UDPCreateServer;
     private Thread UDPSend;
     private Thread UDPRecieve;
-    public Socket client;
     int recv;
     public bool ToCreateServer = false;
     bool serverCreated = false;
@@ -21,8 +19,6 @@ public class UDP_Server : MonoBehaviour
     public string outputText;
     public string inputText;
     public UDP_Client clientUDP;
-    IPEndPoint sender;
-    EndPoint Remote;
     bool doReceive = true;
     bool doSend = true;
     public GameObject chatObject;
@@ -37,9 +33,11 @@ public class UDP_Server : MonoBehaviour
     private bool doDeserialize = true;
     private float time = 0;
     Vector3 auxiliar;
+    Socket udp;
+    public Dictionary<EndPoint, UDP_Client> clients;
+    int port = 9050;
     void Start()
     {
-        UDPCreateServer = new Thread(createServer);
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
         auxiliar = new Vector3();
@@ -54,14 +52,25 @@ public class UDP_Server : MonoBehaviour
 
     void createServer()
     {
-        IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 9050);
-        client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        clients = new Dictionary<EndPoint, UDP_Client>();
+        IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+        foreach (var ip in host.AddressList)
+        {
+            
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                IPEndPoint endPoint = new IPEndPoint((IPAddress)ip, port);
+                Debug.Log("Server IP Address: " + ip);
+                Debug.Log("Port: " + port);
+                udp = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                udp.Bind(endPoint);
+                udp.Blocking = false;
+                break;
+            }
+        }
+        
 
-        client.Bind(ipep);
-        Debug.Log("Waiting for a client...");
-
-        sender = new IPEndPoint(IPAddress.Any, 0);
-        Remote = (EndPoint)(sender);
+        
 
         serverCreated = true;
     }
@@ -74,7 +83,8 @@ public class UDP_Server : MonoBehaviour
             {
 
                 sendData = dataserialization.Serialize(0);
-                client.SendTo(sendData, sendData.Length, SocketFlags.None, Remote);
+                foreach (KeyValuePair<EndPoint, UDP_Client> p in clients)
+                    udp.SendTo(sendData, sendData.Length, SocketFlags.None, p.Key);
                 messageSent = true;
                 PrepareToSend = false;
                 doSerialize = false;
@@ -82,19 +92,26 @@ public class UDP_Server : MonoBehaviour
 
         }
     }
+    void HandleNewClient(EndPoint addr, string data)
+    {
+        clients.Add(addr, new UDP_Client());
 
+    }
     void receive()
     {
         while (doReceive)
         {
-            if (doDeserialize)
+            if (doDeserialize&& udp.Available != 0)
             {
                 byte[] data;
                 data = new byte[8192];
+                EndPoint sender = new IPEndPoint(IPAddress.Any, port);
+                int recv = udp.ReceiveFrom(data, ref sender);
 
-                recv = client.ReceiveFrom(data, ref Remote);
-
-                if (recv > 0)
+                string info = Encoding.Default.GetString(data);
+                if (info[0] == 'n' )
+                    HandleNewClient(sender, info);
+                else if (recv > 0)              
                 {
                     inputText = Encoding.ASCII.GetString(data, 0, recv);
                     messageReceived = true;
@@ -155,11 +172,8 @@ public class UDP_Server : MonoBehaviour
         }
 
         if (ToCreateServer && !serverCreated)
-        {
-            if (!UDPCreateServer.IsAlive)
-            {
-                UDPCreateServer.Start();
-            }
+        {           
+                createServer();           
         }
         if (serverCreated)
         {
