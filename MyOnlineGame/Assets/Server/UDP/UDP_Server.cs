@@ -21,7 +21,6 @@ public class UDP_Server : MonoBehaviour
     public string outputText;
     public string inputText;
     public UDP_Client clientUDP;
-    IPEndPoint sender;
     EndPoint Remote;
     bool doReceive = true;
     bool doSend = true;
@@ -37,6 +36,8 @@ public class UDP_Server : MonoBehaviour
     private bool doDeserialize = true;
     private float time = 0;
     Vector3 auxiliar;
+    Dictionary<EndPoint, UDP_Client> clients;
+    EndPoint sender;
     void Start()
     {
         UDPCreateServer = new Thread(createServer);
@@ -54,6 +55,7 @@ public class UDP_Server : MonoBehaviour
 
     void createServer()
     {
+        clients = new Dictionary<EndPoint, UDP_Client>();
         IPEndPoint ipep = new IPEndPoint(IPAddress.Any, 9050);
         client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
@@ -74,7 +76,13 @@ public class UDP_Server : MonoBehaviour
             {
 
                 sendData = dataserialization.Serialize(0);
-                client.SendTo(sendData, sendData.Length, SocketFlags.None, Remote);
+                
+                
+                foreach (KeyValuePair<EndPoint, UDP_Client> p in clients)
+                {
+                    client.SendTo(sendData, sendData.Length, SocketFlags.None, p.Key);
+                }
+                    
                 messageSent = true;
                 PrepareToSend = false;
                 doSerialize = false;
@@ -92,8 +100,12 @@ public class UDP_Server : MonoBehaviour
                 byte[] data;
                 data = new byte[8192];
 
-                recv = client.ReceiveFrom(data, ref Remote);
-
+                recv = client.ReceiveFrom(data, ref sender);
+                string info = Encoding.Default.GetString(data);
+                if (info[0] == 'n')
+                {
+                    HandleNewClient(sender, info);
+                }
                 if (recv > 0)
                 {
                     inputText = Encoding.ASCII.GetString(data, 0, recv);
@@ -126,6 +138,16 @@ public class UDP_Server : MonoBehaviour
         
         
     }
+    void HandleNewClient(EndPoint addr, string data)
+    {
+       
+        
+       
+
+      
+        clients.Add(addr, new UDP_Client());
+        
+    }
     void Update()
     {
         time += Time.deltaTime;
@@ -142,8 +164,6 @@ public class UDP_Server : MonoBehaviour
             AddMessage(inputText);
             messageReceived = false;
         }
-
-        
         if (makeSend)
         {
             PrepareToSend = true;
