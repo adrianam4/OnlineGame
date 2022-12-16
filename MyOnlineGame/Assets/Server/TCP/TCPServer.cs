@@ -136,9 +136,9 @@ public class TCPServer : MonoBehaviour
         
         for (int b = 0; b < clientsList.Count; b++)
         {
-            
+            string auxiliar = tmp + b.ToString();
             data2 = Encoding.ASCII.GetBytes(tmp+b.ToString());
-            clientsList[b].Send(data2, tmp.Length, SocketFlags.None);
+            clientsList[b].Send(data2, auxiliar.Length, SocketFlags.None);
         }
     }
     void Update()

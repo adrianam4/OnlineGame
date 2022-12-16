@@ -32,6 +32,7 @@ public class TCPClient : MonoBehaviour
     public GameObject player;
     public GameObject levelCanvas;
     public UDP_Client udpClient;
+    public GameObject data;
     void Start()
     {
         _t1 = new Thread(CreateClient);
@@ -110,6 +111,7 @@ public class TCPClient : MonoBehaviour
                 levelCanvas.SetActive(true);
                 GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;            
                 udpClient.GetComponent<UDP_Client>().playerID= Int32.Parse(auxiliar);
+                data.GetComponent<DataSerialization>().playerIDEN = udpClient.GetComponent<UDP_Client>().playerID;
             }
             AddMessage(inputText);
             messageReceived = false;

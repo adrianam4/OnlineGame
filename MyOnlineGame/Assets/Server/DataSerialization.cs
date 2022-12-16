@@ -19,6 +19,7 @@ public class DataSerialization : MonoBehaviour
     public GameObject Player3;
     public GameObject Player4;
     bool first = true;
+    bool toMake = false;
     byte[] data;
     Vector3 player_position;
     private bool deserialized = false;
@@ -36,6 +37,8 @@ public class DataSerialization : MonoBehaviour
     public List<clientStructure> clientList;
     List<clientStructure> clientsToClient;
     int ServerClient;
+    public int playerIDEN;
+    int number;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +58,7 @@ public class DataSerialization : MonoBehaviour
         ServerClient = id;
         stream = new MemoryStream();
         BinaryWriter writer = new BinaryWriter(stream);
-        int auxiiar = player.GetComponent<UDP_Client>().playerID;
+        int auxiiar = playerIDEN;
         if (id == 1)//if is client
         {
             if (auxiiar != -1)
@@ -116,20 +119,11 @@ public class DataSerialization : MonoBehaviour
         else//if is a client
         {
             int numberOfClient = reader.ReadInt32();
-
+            number = numberOfClient;
             for (int a = 0; a < numberOfClient; a++)
             {
-                if (first)
-                {
-                    clientsToClient = new List<clientStructure>();
-                    for(int b = 0; b < numberOfClient; b++)
-                    {
-                        clientsToClient.Add(new clientStructure());
-                        clientsToClient[b].clientPosition = new Vector3(0, 0, 0);
-                    }
-                    first = false;
-                }
-
+                toMake = true;
+                
                 ///////////////////////////////////////////////////////////////////////////////
                 int player= reader.ReadInt32();
                 float newPositionX = reader.ReadSingle();
@@ -205,6 +199,21 @@ public class DataSerialization : MonoBehaviour
         {
 
             DestroyCoin();
+        }
+
+        if (toMake)
+        {
+            if (first)
+            {
+                clientsToClient = new List<clientStructure>();
+                for (int b = 0; b < number; b++)
+                {
+                    clientsToClient.Add(new clientStructure());
+                    clientsToClient[b].clientPosition = new Vector3(0, 0, 0);
+                }
+                first = false;
+            }
+            
         }
         player_position.Set(player.transform.position.x, player.transform.position.y, 0);
     }
