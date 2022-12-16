@@ -36,6 +36,7 @@ public class UDP_Client : MonoBehaviour
     private bool doSerialize = true;
     private bool doDeserialize = true;
     private float time = 0;
+    public int playerID = -1;
     void Start()
     {
         _t2 = new Thread(send);

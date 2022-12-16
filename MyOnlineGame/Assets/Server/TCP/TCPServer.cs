@@ -128,7 +128,19 @@ public class TCPServer : MonoBehaviour
             Debug.Log(inputText);
         }
     }
-
+    public void toStartGame()
+    {
+        byte[] data2;
+        data2 = new byte[100];
+        string tmp = "PlayerID:";
+        
+        for (int b = 0; b < clientsList.Count; b++)
+        {
+            
+            data2 = Encoding.ASCII.GetBytes(tmp+b.ToString());
+            clientsList[b].Send(data2, tmp.Length, SocketFlags.None);
+        }
+    }
     void Update()
     {
         if (messageReceived && inputText.Length > 0)

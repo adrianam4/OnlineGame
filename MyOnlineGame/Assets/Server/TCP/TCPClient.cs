@@ -31,7 +31,7 @@ public class TCPClient : MonoBehaviour
     private bool messageSent = false;
     public GameObject player;
     public GameObject levelCanvas;
-
+    public UDP_Client udpClient;
     void Start()
     {
         _t1 = new Thread(CreateClient);
@@ -101,13 +101,15 @@ public class TCPClient : MonoBehaviour
     {
         if (messageReceived && inputText.Length > 0)
         {
-            if (inputText == "server: StartGame")
+            string a = "PlayerID:";
+            string auxiliar = inputText.Substring(9);
+            if (inputText.Substring(0,9) == a)
             {
                 GameObject.Find("Canvas").SetActive(false);
                 player.SetActive(true);
                 levelCanvas.SetActive(true);
-                GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;
-
+                GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;            
+                udpClient.GetComponent<UDP_Client>().playerID= Int32.Parse(auxiliar);
             }
             AddMessage(inputText);
             messageReceived = false;

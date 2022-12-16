@@ -22,6 +22,7 @@ public class buttonsInput : MonoBehaviour
     public GameObject UDPserver;
     public GameObject UDPclient;
     public GameObject changeTypeObject;
+    public GameObject data;
     Change_Type change;
     string inputText;
     string conectionType="-";
@@ -114,12 +115,24 @@ public class buttonsInput : MonoBehaviour
 
         if(TCPserver.GetComponent<TCPServer>().serverCreated)
         {
+
+            TCPserver.GetComponent<TCPServer>().toStartGame();
+            if(conectionType== "server")
+            {
+                data.GetComponent<DataSerialization>().clientList = new List<clientStructure>();
+                for (int a=0;a< TCPserver.GetComponent<TCPServer>().NumOfClientsConnected; a++)
+                {
+
+                    data.GetComponent<DataSerialization>().clientList.Add(new clientStructure());
+                    data.GetComponent<DataSerialization>().clientList[a].clientPosition = new Vector3(0, 0, 0);
+                }
+                
+            }
             
+            //TCPserver.GetComponent<TCPServer>().outputText = "StartGame";
+            //TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
 
-            TCPserver.GetComponent<TCPServer>().outputText = "StartGame";
-            TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
-
-            UDPserver.GetComponent<UDP_Server>().makeSend = true;
+            //UDPserver.GetComponent<UDP_Server>().makeSend = true;
 
             GameObject.Find("Canvas").SetActive(false);
             player.SetActive(true);
