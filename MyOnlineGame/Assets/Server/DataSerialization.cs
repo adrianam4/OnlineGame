@@ -39,6 +39,7 @@ public class DataSerialization : MonoBehaviour
     int ServerClient;
     public int playerIDEN;
     int number;
+    Vector3 serverPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,8 +50,9 @@ public class DataSerialization : MonoBehaviour
         rootObjects = new List<Vector3>();
         coins = GameObject.Find("LEVEL/Tokens");
         pointsManager = player.GetComponent<PointsManager>();
-        
-        
+        serverPos = new Vector3();
+
+
     }
 
     public byte[] Serialize(int id)
@@ -73,8 +75,10 @@ public class DataSerialization : MonoBehaviour
                 writer.Write(mycoinId);
             }
         }
-        else
+        else//server
         {
+            writer.Write(player_position.x);
+            writer.Write(player_position.y);
             writer.Write(clientList.Count);
             for(int a=0;a< clientList.Count; a++)
             {
@@ -118,6 +122,12 @@ public class DataSerialization : MonoBehaviour
         }
         else//if is a client
         {
+
+            float newPositionServerX = reader.ReadSingle();
+            float newPositionServerY = reader.ReadSingle();
+
+            serverPos.Set(newPositionServerX, newPositionServerY, 0);
+
             int numberOfClient = reader.ReadInt32();
             number = numberOfClient;
             for (int a = 0; a < numberOfClient; a++)
@@ -164,27 +174,23 @@ public class DataSerialization : MonoBehaviour
 
                 }
             }
-            else
+            else//client
             {
+                int b = 0;
+                Player2.transform.SetPositionAndRotation(serverPos, newRotation);
                 for (int a = 0; a < clientsToClient.Count; a++)
                 {
                     if(a!= UDPClient.GetComponent<UDP_Client>().playerID)
                     {
-                        switch (a)
+                        if (b == 0)
                         {
-                            case 0:
-                                Player2.transform.SetPositionAndRotation(clientList[0].clientPosition, newRotation);
-                                break;
-                            case 1:
-                                Player3.transform.SetPositionAndRotation(clientList[1].clientPosition, newRotation);
-                                break;
-                            case 2:
-                                Player4.transform.SetPositionAndRotation(clientList[2].clientPosition, newRotation);
-                                break;
+                            Player3.transform.SetPositionAndRotation(clientList[a].clientPosition, newRotation);
+                        }else if (b == 1)
+                        {
+                            Player4.transform.SetPositionAndRotation(clientList[a].clientPosition, newRotation);
                         }
-
-
-
+                        b++;
+                        
                     }
 
                 }

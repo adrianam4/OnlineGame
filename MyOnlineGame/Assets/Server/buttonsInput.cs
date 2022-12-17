@@ -120,7 +120,7 @@ public class buttonsInput : MonoBehaviour
             if(conectionType== "server")
             {
                 data.GetComponent<DataSerialization>().clientList = new List<clientStructure>();
-                for (int a=0;a< TCPserver.GetComponent<TCPServer>().NumOfClientsConnected; a++)
+                for (int a=0;a< TCPserver.GetComponent<TCPServer>().clientsList.Count; a++)
                 {
 
                     data.GetComponent<DataSerialization>().clientList.Add(new clientStructure());

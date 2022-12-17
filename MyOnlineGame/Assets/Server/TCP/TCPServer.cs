@@ -14,7 +14,7 @@ public class TCPServer : MonoBehaviour
     private Thread _t1;
     private Thread _t2;
     private List<Thread> recieveList;
-    private List<Socket> clientsList;
+    public List<Socket> clientsList;
     int recv;
     public int NumOfClientsConnected;
     public bool ToCreateServer = false;
