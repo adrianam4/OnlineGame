@@ -116,7 +116,7 @@ public class buttonsInput : MonoBehaviour
         if(TCPserver.GetComponent<TCPServer>().serverCreated)
         {
 
-            TCPserver.GetComponent<TCPServer>().toStartGame();
+            
             if(conectionType== "server")
             {
                 data.GetComponent<DataSerialization>().clientList = new List<clientStructure>();
@@ -128,7 +128,7 @@ public class buttonsInput : MonoBehaviour
                 }
                 
             }
-            
+            TCPserver.GetComponent<TCPServer>().toStartGame();
             //TCPserver.GetComponent<TCPServer>().outputText = "StartGame";
             //TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
 

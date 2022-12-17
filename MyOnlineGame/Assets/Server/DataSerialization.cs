@@ -79,6 +79,8 @@ public class DataSerialization : MonoBehaviour
         {
             writer.Write(player_position.x);
             writer.Write(player_position.y);
+            Debug.Log("position x: " + player_position.x);
+            Debug.Log("position y: " + player_position.y);
             writer.Write(clientList.Count);
             for(int a=0;a< clientList.Count; a++)
             {
@@ -111,9 +113,9 @@ public class DataSerialization : MonoBehaviour
         {
             int u = reader.ReadInt32();
             float newPositionX = reader.ReadSingle();
-            Debug.Log("position x: " + newPositionX);
+            //Debug.Log("position x: " + newPositionX);
             float newPositionY = reader.ReadSingle();
-            Debug.Log("position y: " + newPositionY);
+            //Debug.Log("position y: " + newPositionY);
             pointsManager.player1Points = reader.ReadInt32();
             otherCoinDestroyed = reader.ReadBoolean();
 
@@ -125,7 +127,8 @@ public class DataSerialization : MonoBehaviour
 
             float newPositionServerX = reader.ReadSingle();
             float newPositionServerY = reader.ReadSingle();
-
+            Debug.Log("position x: " + newPositionServerX);
+            Debug.Log("position y: " + newPositionServerY);
             serverPos.Set(newPositionServerX, newPositionServerY, 0);
 
             int numberOfClient = reader.ReadInt32();
@@ -137,17 +140,17 @@ public class DataSerialization : MonoBehaviour
                 ///////////////////////////////////////////////////////////////////////////////
                 int player= reader.ReadInt32();
                 float newPositionX = reader.ReadSingle();
-                Debug.Log("position x: " + newPositionX);
+                //Debug.Log("position x: " + newPositionX);
                 float newPositionY = reader.ReadSingle();
                 clientsToClient[a].clientPosition.Set(newPositionX, newPositionY,0);
                 clientsToClient[a].clientID = player;
-                pointsManager.player1Points = reader.ReadInt32();
-                otherCoinDestroyed = reader.ReadBoolean();
-
-                othercoinId = reader.ReadInt32();
+                
 
             }
+            pointsManager.player1Points = reader.ReadInt32();
+            otherCoinDestroyed = reader.ReadBoolean();
 
+            othercoinId = reader.ReadInt32();
         }
         deserialized = true;
     }
@@ -184,10 +187,10 @@ public class DataSerialization : MonoBehaviour
                     {
                         if (b == 0)
                         {
-                            Player3.transform.SetPositionAndRotation(clientList[a].clientPosition, newRotation);
+                            Player3.transform.SetPositionAndRotation(clientsToClient[a].clientPosition, newRotation);
                         }else if (b == 1)
                         {
-                            Player4.transform.SetPositionAndRotation(clientList[a].clientPosition, newRotation);
+                            Player4.transform.SetPositionAndRotation(clientsToClient[a].clientPosition, newRotation);
                         }
                         b++;
                         
