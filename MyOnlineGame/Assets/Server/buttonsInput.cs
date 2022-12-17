@@ -122,7 +122,7 @@ public class buttonsInput : MonoBehaviour
                 data.GetComponent<DataSerialization>().clientList = new List<clientStructure>();
                 for (int a=0;a< TCPserver.GetComponent<TCPServer>().clientsList.Count; a++)
                 {
-
+                    data.GetComponent<DataSerialization>().otherCoinsDestroyed.Add(0);
                     data.GetComponent<DataSerialization>().clientList.Add(new clientStructure());
                     data.GetComponent<DataSerialization>().clientList[a].clientPosition = new Vector3(0, 0, 0);
                 }

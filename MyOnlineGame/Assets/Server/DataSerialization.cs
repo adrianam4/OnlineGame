@@ -25,9 +25,6 @@ public class DataSerialization : MonoBehaviour
     private bool deserialized = false;
     private PointsManager pointsManager;
 
-    bool otherCoinDestroyed = false;
-    int othercoinId = -1;
-    bool myCoinDestroyed = false;
     int mycoinId = -1;
     public List<Vector3> rootObjects;
     public int type = -1;
@@ -40,6 +37,7 @@ public class DataSerialization : MonoBehaviour
     public int playerIDEN;
     int number;
     Vector3 serverPos;
+    public List<int> otherCoinsDestroyed;
     // Start is called before the first frame update
     void Start()
     {
@@ -51,7 +49,7 @@ public class DataSerialization : MonoBehaviour
         coins = GameObject.Find("LEVEL/Tokens");
         pointsManager = player.GetComponent<PointsManager>();
         serverPos = new Vector3();
-
+        otherCoinsDestroyed = new List<int>();
 
     }
 
@@ -71,7 +69,6 @@ public class DataSerialization : MonoBehaviour
                 writer.Write(pointsManager.playerPoints);
 
 
-                writer.Write(myCoinDestroyed);
                 writer.Write(mycoinId);
             }
         }
@@ -91,9 +88,13 @@ public class DataSerialization : MonoBehaviour
            
             writer.Write(pointsManager.playerPoints);
 
+            int coinID= mycoinId;
+            writer.Write(coinID);
+            for (int a = 0; a < clientList.Count; a++)
+            {
+                writer.Write(otherCoinsDestroyed[a]);
 
-            writer.Write(myCoinDestroyed);
-            writer.Write(mycoinId);
+            }
         }
         
        
@@ -117,10 +118,11 @@ public class DataSerialization : MonoBehaviour
             float newPositionY = reader.ReadSingle();
             //Debug.Log("position y: " + newPositionY);
             pointsManager.player1Points = reader.ReadInt32();
-            otherCoinDestroyed = reader.ReadBoolean();
 
-            othercoinId = reader.ReadInt32();
+            
             clientList[u].clientPosition.Set(newPositionX, newPositionY,0);
+
+            otherCoinsDestroyed[u] = reader.ReadInt32();
         }
         else//if is a client
         {
@@ -149,9 +151,14 @@ public class DataSerialization : MonoBehaviour
 
             }
             pointsManager.player1Points = reader.ReadInt32();
-            otherCoinDestroyed = reader.ReadBoolean();
 
-            othercoinId = reader.ReadInt32();
+
+
+            for (int b = 0; b < numberOfClient; b++)
+            {
+                otherCoinsDestroyed[b] = reader.ReadInt32();
+            }
+            
         }
         deserialized = true;
     }
@@ -205,11 +212,9 @@ public class DataSerialization : MonoBehaviour
             deserialized = false;
             
         }
-        if (otherCoinDestroyed)
-        {
 
-            DestroyCoin();
-        }
+
+        DestroyCoin();
 
         if (toMake)
         {
@@ -218,6 +223,7 @@ public class DataSerialization : MonoBehaviour
                 clientsToClient = new List<clientStructure>();
                 for (int b = 0; b < number; b++)
                 {
+                    otherCoinsDestroyed.Add(-1);
                     clientsToClient.Add(new clientStructure());
                     clientsToClient[b].clientPosition = new Vector3(0, 0, 0);
                 }
@@ -229,20 +235,23 @@ public class DataSerialization : MonoBehaviour
     }
     public void setDestroiedCoin(int id)
     {
-        myCoinDestroyed = true;
         mycoinId = id;
     }
     void DestroyCoin()
     {
-        otherCoinDestroyed = false;
-        for (int a = 0; a < coins.transform.childCount; a++)
-        {
-           
-            if (othercoinId == coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().id)
+        for(int b = 0; b < otherCoinsDestroyed.Count; b++) {
+            for (int a = 0; a < coins.transform.childCount; a++)
             {
-                coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().collected = true;
+
+                if (otherCoinsDestroyed[b] == coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().id)
+                {
+                    coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().collected = true;
+                }
             }
+
+
         }
+        
 
     }
 }
