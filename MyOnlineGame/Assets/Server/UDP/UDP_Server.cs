@@ -115,7 +115,7 @@ public class UDP_Server : MonoBehaviour
                 {
                     inputText = Encoding.ASCII.GetString(data, 0, recv);
                     messageReceived = true;
-                    Debug.Log(inputText);
+                    //Debug.Log(inputText);
                     dataserialization.Deserialize(data,0);
                 }
 

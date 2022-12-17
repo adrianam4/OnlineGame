@@ -133,9 +133,10 @@ public class DataSerialization : MonoBehaviour
 
             int numberOfClient = reader.ReadInt32();
             number = numberOfClient;
+            toMake = true;
             for (int a = 0; a < numberOfClient; a++)
             {
-                toMake = true;
+                
                 
                 ///////////////////////////////////////////////////////////////////////////////
                 int player= reader.ReadInt32();

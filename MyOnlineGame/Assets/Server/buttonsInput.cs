@@ -130,9 +130,9 @@ public class buttonsInput : MonoBehaviour
             }
             TCPserver.GetComponent<TCPServer>().toStartGame();
             //TCPserver.GetComponent<TCPServer>().outputText = "StartGame";
-            //TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
+            TCPserver.GetComponent<TCPServer>().PrepareToSend = true;
 
-            //UDPserver.GetComponent<UDP_Server>().makeSend = true;
+            UDPserver.GetComponent<UDP_Server>().makeSend = true;
 
             GameObject.Find("Canvas").SetActive(false);
             player.SetActive(true);
