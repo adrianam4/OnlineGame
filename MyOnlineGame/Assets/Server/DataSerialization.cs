@@ -186,13 +186,13 @@ public class DataSerialization : MonoBehaviour
 
                 }
             }
-            else//client
+            else if(ServerClient == 1)//client
             {
                 int b = 0;
-                Player2.transform.SetPositionAndRotation(serverPos, newRotation);
                 for (int a = 0; a < clientsToClient.Count; a++)
                 {
-                    if(a!= UDPClient.GetComponent<UDP_Client>().playerID)
+                    Player2.transform.SetPositionAndRotation(serverPos, newRotation);
+                    if (a!= UDPClient.GetComponent<UDP_Client>().playerID)
                     {
                         if (b == 0)
                         {
