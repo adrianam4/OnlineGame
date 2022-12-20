@@ -119,9 +119,11 @@ public class buttonsInput : MonoBehaviour
             
             if(conectionType== "server")
             {
+                data.GetComponent<DataSerialization>().otherenemyDownID = new List<int>();
                 data.GetComponent<DataSerialization>().clientList = new List<clientStructure>();
                 for (int a=0;a< TCPserver.GetComponent<TCPServer>().clientsList.Count; a++)
                 {
+                    data.GetComponent<DataSerialization>().otherenemyDownID.Add(-1);
                     data.GetComponent<DataSerialization>().otherCoinsDestroyed.Add(0);
                     data.GetComponent<DataSerialization>().clientList.Add(new clientStructure());
                     data.GetComponent<DataSerialization>().clientList[a].clientPosition = new Vector3(0, 0, 0);

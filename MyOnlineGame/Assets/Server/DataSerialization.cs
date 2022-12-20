@@ -39,9 +39,16 @@ public class DataSerialization : MonoBehaviour
     Vector3 serverPos;
     public List<int> otherCoinsDestroyed;
     int serverCoinDestroyed=-1;
+    GameObject enemies;
+
+
+    public int yourenemyDownID;
+    public List<int> otherenemyDownID;
+    int serverenemydoenID=-1;
     // Start is called before the first frame update
     void Start()
     {
+        enemies = GameObject.Find("LEVEL/Enemies");
         newRotation = Quaternion.identity;
         data = new byte[100];
         UDPServer = GameObject.Find("UDPServer");
@@ -51,7 +58,6 @@ public class DataSerialization : MonoBehaviour
         pointsManager = player.GetComponent<PointsManager>();
         serverPos = new Vector3();
         otherCoinsDestroyed = new List<int>();
-
     }
 
     public byte[] Serialize(int id)
@@ -71,6 +77,7 @@ public class DataSerialization : MonoBehaviour
 
 
                 writer.Write(mycoinId);
+                writer.Write(yourenemyDownID);
             }
         }
         else//server
@@ -94,6 +101,12 @@ public class DataSerialization : MonoBehaviour
             for (int a = 0; a < clientList.Count; a++)
             {
                 writer.Write(otherCoinsDestroyed[a]);
+
+            }
+            writer.Write(yourenemyDownID);
+            for (int a = 0; a < clientList.Count; a++)
+            {
+                writer.Write(otherenemyDownID[a]);
 
             }
         }
@@ -124,15 +137,18 @@ public class DataSerialization : MonoBehaviour
             clientList[u].clientPosition.Set(newPositionX, newPositionY,0);
 
             otherCoinsDestroyed[u] = reader.ReadInt32();
+            otherenemyDownID[u]= reader.ReadInt32();
         }
         else//if is a client
         {
 
             float newPositionServerX = reader.ReadSingle();
             float newPositionServerY = reader.ReadSingle();
+            
+            serverPos.Set(newPositionServerX, newPositionServerY, 0);
+
             Debug.Log("position x: " + newPositionServerX);
             Debug.Log("position y: " + newPositionServerY);
-            serverPos.Set(newPositionServerX, newPositionServerY, 0);
 
             int numberOfClient = reader.ReadInt32();
             number = numberOfClient;
@@ -159,7 +175,11 @@ public class DataSerialization : MonoBehaviour
             {
                 otherCoinsDestroyed[b] = reader.ReadInt32();
             }
-            
+            serverenemydoenID=reader.ReadInt32();
+            for (int b = 0; b < numberOfClient; b++)
+            {
+                otherenemyDownID[b] = reader.ReadInt32();
+            }
         }
         deserialized = true;
     }
@@ -189,9 +209,10 @@ public class DataSerialization : MonoBehaviour
             else if(ServerClient == 1)//client
             {
                 int b = 0;
+                Player2.transform.SetPositionAndRotation(serverPos, newRotation);
                 for (int a = 0; a < clientsToClient.Count; a++)
                 {
-                    Player2.transform.SetPositionAndRotation(serverPos, newRotation);
+                    
                     if (a!= UDPClient.GetComponent<UDP_Client>().playerID)
                     {
                         if (b == 0)
@@ -213,17 +234,18 @@ public class DataSerialization : MonoBehaviour
             deserialized = false;
             
         }
-
-
+        newEnemyDead();
         DestroyCoin();
 
         if (toMake)
         {
             if (first)
             {
+                otherenemyDownID = new List<int>();
                 clientsToClient = new List<clientStructure>();
                 for (int b = 0; b < number; b++)
                 {
+                    otherenemyDownID.Add(-1);
                     otherCoinsDestroyed.Add(-1);
                     clientsToClient.Add(new clientStructure());
                     clientsToClient[b].clientPosition = new Vector3(0, 0, 0);
@@ -273,5 +295,24 @@ public class DataSerialization : MonoBehaviour
         }
         
 
+    }
+    public void newEnemyDead()
+    {
+        for(int a = 0; a < otherenemyDownID.Count; a++)
+        {
+            for(int b = 0;b< enemies.transform.childCount; b++)
+            {
+                if (enemies.transform.GetChild(b).name == "Enemy")
+                {
+                    if (enemies.transform.GetChild(b).gameObject.GetComponent<Platformer.Mechanics.EnemyController>().isDying == false) {
+                        if (enemies.transform.GetChild(b).gameObject.GetComponent<Platformer.Mechanics.EnemyController>().id == otherenemyDownID[a]|| enemies.transform.GetChild(b).gameObject.GetComponent<Platformer.Mechanics.EnemyController>().id == serverenemydoenID)
+                        {
+                            enemies.transform.GetChild(b).gameObject.GetComponent<Platformer.Mechanics.EnemyController>().isDying = true;
+                        }
+                    }
+                }
+            }
+        }
+        //enemies.transform.GetChild(id+1).gameObject.SetActive(false);
     }
 }

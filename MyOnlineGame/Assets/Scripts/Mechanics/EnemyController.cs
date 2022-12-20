@@ -12,6 +12,7 @@ namespace Platformer.Mechanics
     [RequireComponent(typeof(AnimationController), typeof(Collider2D))]
     public class EnemyController : MonoBehaviour
     {
+        public bool isDying = false;
         public PatrolPath path;
         public AudioClip ouch;
         public int id;
@@ -20,15 +21,19 @@ namespace Platformer.Mechanics
         internal Collider2D _collider;
         internal AudioSource _audio;
         SpriteRenderer spriteRenderer;
-
+        GameObject data;
         public Bounds Bounds => _collider.bounds;
-
+        Vector3 newPos;
+        Quaternion newrot;
         void Awake()
         {
+            data = GameObject.Find("CHAT/Data");
             control = GetComponent<AnimationController>();
             _collider = GetComponent<Collider2D>();
             _audio = GetComponent<AudioSource>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            newPos=new Vector3(0,0,0);
+            newrot = Quaternion.identity;
         }
         public void MakeDead()
         {
@@ -43,11 +48,22 @@ namespace Platformer.Mechanics
                 var ev = Schedule<PlayerEnemyCollision>();
                 ev.player = player;
                 ev.enemy = this;
+                data.GetComponent<DataSerialization>().yourenemyDownID = id; ;
             }
         }
 
         void Update()
         {
+            if (isDying == true)
+            {
+                path = null;
+                newPos.Set(this.gameObject.transform.position.x, this.gameObject.transform.position.y-0.05f, 0);
+                this.gameObject.transform.SetPositionAndRotation(newPos, newrot);
+                if (this.gameObject.transform.position.y < -8)
+                {
+                    this.gameObject.SetActive(false);
+                }
+            }
             if (path != null)
             {
                 if (mover == null) mover = path.CreateMover(control.maxSpeed * 0.5f);
