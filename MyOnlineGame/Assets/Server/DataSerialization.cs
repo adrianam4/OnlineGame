@@ -38,6 +38,7 @@ public class DataSerialization : MonoBehaviour
     int number;
     Vector3 serverPos;
     public List<int> otherCoinsDestroyed;
+    int serverCoinDestroyed=-1;
     // Start is called before the first frame update
     void Start()
     {
@@ -152,7 +153,7 @@ public class DataSerialization : MonoBehaviour
             }
             pointsManager.player1Points = reader.ReadInt32();
 
-
+            serverCoinDestroyed = reader.ReadInt32();
 
             for (int b = 0; b < numberOfClient; b++)
             {
@@ -239,7 +240,26 @@ public class DataSerialization : MonoBehaviour
     }
     void DestroyCoin()
     {
-        for(int b = 0; b < otherCoinsDestroyed.Count; b++) {
+        if (serverCoinDestroyed!=-1)
+        {
+            for (int b = 0; b < otherCoinsDestroyed.Count; b++)
+            {
+                for (int a = 0; a < coins.transform.childCount; a++)
+                {
+
+                    if (serverCoinDestroyed == coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().id)
+                    {
+                        coins.transform.GetChild(a).GetComponent<Platformer.Mechanics.TokenInstance>().collected = true;
+                    }
+                }
+
+
+            }
+
+
+        }
+
+        for (int b = 0; b < otherCoinsDestroyed.Count; b++) {
             for (int a = 0; a < coins.transform.childCount; a++)
             {
 
