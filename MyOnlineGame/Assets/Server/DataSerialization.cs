@@ -26,7 +26,6 @@ public class DataSerialization : MonoBehaviour
     private PointsManager pointsManager;
 
     int mycoinId = -1;
-    public List<Vector3> rootObjects;
     public int type = -1;
 
     public bool enemyDown = false;
@@ -45,6 +44,15 @@ public class DataSerialization : MonoBehaviour
     public int yourenemyDownID;
     public List<int> otherenemyDownID;
     int serverenemydoenID=-1;
+
+    public List<Vector3> player2;
+    public List<Vector3> player3;
+    public List<Vector3> player4;
+
+    int player2Max = 0;
+    int player3Max = 0;
+    int player4Max = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,14 +61,13 @@ public class DataSerialization : MonoBehaviour
         data = new byte[100];
         UDPServer = GameObject.Find("UDPServer");
         UDPClient = GameObject.Find("UDPClient");
-        rootObjects = new List<Vector3>();
         coins = GameObject.Find("LEVEL/Tokens");
         pointsManager = player.GetComponent<PointsManager>();
         serverPos = new Vector3();
         otherCoinsDestroyed = new List<int>();
     }
 
-    public byte[] Serialize(int id)
+    public byte[] Serialize(int id,int client)
     {
         ServerClient = id;
         stream = new MemoryStream();
@@ -109,6 +116,41 @@ public class DataSerialization : MonoBehaviour
                 writer.Write(otherenemyDownID[a]);
 
             }
+            if (client == 2)
+            {
+                for (int a = 0; a < player2Max; a++)
+                {
+                    writer.Write(player2Max);
+                    writer.Write(player2[a].x);
+                    writer.Write(player2[a].y);
+                }
+                player2Max = 0;
+            }
+            else if(client == 3)
+            {
+                for (int a = 0; a < player3Max; a++)
+                {
+                    writer.Write(player3Max);
+                    writer.Write(player3[a].x);
+                    writer.Write(player3[a].y);
+                }
+                player3Max = 0;
+            }
+            else if (client == 4)
+            {
+                for (int a = 0; a < player4Max; a++)
+                {
+                    writer.Write(player4Max);
+                    writer.Write(player4[a].x);
+                    writer.Write(player4[a].y);
+                }
+                player4Max = 0;
+            }
+            
+            
+            
+
+
         }
         
        
@@ -180,6 +222,14 @@ public class DataSerialization : MonoBehaviour
             {
                 otherenemyDownID[b] = reader.ReadInt32();
             }
+            int cantOfenemys = reader.ReadInt32();
+            for (int b = 0; b < numberOfClient; b++)
+            {
+                float x = reader.ReadSingle();
+                float y = reader.ReadSingle();
+                float enemyID = reader.ReadSingle();
+                player2[b].Set(x,y, enemyID);
+            }
         }
         deserialized = true;
     }
@@ -234,6 +284,23 @@ public class DataSerialization : MonoBehaviour
             deserialized = false;
             
         }
+        if (ServerClient == 0)//server
+        {
+
+            
+            setEnemyPosition();
+
+        }
+        else if(ServerClient == 1)//client
+        {
+            Vector3 y=new Vector3();
+            for(int a = 0;a < player2.Count; a++)
+            {
+                y.Set(player2[a].x, player2[a].y, 0);
+                enemies.transform.GetChild((int)player2[a].z + 1).gameObject.transform.SetPositionAndRotation(y, newRotation);
+            }
+        }
+        
         newEnemyDead();
         DestroyCoin();
 
@@ -243,6 +310,11 @@ public class DataSerialization : MonoBehaviour
             {
                 otherenemyDownID = new List<int>();
                 clientsToClient = new List<clientStructure>();
+                player2=new List<Vector3>();
+                for(int a = 0;a < 4; a++)
+                {
+                    player2.Add(new Vector3());
+                }
                 for (int b = 0; b < number; b++)
                 {
                     otherenemyDownID.Add(-1);
@@ -314,5 +386,56 @@ public class DataSerialization : MonoBehaviour
             }
         }
         //enemies.transform.GetChild(id+1).gameObject.SetActive(false);
+    }
+    void setEnemyPosition()
+    {
+        
+        Vector3 Postocalc = new Vector3();
+        if (player2Max == 0 && player3Max == 0&& player4Max == 0)
+        {
+            for (int b = 0; b < enemies.transform.childCount; b++)
+            {
+                if (enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().path != null && enemies.transform.GetChild(b).name == "Enemy")
+                {
+                    Postocalc = enemies.transform.GetChild(b).transform.position - Player2.transform.position;
+                    if (Postocalc.sqrMagnitude < 7)
+                    {
+                        if (player2Max < 4)
+                        {
+                            player2[player2Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
+                            player2Max++;
+                        }
+
+
+                    }
+                    Postocalc = enemies.transform.GetChild(b).transform.position - Player3.transform.position;
+                    if (Postocalc.sqrMagnitude < 7)
+                    {
+                        if (player3Max < 4)
+                        {
+                            player3[player3Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
+                            player3Max++;
+                        }
+
+
+                    }
+                    Postocalc = enemies.transform.GetChild(b).transform.position - Player4.transform.position;
+                    if (Postocalc.sqrMagnitude < 7)
+                    {
+                        if (player4Max < 4)
+                        {
+                            player4[player4Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
+                            player4Max++;
+                        }
+
+
+                    }
+
+                }
+            }
+
+
+        }
+
     }
 }

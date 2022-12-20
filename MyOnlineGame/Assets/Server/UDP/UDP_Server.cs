@@ -82,9 +82,14 @@ public class UDP_Server : MonoBehaviour
             if (PrepareToSend && doSerialize)
             {
 
-                sendData = dataserialization.Serialize(0);
+                int client = 0;
                 foreach (KeyValuePair<EndPoint, UDP_Client> p in clients)
+                {
+                    sendData = dataserialization.Serialize(0,client);
                     udp.SendTo(sendData, sendData.Length, SocketFlags.None, p.Key);
+                    client++;
+                }
+                    
                 messageSent = true;
                 PrepareToSend = false;
                 doSerialize = false;
@@ -123,32 +128,12 @@ public class UDP_Server : MonoBehaviour
             }
         }
     }
-    void setAllEnemis()
-    {
-        GameObject enemies = GameObject.Find("LEVEL/Enemies");
-        
-
-        for (int a=0;a< enemies.transform.childCount; a++)
-        {
-            if (enemies.transform.GetChild(a).name == "Enemy")
-            {
-                if (enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().path != null){
-                    auxiliar.Set(enemies.transform.GetChild(a).GetComponent<Platformer.Mechanics.EnemyController>().id, enemies.transform.GetChild(a).transform.position.x, enemies.transform.GetChild(a).transform.position.y);
-                    dataserialization.rootObjects.Add(auxiliar);
-                }
-                
-            }
-                       
-        }
-        
-        
-    }
+   
     void Update()
     {
         time += Time.deltaTime;
         if (time >= 0.03)
         {
-            setAllEnemis();
             doSerialize = true;
             time = 0;
         }

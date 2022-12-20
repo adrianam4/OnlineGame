@@ -119,6 +119,22 @@ public class buttonsInput : MonoBehaviour
             
             if(conectionType== "server")
             {
+                data.GetComponent<DataSerialization>().player2 = new List<Vector3>();
+                data.GetComponent<DataSerialization>().player3 = new List<Vector3>();
+                data.GetComponent<DataSerialization>().player4 = new List<Vector3>();
+                for (int a = 0; a < 4; a++)
+                {
+                    data.GetComponent<DataSerialization>().player2.Add(new Vector3()) ;
+                    data.GetComponent<DataSerialization>().player3.Add(new Vector3());
+                    data.GetComponent<DataSerialization>().player4.Add(new Vector3());
+                }
+
+
+
+
+
+
+
                 data.GetComponent<DataSerialization>().otherenemyDownID = new List<int>();
                 data.GetComponent<DataSerialization>().clientList = new List<clientStructure>();
                 for (int a=0;a< TCPserver.GetComponent<TCPServer>().clientsList.Count; a++)
