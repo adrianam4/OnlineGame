@@ -33,6 +33,7 @@ public class TCPClient : MonoBehaviour
     public GameObject levelCanvas;
     public UDP_Client udpClient;
     public GameObject data;
+    public GameObject chatCanvas;
     void Start()
     {
         _t1 = new Thread(CreateClient);
@@ -106,7 +107,7 @@ public class TCPClient : MonoBehaviour
             string auxiliar = inputText.Substring(9);
             if (inputText.Substring(0,9) == a)
             {
-                GameObject.Find("CHAT/Canvas").SetActive(false);
+                chatCanvas.SetActive(false);
                 player.SetActive(true);
                 levelCanvas.SetActive(true);
                 GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;            
