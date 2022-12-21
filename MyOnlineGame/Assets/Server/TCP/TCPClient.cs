@@ -106,7 +106,7 @@ public class TCPClient : MonoBehaviour
             string auxiliar = inputText.Substring(9);
             if (inputText.Substring(0,9) == a)
             {
-                GameObject.Find("Canvas").SetActive(false);
+                GameObject.Find("CHAT/Canvas").SetActive(false);
                 player.SetActive(true);
                 levelCanvas.SetActive(true);
                 GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;            
