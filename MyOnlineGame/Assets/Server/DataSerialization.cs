@@ -146,15 +146,10 @@ public class DataSerialization : MonoBehaviour
                 }
                 player4Max = 0;
             }
-            
-            
-            
-
-
+            writer.Write(pointsManager.player1Points);
+            writer.Write(pointsManager.player2Points);
+            writer.Write(pointsManager.player3Points);
         }
-        
-       
-
         return stream.ToArray();
     }
 
@@ -173,8 +168,18 @@ public class DataSerialization : MonoBehaviour
             //Debug.Log("position x: " + newPositionX);
             float newPositionY = reader.ReadSingle();
             //Debug.Log("position y: " + newPositionY);
-            pointsManager.player1Points = reader.ReadInt32();
-
+            switch (u)
+            {
+                case 0:
+                    pointsManager.player1Points = reader.ReadInt32();
+                    break;
+                case 1:
+                    pointsManager.player2Points = reader.ReadInt32();
+                    break;
+                case 2:
+                    pointsManager.player3Points = reader.ReadInt32();
+                    break;
+            }
             
             clientList[u].clientPosition.Set(newPositionX, newPositionY,0);
 
@@ -209,7 +214,6 @@ public class DataSerialization : MonoBehaviour
                 
 
             }
-            pointsManager.player1Points = reader.ReadInt32();
 
             serverCoinDestroyed = reader.ReadInt32();
 
@@ -230,6 +234,9 @@ public class DataSerialization : MonoBehaviour
                 float enemyID = reader.ReadSingle();
                 player2[b].Set(x,y, enemyID);
             }
+            pointsManager.player1Points = reader.ReadInt32();
+            pointsManager.player2Points = reader.ReadInt32();
+            pointsManager.player3Points = reader.ReadInt32();
         }
         deserialized = true;
     }
@@ -308,6 +315,13 @@ public class DataSerialization : MonoBehaviour
         {
             if (first)
             {
+                for (int b = 0; b < enemies.transform.childCount; b++)
+                {
+                    if (enemies.transform.GetChild(b).name == "Enemy")
+                    {
+                        enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().path = null;
+                    }
+                }
                 otherenemyDownID = new List<int>();
                 clientsToClient = new List<clientStructure>();
                 player2=new List<Vector3>();
