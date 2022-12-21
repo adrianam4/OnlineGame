@@ -101,7 +101,7 @@ public class DataSerialization : MonoBehaviour
                 writer.Write(clientList[a].clientPosition.y);
             }
            
-            writer.Write(pointsManager.playerPoints);
+            
 
             int coinID= mycoinId;
             writer.Write(coinID);
@@ -118,34 +118,41 @@ public class DataSerialization : MonoBehaviour
             }
             if (client == 2)
             {
+                writer.Write(player2Max);
                 for (int a = 0; a < player2Max; a++)
                 {
-                    writer.Write(player2Max);
+                    
                     writer.Write(player2[a].x);
                     writer.Write(player2[a].y);
+                    writer.Write(player2[a].z);
                 }
                 player2Max = 0;
             }
             else if(client == 3)
             {
+                writer.Write(player3Max);
                 for (int a = 0; a < player3Max; a++)
                 {
-                    writer.Write(player3Max);
+                    
                     writer.Write(player3[a].x);
                     writer.Write(player3[a].y);
+                    writer.Write(player3[a].z);
                 }
                 player3Max = 0;
             }
             else if (client == 4)
             {
+                writer.Write(player4Max);
                 for (int a = 0; a < player4Max; a++)
                 {
-                    writer.Write(player4Max);
+                    
                     writer.Write(player4[a].x);
                     writer.Write(player4[a].y);
+                    writer.Write(player4[a].z);
                 }
                 player4Max = 0;
             }
+            writer.Write(pointsManager.playerPoints);
             writer.Write(pointsManager.player1Points);
             writer.Write(pointsManager.player2Points);
             writer.Write(pointsManager.player3Points);
@@ -227,7 +234,7 @@ public class DataSerialization : MonoBehaviour
                 otherenemyDownID[b] = reader.ReadInt32();
             }
             int cantOfenemys = reader.ReadInt32();
-            for (int b = 0; b < numberOfClient; b++)
+            for (int b = 0; b < cantOfenemys; b++)
             {
                 float x = reader.ReadSingle();
                 float y = reader.ReadSingle();
@@ -409,7 +416,7 @@ public class DataSerialization : MonoBehaviour
         {
             for (int b = 0; b < enemies.transform.childCount; b++)
             {
-                if (enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().path != null && enemies.transform.GetChild(b).name == "Enemy")
+                if (enemies.transform.GetChild(b).name == "Enemy" && enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().path != null)
                 {
                     Postocalc = enemies.transform.GetChild(b).transform.position - Player2.transform.position;
                     if (Postocalc.sqrMagnitude < 7)
