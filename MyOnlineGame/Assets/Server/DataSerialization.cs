@@ -32,7 +32,7 @@ public class DataSerialization : MonoBehaviour
     public int enemyDownId = -1;
     public List<clientStructure> clientList;
     List<clientStructure> clientsToClient;
-    int ServerClient;
+    int ServerClient = -1;
     public int playerIDEN;
     int number;
     Vector3 serverPos;
