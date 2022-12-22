@@ -91,7 +91,7 @@ public class UDP_Client : MonoBehaviour
             if (doDeserialize)
             {
                 byte[] data;
-                data = new byte[10192];
+                data = new byte[8192];
 
                 recv = server.ReceiveFrom(data, ref Remote);
 

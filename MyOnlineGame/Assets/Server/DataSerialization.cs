@@ -421,7 +421,7 @@ public class DataSerialization : MonoBehaviour
                 if (enemies.transform.GetChild(b).name == "Enemy" && enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().path != null)
                 {
                     Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player2.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player2.transform.position.y, 0);
-                    if (Postocalc.sqrMagnitude < 10)
+                    if (Postocalc.sqrMagnitude < 300)
                     {
                         if (player2Max < 4)
                         {
@@ -432,7 +432,7 @@ public class DataSerialization : MonoBehaviour
 
                     }
                     Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player3.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player3.transform.position.y, 0);
-                    if (Postocalc.sqrMagnitude < 10)
+                    if (Postocalc.sqrMagnitude < 300)
                     {
 
 
@@ -447,7 +447,7 @@ public class DataSerialization : MonoBehaviour
 
 
                     Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player4.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player4.transform.position.y, 0);
-                    if (Postocalc.sqrMagnitude < 10)
+                    if (Postocalc.sqrMagnitude < 300)
 
                     {
                         if (player4Max < 4)
