@@ -121,7 +121,7 @@ public class DataSerialization : MonoBehaviour
             //    writer.Write(0);
             //    for (int a = 0; a < player2Max; a++)
             //    {
-                    
+
             //        writer.Write(player2[a].x);
             //        writer.Write(player2[a].y);
             //        writer.Write(player2[a].z);
@@ -133,7 +133,7 @@ public class DataSerialization : MonoBehaviour
             //    writer.Write(0);
             //    for (int a = 0; a < player3Max; a++)
             //    {
-                    
+
             //        writer.Write(player3[a].x);
             //        writer.Write(player3[a].y);
             //        writer.Write(player3[a].z);
@@ -145,14 +145,14 @@ public class DataSerialization : MonoBehaviour
             //    writer.Write(0);
             //    for (int a = 0; a < player4Max; a++)
             //    {
-                    
+
             //        writer.Write(player4[a].x);
             //        writer.Write(player4[a].y);
             //        writer.Write(player4[a].z);
             //    }
             //    player4Max = 0;
             //}
-            //writer.Write(pointsManager.playerPoints);
+            writer.Write(pointsManager.playerPoints);
             //writer.Write(pointsManager.player1Points);
             //writer.Write(pointsManager.player2Points);
             //writer.Write(pointsManager.player3Points);
@@ -241,7 +241,7 @@ public class DataSerialization : MonoBehaviour
             //    float enemyID = reader.ReadInt32();
             //    player2[b].Set(x,y, enemyID);
             //}
-            //pointsManager.player1Points = reader.ReadInt32();
+            pointsManager.player1Points = reader.ReadInt32();
             //pointsManager.player2Points = reader.ReadInt32();
             //pointsManager.player3Points = reader.ReadInt32();
         }
