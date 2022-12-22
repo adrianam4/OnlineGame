@@ -116,42 +116,42 @@ public class DataSerialization : MonoBehaviour
                 writer.Write(otherenemyDownID[a]);
 
             }
-            if (client == 2)
-            {
-                writer.Write(player2Max);
-                for (int a = 0; a < player2Max; a++)
-                {
+            //if (client == 2)
+            //{
+            //    writer.Write(0);
+            //    for (int a = 0; a < player2Max; a++)
+            //    {
                     
-                    writer.Write(player2[a].x);
-                    writer.Write(player2[a].y);
-                    writer.Write(player2[a].z);
-                }
-                player2Max = 0;
-            }
-            else if(client == 3)
-            {
-                writer.Write(player3Max);
-                for (int a = 0; a < player3Max; a++)
-                {
+            //        writer.Write(player2[a].x);
+            //        writer.Write(player2[a].y);
+            //        writer.Write(player2[a].z);
+            //    }
+            //    player2Max = 0;
+            //}
+            //else if(client == 3)
+            //{
+            //    writer.Write(0);
+            //    for (int a = 0; a < player3Max; a++)
+            //    {
                     
-                    writer.Write(player3[a].x);
-                    writer.Write(player3[a].y);
-                    writer.Write(player3[a].z);
-                }
-                player3Max = 0;
-            }
-            else if (client == 4)
-            {
-                writer.Write(player4Max);
-                for (int a = 0; a < player4Max; a++)
-                {
+            //        writer.Write(player3[a].x);
+            //        writer.Write(player3[a].y);
+            //        writer.Write(player3[a].z);
+            //    }
+            //    player3Max = 0;
+            //}
+            //else if (client == 4)
+            //{
+            //    writer.Write(0);
+            //    for (int a = 0; a < player4Max; a++)
+            //    {
                     
-                    writer.Write(player4[a].x);
-                    writer.Write(player4[a].y);
-                    writer.Write(player4[a].z);
-                }
-                player4Max = 0;
-            }
+            //        writer.Write(player4[a].x);
+            //        writer.Write(player4[a].y);
+            //        writer.Write(player4[a].z);
+            //    }
+            //    player4Max = 0;
+            //}
             writer.Write(pointsManager.playerPoints);
             writer.Write(pointsManager.player1Points);
             writer.Write(pointsManager.player2Points);
@@ -233,14 +233,14 @@ public class DataSerialization : MonoBehaviour
             {
                 otherenemyDownID[b] = reader.ReadInt32();
             }
-            int cantOfenemys = reader.ReadInt32();
-            for (int b = 0; b < cantOfenemys; b++)
-            {
-                float x = reader.ReadSingle();
-                float y = reader.ReadSingle();
-                float enemyID = reader.ReadSingle();
-                player2[b].Set(x,y, enemyID);
-            }
+            //int cantOfenemys = reader.ReadInt32();
+            //for (int b = 0; b < cantOfenemys; b++)
+            //{
+            //    float x = reader.ReadSingle();
+            //    float y = reader.ReadSingle();
+            //    float enemyID = reader.ReadInt32();
+            //    player2[b].Set(x,y, enemyID);
+            //}
             pointsManager.player1Points = reader.ReadInt32();
             pointsManager.player2Points = reader.ReadInt32();
             pointsManager.player3Points = reader.ReadInt32();
@@ -413,57 +413,57 @@ public class DataSerialization : MonoBehaviour
     void setEnemyPosition()
     {
 
-        Vector3 Postocalc = new Vector3();
-        if (player2Max == 0 && player3Max == 0 && player4Max == 0)
-        {
-            for (int b = 0; b < enemies.transform.childCount; b++)
-            {
-                if (enemies.transform.GetChild(b).name == "Enemy" && enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().path != null)
-                {
-                    Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player2.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player2.transform.position.y, 0);
-                    if (Postocalc.sqrMagnitude < 300)
-                    {
-                        if (player2Max < 4)
-                        {
-                            player2[player2Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
-                            player2Max++;
-                        }
+        //Vector3 Postocalc = new Vector3();
+        //if (player2Max == 0 && player3Max == 0 && player4Max == 0)
+        //{
+        //    for (int b = 0; b < enemies.transform.childCount; b++)
+        //    {
+        //        if (enemies.transform.GetChild(b).name == "Enemy" && enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().path != null)
+        //        {
+        //            Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player2.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player2.transform.position.y, 0);
+        //            if (Postocalc.sqrMagnitude < 300)
+        //            {
+        //                if (player2Max < 4)
+        //                {
+        //                    player2[player2Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
+        //                    player2Max++;
+        //                }
 
 
-                    }
-                    Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player3.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player3.transform.position.y, 0);
-                    if (Postocalc.sqrMagnitude < 300)
-                    {
-
-
-
-                        if (player3Max < 4)
-                        {
-                            player3[player3Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
-                            player3Max++;
-                        }
-                    }
+        //            }
+        //            Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player3.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player3.transform.position.y, 0);
+        //            if (Postocalc.sqrMagnitude < 300)
+        //            {
 
 
 
-                    Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player4.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player4.transform.position.y, 0);
-                    if (Postocalc.sqrMagnitude < 300)
-
-                    {
-                        if (player4Max < 4)
-                        {
-                            player4[player4Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
-                            player4Max++;
-                        }
+        //                if (player3Max < 4)
+        //                {
+        //                    player3[player3Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
+        //                    player3Max++;
+        //                }
+        //            }
 
 
-                    }
 
-                }
-            }
+        //            Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player4.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player4.transform.position.y, 0);
+        //            if (Postocalc.sqrMagnitude < 300)
+
+        //            {
+        //                if (player4Max < 4)
+        //                {
+        //                    player4[player4Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
+        //                    player4Max++;
+        //                }
 
 
-        }
+        //            }
+
+        //        }
+        //    }
+
+
+        //}
 
     }
 }
