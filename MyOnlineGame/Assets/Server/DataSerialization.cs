@@ -170,7 +170,7 @@ public class DataSerialization : MonoBehaviour
         
         if (id == 0)//if is server
         {
-            int u = reader.ReadInt16();
+            int u = reader.ReadInt32();
             float newPositionX = reader.ReadSingle();
             //Debug.Log("position x: " + newPositionX);
             float newPositionY = reader.ReadSingle();
@@ -178,20 +178,20 @@ public class DataSerialization : MonoBehaviour
             switch (u)
             {
                 case 0:
-                    pointsManager.player1Points = reader.ReadInt16();
+                    pointsManager.player1Points = reader.ReadInt32();
                     break;
                 case 1:
-                    pointsManager.player2Points = reader.ReadInt16();
+                    pointsManager.player2Points = reader.ReadInt32();
                     break;
                 case 2:
-                    pointsManager.player3Points = reader.ReadInt16();
+                    pointsManager.player3Points = reader.ReadInt32();
                     break;
             }
             
             clientList[u].clientPosition.Set(newPositionX, newPositionY,0);
 
-            otherCoinsDestroyed[u] = reader.ReadInt16();
-            otherenemyDownID[u]= reader.ReadInt16();
+            otherCoinsDestroyed[u] = reader.ReadInt32();
+            otherenemyDownID[u]= reader.ReadInt32();
         }
         else//if is a client
         {
@@ -204,7 +204,7 @@ public class DataSerialization : MonoBehaviour
             Debug.Log("position x: " + newPositionServerX);
             Debug.Log("position y: " + newPositionServerY);
 
-            int numberOfClient = reader.ReadInt16();
+            int numberOfClient = reader.ReadInt32();
             number = numberOfClient;
             toMake = true;
             for (int a = 0; a < numberOfClient; a++)
@@ -212,7 +212,7 @@ public class DataSerialization : MonoBehaviour
                 
                 
                 ///////////////////////////////////////////////////////////////////////////////
-                int player = reader.ReadInt16();
+                int player = reader.ReadInt32();
                 float newPositionX = reader.ReadSingle();
                 //Debug.Log("position x: " + newPositionX);
                 float newPositionY = reader.ReadSingle();
@@ -222,16 +222,16 @@ public class DataSerialization : MonoBehaviour
 
             }
 
-            serverCoinDestroyed = reader.ReadInt16();
+            serverCoinDestroyed = reader.ReadInt32();
 
             for (int b = 0; b < numberOfClient; b++)
             {
-                otherCoinsDestroyed[b] = reader.ReadInt16();
+                otherCoinsDestroyed[b] = reader.ReadInt32();
             }
-            serverenemydoenID=reader.ReadInt16();
+            serverenemydoenID=reader.ReadInt32();
             for (int b = 0; b < numberOfClient; b++)
             {
-                otherenemyDownID[b] = reader.ReadInt16();
+                otherenemyDownID[b] = reader.ReadInt32();
             }
             //int cantOfenemys = reader.ReadInt32();
             //for (int b = 0; b < cantOfenemys; b++)
