@@ -91,15 +91,13 @@ public class UDP_Client : MonoBehaviour
             if (doDeserialize)
             {
                 byte[] data;
-                data = new byte[8192];
+                data = new byte[10192];
 
                 recv = server.ReceiveFrom(data, ref Remote);
 
                 if (recv > 0)
                 {
-                    inputText = Encoding.ASCII.GetString(data, 0, recv);
                     messageReceived = true;
-                    Debug.Log(inputText);
                     dataserialization.Deserialize(data,1);
                 }
                 doDeserialize = false;
