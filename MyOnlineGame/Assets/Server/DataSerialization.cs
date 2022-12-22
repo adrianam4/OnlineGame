@@ -32,18 +32,18 @@ public class DataSerialization : MonoBehaviour
     public int enemyDownId = -1;
     public List<clientStructure> clientList;
     List<clientStructure> clientsToClient;
-    int ServerClient = -1;
+    public int ServerClient = -1;
     public int playerIDEN;
-    int number;
+    public int number;
     Vector3 serverPos;
     public List<int> otherCoinsDestroyed;
-    int serverCoinDestroyed=-1;
+    int serverCoinDestroyed = -1;
     GameObject enemies;
 
 
     public int yourenemyDownID;
     public List<int> otherenemyDownID;
-    int serverenemydoenID=-1;
+    int serverenemydoenID = -1;
 
     public List<Vector3> player2;
     public List<Vector3> player3;
@@ -249,7 +249,6 @@ public class DataSerialization : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log("Client Count: " + clientList.Count);
         if (deserialized)
         {
             if (ServerClient == 0)//server

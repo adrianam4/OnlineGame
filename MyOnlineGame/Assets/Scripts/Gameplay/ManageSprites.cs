@@ -20,8 +20,10 @@ public class ManageSprites : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        clientCount = serverObject.GetComponent<DataSerialization>().clientList.Count;
-        //Debug.Log("Client Count: " + clientCount);
+        if (serverObject.GetComponent<DataSerialization>().ServerClient == 0)
+            clientCount = serverObject.GetComponent<DataSerialization>().clientList.Count;
+        else
+            clientCount = serverObject.GetComponent<DataSerialization>().number + 1;
 
         if (clientCount == 0)
         {
