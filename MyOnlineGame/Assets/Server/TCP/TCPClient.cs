@@ -103,19 +103,23 @@ public class TCPClient : MonoBehaviour
     {
         if (messageReceived && inputText.Length > 0)
         {
-            string a = "PlayerID:";
-            string auxiliar = inputText.Substring(9);
-            if (inputText.Substring(0,9) == a)
+            try
             {
-                chatCanvas.SetActive(false);
-                player.SetActive(true);
-                levelCanvas.SetActive(true);
-                GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;            
-                udpClient.GetComponent<UDP_Client>().playerID= Int32.Parse(auxiliar);
-                data.GetComponent<DataSerialization>().playerIDEN = udpClient.GetComponent<UDP_Client>().playerID;
+                string a = "PlayerID:";
+                string auxiliar = inputText.Substring(9);
+                if (inputText.Substring(0, 9) == a)
+                {
+                    chatCanvas.SetActive(false);
+                    player.SetActive(true);
+                    levelCanvas.SetActive(true);
+                    GameObject.Find("UDPClient").GetComponent<UDP_Client>().makeSend = true;
+                    udpClient.GetComponent<UDP_Client>().playerID = Int32.Parse(auxiliar);
+                    data.GetComponent<DataSerialization>().playerIDEN = udpClient.GetComponent<UDP_Client>().playerID;
+                }
+                AddMessage(inputText);
+                messageReceived = false;
             }
-            AddMessage(inputText);
-            messageReceived = false;
+            catch { }
             
         }
 

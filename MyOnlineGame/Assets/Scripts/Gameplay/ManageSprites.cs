@@ -23,7 +23,7 @@ public class ManageSprites : MonoBehaviour
         if (serverObject.GetComponent<DataSerialization>().ServerClient == 0)
             clientCount = serverObject.GetComponent<DataSerialization>().clientList.Count;
         else
-            clientCount = serverObject.GetComponent<DataSerialization>().number + 1;
+            clientCount = serverObject.GetComponent<DataSerialization>().number;
 
         if (clientCount == 0)
         {

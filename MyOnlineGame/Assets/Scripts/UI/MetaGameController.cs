@@ -55,7 +55,7 @@ namespace Platformer.UI
             else
             {
                 Time.timeScale = 1;
-                mainMenu.gameObject.SetActive(false);
+                //mainMenu.gameObject.SetActive(false);
                 foreach (var i in gamePlayCanvasii) i.gameObject.SetActive(true);
             }
             this.showMainCanvas = show;
