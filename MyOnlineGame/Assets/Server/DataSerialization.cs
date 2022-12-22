@@ -248,9 +248,12 @@ public class DataSerialization : MonoBehaviour
                     {
                         if (c == 0)
                         {
-                            pointsManager.player2Points = clientsToClient[a].cantOfCoins;
+                            pointsManager.player1Points = clientsToClient[a].cantOfCoins;
                             
                         }else if(c == 1)
+                        {
+                            pointsManager.player2Points = clientsToClient[a].cantOfCoins;
+                        }else if(c == 2)
                         {
                             pointsManager.player3Points = clientsToClient[a].cantOfCoins;
                         }
