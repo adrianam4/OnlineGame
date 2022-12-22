@@ -291,6 +291,13 @@ public class DataSerialization : MonoBehaviour
                     }
 
                 }
+                Vector3 y = new Vector3();
+                for (int a = 0; a < player2.Count; a++)
+                {
+                    y.Set(player2[a].x, player2[a].y, 0);
+                    int s = (int)player2[a].z;
+                    enemies.transform.GetChild(s + 1).gameObject.transform.SetPositionAndRotation(y, newRotation);
+                }
 
 
 
@@ -307,12 +314,7 @@ public class DataSerialization : MonoBehaviour
         }
         else if(ServerClient == 1)//client
         {
-            Vector3 y=new Vector3();
-            for(int a = 0;a < player2.Count; a++)
-            {
-                y.Set(player2[a].x, player2[a].y, 0);
-                enemies.transform.GetChild((int)player2[a].z + 1).gameObject.transform.SetPositionAndRotation(y, newRotation);
-            }
+           
         }
         
         newEnemyDead();
@@ -410,16 +412,16 @@ public class DataSerialization : MonoBehaviour
     }
     void setEnemyPosition()
     {
-        
+
         Vector3 Postocalc = new Vector3();
-        if (player2Max == 0 && player3Max == 0&& player4Max == 0)
+        if (player2Max == 0 && player3Max == 0 && player4Max == 0)
         {
             for (int b = 0; b < enemies.transform.childCount; b++)
             {
                 if (enemies.transform.GetChild(b).name == "Enemy" && enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().path != null)
                 {
-                    Postocalc = enemies.transform.GetChild(b).transform.position - Player2.transform.position;
-                    if (Postocalc.sqrMagnitude < 7)
+                    Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player2.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player2.transform.position.y, 0);
+                    if (Postocalc.sqrMagnitude < 10)
                     {
                         if (player2Max < 4)
                         {
@@ -429,19 +431,24 @@ public class DataSerialization : MonoBehaviour
 
 
                     }
-                    Postocalc = enemies.transform.GetChild(b).transform.position - Player3.transform.position;
-                    if (Postocalc.sqrMagnitude < 7)
+                    Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player3.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player3.transform.position.y, 0);
+                    if (Postocalc.sqrMagnitude < 10)
                     {
+
+
+
                         if (player3Max < 4)
                         {
                             player3[player3Max].Set(enemies.transform.GetChild(b).transform.position.x, enemies.transform.GetChild(b).transform.position.y, enemies.transform.GetChild(b).GetComponent<Platformer.Mechanics.EnemyController>().id);
                             player3Max++;
                         }
-
-
                     }
-                    Postocalc = enemies.transform.GetChild(b).transform.position - Player4.transform.position;
-                    if (Postocalc.sqrMagnitude < 7)
+
+
+
+                    Postocalc.Set(enemies.transform.GetChild(b).transform.position.x - Player4.transform.position.x, enemies.transform.GetChild(b).transform.position.y - Player4.transform.position.y, 0);
+                    if (Postocalc.sqrMagnitude < 10)
+
                     {
                         if (player4Max < 4)
                         {
