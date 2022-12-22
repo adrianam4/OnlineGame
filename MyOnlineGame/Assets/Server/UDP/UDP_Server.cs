@@ -32,7 +32,6 @@ public class UDP_Server : MonoBehaviour
     private bool doSerialize = true;
     private bool doDeserialize = true;
     private float time = 0;
-    Vector3 auxiliar;
     Socket udp;
     public Dictionary<EndPoint, UDP_Client> clients;
     int port = 9050;
@@ -40,7 +39,6 @@ public class UDP_Server : MonoBehaviour
     {
         UDPSend = new Thread(send);
         UDPRecieve = new Thread(receive);
-        auxiliar = new Vector3();
         chatText = chatObject.GetComponentInChildren<TextMeshProUGUI>();
         dataserialization = serializator.GetComponent<DataSerialization>();
     }

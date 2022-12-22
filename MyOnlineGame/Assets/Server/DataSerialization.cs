@@ -249,6 +249,7 @@ public class DataSerialization : MonoBehaviour
     }
     private void Update()
     {
+        Debug.Log("Client Count: " + clientList.Count);
         if (deserialized)
         {
             if (ServerClient == 0)//server

@@ -16,12 +16,12 @@ public class ManageSprites : MonoBehaviour
     public GameObject player3;
     public GameObject player3UI;
 
-    public int clientCount;
-
+    private int clientCount;
     // Update is called once per frame
     void Update()
     {
-        //clientCount = serverObject.GetComponent<TCPServer>().clientsList.Count;
+        clientCount = serverObject.GetComponent<DataSerialization>().clientList.Count;
+        //Debug.Log("Client Count: " + clientCount);
 
         if (clientCount == 0)
         {
