@@ -6,7 +6,6 @@ public class clientStructure
 {
     public int clientID;
     public Vector3 clientPosition;
-    public int cantOfCoins;
 }
 public class DataSerialization : MonoBehaviour
 {
@@ -100,19 +99,6 @@ public class DataSerialization : MonoBehaviour
                 writer.Write(a);
                 writer.Write(clientList[a].clientPosition.x);
                 writer.Write(clientList[a].clientPosition.y);
-                if (a == 0)
-                {
-                    writer.Write(pointsManager.player1Points);
-                }else if(a == 1)
-                {
-                    writer.Write(pointsManager.player2Points);
-                }else if(a == 2)
-                {
-                    writer.Write(pointsManager.player3Points);
-                }
-                
-                
-                
             }
            
             
@@ -130,9 +116,46 @@ public class DataSerialization : MonoBehaviour
                 writer.Write(otherenemyDownID[a]);
 
             }
-
-            writer.Write(pointsManager.playerPoints);
-            
+            //if (client == 2)
+            //{
+            //    writer.Write(0);
+            //    for (int a = 0; a < player2Max; a++)
+            //    {
+                    
+            //        writer.Write(player2[a].x);
+            //        writer.Write(player2[a].y);
+            //        writer.Write(player2[a].z);
+            //    }
+            //    player2Max = 0;
+            //}
+            //else if(client == 3)
+            //{
+            //    writer.Write(0);
+            //    for (int a = 0; a < player3Max; a++)
+            //    {
+                    
+            //        writer.Write(player3[a].x);
+            //        writer.Write(player3[a].y);
+            //        writer.Write(player3[a].z);
+            //    }
+            //    player3Max = 0;
+            //}
+            //else if (client == 4)
+            //{
+            //    writer.Write(0);
+            //    for (int a = 0; a < player4Max; a++)
+            //    {
+                    
+            //        writer.Write(player4[a].x);
+            //        writer.Write(player4[a].y);
+            //        writer.Write(player4[a].z);
+            //    }
+            //    player4Max = 0;
+            //}
+            //writer.Write(pointsManager.playerPoints);
+            //writer.Write(pointsManager.player1Points);
+            //writer.Write(pointsManager.player2Points);
+            //writer.Write(pointsManager.player3Points);
         }
         return stream.ToArray();
     }
@@ -195,7 +218,7 @@ public class DataSerialization : MonoBehaviour
                 float newPositionY = reader.ReadSingle();
                 clientsToClient[a].clientPosition.Set(newPositionX, newPositionY,0);
                 clientsToClient[a].clientID = player;
-                clientsToClient[a].cantOfCoins= reader.ReadInt32();
+                
 
             }
 
@@ -210,8 +233,17 @@ public class DataSerialization : MonoBehaviour
             {
                 otherenemyDownID[b] = reader.ReadInt32();
             }
-
-            pointsManager.player1Points = reader.ReadInt32();
+            //int cantOfenemys = reader.ReadInt32();
+            //for (int b = 0; b < cantOfenemys; b++)
+            //{
+            //    float x = reader.ReadSingle();
+            //    float y = reader.ReadSingle();
+            //    float enemyID = reader.ReadInt32();
+            //    player2[b].Set(x,y, enemyID);
+            //}
+            //pointsManager.player1Points = reader.ReadInt32();
+            //pointsManager.player2Points = reader.ReadInt32();
+            //pointsManager.player3Points = reader.ReadInt32();
         }
         deserialized = true;
     }
@@ -240,26 +272,6 @@ public class DataSerialization : MonoBehaviour
             }
             else if(ServerClient == 1)//client
             {
-
-                int c = 0;
-                for(int a=0;a< clientsToClient.Count; a++)
-                {
-                    if (a != playerIDEN)
-                    {
-                        if (c == 0)
-                        {
-                            pointsManager.player1Points = clientsToClient[a].cantOfCoins;
-                            
-                        }else if(c == 1)
-                        {
-                            pointsManager.player2Points = clientsToClient[a].cantOfCoins;
-                        }else if(c == 2)
-                        {
-                            pointsManager.player3Points = clientsToClient[a].cantOfCoins;
-                        }
-                    }
-                    c++;
-                }
                 int b = 0;
                 Player2.transform.SetPositionAndRotation(serverPos, newRotation);
                 for (int a = 0; a < clientsToClient.Count; a++)
