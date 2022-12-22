@@ -153,9 +153,9 @@ public class DataSerialization : MonoBehaviour
             //    player4Max = 0;
             //}
             writer.Write(pointsManager.playerPoints);
-            //writer.Write(pointsManager.player1Points);
-            //writer.Write(pointsManager.player2Points);
-            //writer.Write(pointsManager.player3Points);
+            writer.Write(pointsManager.player1Points);
+            writer.Write(pointsManager.player2Points);
+            writer.Write(pointsManager.player3Points);
         }
         return stream.ToArray();
     }
@@ -242,8 +242,8 @@ public class DataSerialization : MonoBehaviour
             //    player2[b].Set(x,y, enemyID);
             //}
             pointsManager.player1Points = reader.ReadInt32();
-            //pointsManager.player2Points = reader.ReadInt32();
-            //pointsManager.player3Points = reader.ReadInt32();
+            pointsManager.player2Points = reader.ReadInt32();
+            pointsManager.player3Points = reader.ReadInt32();
         }
         deserialized = true;
     }
