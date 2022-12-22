@@ -314,7 +314,8 @@ public class DataSerialization : MonoBehaviour
         }
         else if(ServerClient == 1)//client
         {
-           
+            
+            
         }
         
         newEnemyDead();
@@ -345,10 +346,16 @@ public class DataSerialization : MonoBehaviour
                     clientsToClient.Add(new clientStructure());
                     clientsToClient[b].clientPosition = new Vector3(0, 0, 0);
                 }
+                for (int b = 0; b < 5; b++)
+                {
+                    clientsToClient.Add(new clientStructure());
+                    clientsToClient[b].clientPosition = new Vector3(0, 0, 0);
+                }
                 first = false;
             }
             
         }
+        
         player_position.Set(player.transform.position.x, player.transform.position.y, 0);
     }
     public void setDestroiedCoin(int id)
