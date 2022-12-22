@@ -212,14 +212,16 @@ public class DataSerialization : MonoBehaviour
                 
                 
                 ///////////////////////////////////////////////////////////////////////////////
-                int player= reader.ReadInt32();
-                float newPositionX = reader.ReadSingle();
-                //Debug.Log("position x: " + newPositionX);
-                float newPositionY = reader.ReadSingle();
-                clientsToClient[a].clientPosition.Set(newPositionX, newPositionY,0);
-                clientsToClient[a].clientID = player;
-                
-
+                try
+                {
+                    int player = reader.ReadInt32();
+                    float newPositionX = reader.ReadSingle();
+                    //Debug.Log("position x: " + newPositionX);
+                    float newPositionY = reader.ReadSingle();
+                    clientsToClient[a].clientPosition.Set(newPositionX, newPositionY, 0);
+                    clientsToClient[a].clientID = player;
+                }
+                catch { }
             }
 
             serverCoinDestroyed = reader.ReadInt32();
