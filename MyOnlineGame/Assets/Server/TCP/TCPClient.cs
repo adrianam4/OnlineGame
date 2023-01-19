@@ -123,10 +123,13 @@ public class TCPClient : MonoBehaviour
             
         }
 
-        if (messageSent && outputText.Length > 0)
+        if(messageSent == true)
         {
-            AddMessage(username + ": " + outputText);
-            messageSent = false;
+            if (messageSent && outputText.Length > 0)
+            {
+                AddMessage(username + ": " + outputText);
+                messageSent = false;
+            }
         }
 
         if (ToCreateclient && !clientCreated)
