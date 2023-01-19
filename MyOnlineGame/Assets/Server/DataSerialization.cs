@@ -249,6 +249,12 @@ public class DataSerialization : MonoBehaviour
     }
     private void Update()
     {
+        Vector3 prevPos = new Vector3();
+        Vector3 currentPos = new Vector3();
+        Vector3 interpolatedPos = new Vector3();
+
+        float interpolationRatio = 0f;
+
         if (deserialized)
         {
             if (ServerClient == 0)//server
@@ -258,13 +264,31 @@ public class DataSerialization : MonoBehaviour
                     switch (a)
                     {
                         case 0:
-                            Player2.transform.SetPositionAndRotation(clientList[0].clientPosition, newRotation);
+                            //Interpolate
+                            prevPos = Player2.transform.position;
+                            currentPos = clientList[0].clientPosition;
+                            interpolationRatio = (currentPos - prevPos).magnitude / 3;
+                            interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
+
+                            Player2.transform.SetPositionAndRotation(interpolatedPos, newRotation);
                             break;
                         case 1:
-                            Player3.transform.SetPositionAndRotation(clientList[1].clientPosition, newRotation);
+                            //Interpolate
+                            prevPos = Player3.transform.position;
+                            currentPos = clientList[1].clientPosition;
+                            interpolationRatio = (currentPos - prevPos).magnitude / 3;
+                            interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
+
+                            Player3.transform.SetPositionAndRotation(interpolatedPos, newRotation);
                             break;
                         case 2:
-                            Player4.transform.SetPositionAndRotation(clientList[2].clientPosition, newRotation);
+                            //Interpolate
+                            prevPos = Player4.transform.position;
+                            currentPos = clientList[2].clientPosition;
+                            interpolationRatio = (currentPos - prevPos).magnitude / 3;
+                            interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
+
+                            Player4.transform.SetPositionAndRotation(interpolatedPos, newRotation);
                             break;
                     }
 
@@ -273,7 +297,13 @@ public class DataSerialization : MonoBehaviour
             else if(ServerClient == 1)//client
             {
                 int b = 0;
-                Player2.transform.SetPositionAndRotation(serverPos, newRotation);
+                //Interpolate
+                prevPos = Player2.transform.position;
+                currentPos = serverPos;
+                interpolationRatio = (currentPos - prevPos).magnitude / 3;
+                interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
+
+                Player2.transform.SetPositionAndRotation(interpolatedPos, newRotation);
                 for (int a = 0; a < clientsToClient.Count; a++)
                 {
                     
@@ -281,10 +311,22 @@ public class DataSerialization : MonoBehaviour
                     {
                         if (b == 0)
                         {
-                            Player3.transform.SetPositionAndRotation(clientsToClient[a].clientPosition, newRotation);
+                            //Interpolate
+                            prevPos = Player3.transform.position;
+                            currentPos = clientsToClient[a].clientPosition;
+                            interpolationRatio = (currentPos - prevPos).magnitude / 3;
+                            interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
+
+                            Player3.transform.SetPositionAndRotation(interpolatedPos, newRotation);
                         }else if (b == 1)
                         {
-                            Player4.transform.SetPositionAndRotation(clientsToClient[a].clientPosition, newRotation);
+                            //Interpolate
+                            prevPos = Player4.transform.position;
+                            currentPos = clientsToClient[a].clientPosition;
+                            interpolationRatio = (currentPos - prevPos).magnitude / 3;
+                            interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
+
+                            Player4.transform.SetPositionAndRotation(interpolatedPos, newRotation);
                         }
                         b++;
                         
