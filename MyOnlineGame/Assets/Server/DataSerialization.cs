@@ -196,17 +196,16 @@ public class DataSerialization : MonoBehaviour
             float newPositionServerX = reader.ReadSingle();
             float newPositionServerY = reader.ReadSingle();
             
-            serverPos.Set(newPositionServerX, newPositionServerY, 0);
-
-            Debug.Log("position x: " + newPositionServerX);
-            Debug.Log("position y: " + newPositionServerY);
+            
 
             int numberOfClient = reader.ReadInt32();
-            number = numberOfClient;
-            Debug.Log("--------------------------------number"+numberOfClient);
-            toMake = true;
+            
             if (numberOfClient > 0)
             {
+                serverPos.Set(newPositionServerX, newPositionServerY, 0);
+                number = numberOfClient;
+                Debug.Log("--------------------------------number" + numberOfClient);
+                toMake = true;
                 for (int a = 0; a < numberOfClient; a++)
                 {
 
