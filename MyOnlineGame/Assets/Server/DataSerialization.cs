@@ -200,7 +200,7 @@ public class DataSerialization : MonoBehaviour
 
             int numberOfClient = reader.ReadInt32();
             
-            if (numberOfClient > 0)
+            if (numberOfClient > 0 && numberOfClient < 4)
             {
                 serverPos.Set(newPositionServerX, newPositionServerY, 0);
                 number = numberOfClient;
@@ -217,8 +217,6 @@ public class DataSerialization : MonoBehaviour
                     float newPositionY = reader.ReadSingle();
                     clientsToClient[a].clientPosition.Set(newPositionX, newPositionY, 0);
                     clientsToClient[a].clientID = player;
-
-
                 }
 
                 serverCoinDestroyed = reader.ReadInt32();
