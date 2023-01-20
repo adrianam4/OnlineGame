@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 using System.IO;
 public class clientStructure
 {
@@ -48,10 +49,6 @@ public class DataSerialization : MonoBehaviour
     public List<Vector3> player2;
     public List<Vector3> player3;
     public List<Vector3> player4;
-
-    int player2Max = 0;
-    int player3Max = 0;
-    int player4Max = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -338,97 +335,103 @@ public class DataSerialization : MonoBehaviour
             }
             else if(ServerClient == 1)//client
             {
-                int b = 0;
-                //Interpolate
-                prevPos = Player2.transform.position;
-                currentPos = serverPos;
-                interpolationRatio = (currentPos - prevPos).magnitude / 3;
-                interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
-                //Apply Anim
-                if (prevPos.x < currentPos.x)
+                Mutex mutex = new Mutex();
+                mutex.WaitOne();
                 {
-                    Player2.GetComponent<Animator>().SetBool("grounded", false);
-                    Player2.GetComponent<Animator>().SetFloat("velocityX", 1);
-                }
-                else if (prevPos.x == currentPos.x)
-                {
-                    Player2.GetComponent<Animator>().SetFloat("velocityX", 0);
-                    Player2.GetComponent<Animator>().SetBool("grounded", true);
-                }
-                else
-                {
-                    Player2.GetComponent<Animator>().SetBool("grounded", false);
-                    Player2.GetComponent<Animator>().SetFloat("velocityX", -1);
-                }
 
-                Player2.transform.SetPositionAndRotation(interpolatedPos, newRotation);
-                for (int a = 0; a < clientsToClient.Count; a++)
-                {
-                    
-                    if (a!= UDPClient.GetComponent<UDP_Client>().playerID)
+                    int b = 0;
+                    //Interpolate
+                    prevPos = Player2.transform.position;
+                    currentPos = serverPos;
+                    interpolationRatio = (currentPos - prevPos).magnitude / 3;
+                    interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
+                    //Apply Anim
+                    if (prevPos.x < currentPos.x)
                     {
-                        if (b == 0)
-                        {
-                            //Interpolate
-                            prevPos = Player3.transform.position;
-                            currentPos = clientsToClient[a].clientPosition;
-                            interpolationRatio = (currentPos - prevPos).magnitude / 3;
-                            interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
-                            if (prevPos.x < currentPos.x)
-                            {
-                                Player3.GetComponent<Animator>().SetBool("grounded", false);
-                                Player3.GetComponent<Animator>().SetFloat("velocityX", 1);
-                            }
-                            else if (prevPos.x == currentPos.x)
-                            {
-                                Player3.GetComponent<Animator>().SetFloat("velocityX", 0);
-                                Player3.GetComponent<Animator>().SetBool("grounded", true);
-                            }
-                            else
-                            {
-                                Player3.GetComponent<Animator>().SetBool("grounded", false);
-                                Player3.GetComponent<Animator>().SetFloat("velocityX", -1);
-                            }
-                            Player3.transform.SetPositionAndRotation(interpolatedPos, newRotation);
-                        }else if (b == 1)
-                        {
-                            //Interpolate
-                            prevPos = Player4.transform.position;
-                            currentPos = clientsToClient[a].clientPosition;
-                            interpolationRatio = (currentPos - prevPos).magnitude / 3;
-                            interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
-                            if (prevPos.x < currentPos.x)
-                            {
-                                Player4.GetComponent<Animator>().SetBool("grounded", false);
-                                Player4.GetComponent<Animator>().SetFloat("velocityX", 1);
-                            }
-                            else if (prevPos.x == currentPos.x)
-                            {
-                                Player4.GetComponent<Animator>().SetFloat("velocityX", 0);
-                                Player4.GetComponent<Animator>().SetBool("grounded", true);
-                            }
-                            else
-                            {
-                                Player4.GetComponent<Animator>().SetBool("grounded", false);
-                                Player4.GetComponent<Animator>().SetFloat("velocityX", -1);
-                            }
-                            Player4.transform.SetPositionAndRotation(interpolatedPos, newRotation);
-                        }
-                        b++;
-                        
+                        Player2.GetComponent<Animator>().SetBool("grounded", false);
+                        Player2.GetComponent<Animator>().SetFloat("velocityX", 1);
+                    }
+                    else if (prevPos.x == currentPos.x)
+                    {
+                        Player2.GetComponent<Animator>().SetFloat("velocityX", 0);
+                        Player2.GetComponent<Animator>().SetBool("grounded", true);
+                    }
+                    else
+                    {
+                        Player2.GetComponent<Animator>().SetBool("grounded", false);
+                        Player2.GetComponent<Animator>().SetFloat("velocityX", -1);
                     }
 
+                    Player2.transform.SetPositionAndRotation(interpolatedPos, newRotation);
+                    for (int a = 0; a < clientsToClient.Count; a++)
+                    {
+
+                        if (a != UDPClient.GetComponent<UDP_Client>().playerID)
+                        {
+                            if (b == 0)
+                            {
+                                //Interpolate
+                                prevPos = Player3.transform.position;
+                                currentPos = clientsToClient[a].clientPosition;
+                                interpolationRatio = (currentPos - prevPos).magnitude / 3;
+                                interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
+                                if (prevPos.x < currentPos.x)
+                                {
+                                    Player3.GetComponent<Animator>().SetBool("grounded", false);
+                                    Player3.GetComponent<Animator>().SetFloat("velocityX", 1);
+                                }
+                                else if (prevPos.x == currentPos.x)
+                                {
+                                    Player3.GetComponent<Animator>().SetFloat("velocityX", 0);
+                                    Player3.GetComponent<Animator>().SetBool("grounded", true);
+                                }
+                                else
+                                {
+                                    Player3.GetComponent<Animator>().SetBool("grounded", false);
+                                    Player3.GetComponent<Animator>().SetFloat("velocityX", -1);
+                                }
+                                Player3.transform.SetPositionAndRotation(interpolatedPos, newRotation);
+                            }
+                            else if (b == 1)
+                            {
+                                //Interpolate
+                                prevPos = Player4.transform.position;
+                                currentPos = clientsToClient[a].clientPosition;
+                                interpolationRatio = (currentPos - prevPos).magnitude / 3;
+                                interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
+                                if (prevPos.x < currentPos.x)
+                                {
+                                    Player4.GetComponent<Animator>().SetBool("grounded", false);
+                                    Player4.GetComponent<Animator>().SetFloat("velocityX", 1);
+                                }
+                                else if (prevPos.x == currentPos.x)
+                                {
+                                    Player4.GetComponent<Animator>().SetFloat("velocityX", 0);
+                                    Player4.GetComponent<Animator>().SetBool("grounded", true);
+                                }
+                                else
+                                {
+                                    Player4.GetComponent<Animator>().SetBool("grounded", false);
+                                    Player4.GetComponent<Animator>().SetFloat("velocityX", -1);
+                                }
+                                Player4.transform.SetPositionAndRotation(interpolatedPos, newRotation);
+                            }
+                            b++;
+
+                        }
+
+                    }
+                    Vector3 y = new Vector3();
+                    for (int a = 0; a < player2.Count; a++)
+                    {
+                        y.Set(player2[a].x, player2[a].y, 0);
+                        int s = (int)player2[a].z;
+                        enemies.transform.GetChild(s + 1).gameObject.transform.SetPositionAndRotation(y, newRotation);
+                    }
+
+
                 }
-                Vector3 y = new Vector3();
-                for (int a = 0; a < player2.Count; a++)
-                {
-                    y.Set(player2[a].x, player2[a].y, 0);
-                    int s = (int)player2[a].z;
-                    enemies.transform.GetChild(s + 1).gameObject.transform.SetPositionAndRotation(y, newRotation);
-                }
-
-
-
+                mutex.ReleaseMutex();
             }
             deserialized = false;
             
