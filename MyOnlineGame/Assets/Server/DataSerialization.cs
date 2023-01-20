@@ -271,17 +271,14 @@ public class DataSerialization : MonoBehaviour
                             interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
                             if (prevPos.x < currentPos.x)
                             {
-                                Player2.GetComponent<Animator>().SetBool("grounded", false);
                                 Player2.GetComponent<Animator>().SetFloat("velocityX", 1);
                             }
                             else if (prevPos.x == currentPos.x)
                             {
-                                Player2.GetComponent<Animator>().SetFloat("velocityX", 0);
                                 Player2.GetComponent<Animator>().SetBool("grounded", true);
                             }
                             else
                             {
-                                Player2.GetComponent<Animator>().SetBool("grounded", false);
                                 Player2.GetComponent<Animator>().SetFloat("velocityX", -1);
                             }
                             Player2.transform.SetPositionAndRotation(interpolatedPos, newRotation);
@@ -294,17 +291,14 @@ public class DataSerialization : MonoBehaviour
                             interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
                             if (prevPos.x < currentPos.x)
                             {
-                                Player3.GetComponent<Animator>().SetBool("grounded", false);
                                 Player3.GetComponent<Animator>().SetFloat("velocityX", 1);
                             }
                             else if (prevPos.x == currentPos.x)
                             {
-                                Player3.GetComponent<Animator>().SetFloat("velocityX", 0);
                                 Player3.GetComponent<Animator>().SetBool("grounded", true);
                             }
                             else
                             {
-                                Player3.GetComponent<Animator>().SetBool("grounded", false);
                                 Player3.GetComponent<Animator>().SetFloat("velocityX", -1);
                             }
                             Player3.transform.SetPositionAndRotation(interpolatedPos, newRotation);
@@ -317,17 +311,15 @@ public class DataSerialization : MonoBehaviour
                             interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
                             if (prevPos.x < currentPos.x)
                             {
-                                Player4.GetComponent<Animator>().SetBool("grounded", false);
                                 Player4.GetComponent<Animator>().SetFloat("velocityX", 1);
                             }
                             else if (prevPos.x == currentPos.x)
                             {
-                                Player4.GetComponent<Animator>().SetFloat("velocityX", 0);
+ 
                                 Player4.GetComponent<Animator>().SetBool("grounded", true);
                             }
                             else
                             {
-                                Player4.GetComponent<Animator>().SetBool("grounded", false);
                                 Player4.GetComponent<Animator>().SetFloat("velocityX", -1);
                             }
                             Player4.transform.SetPositionAndRotation(interpolatedPos, newRotation);
@@ -351,17 +343,14 @@ public class DataSerialization : MonoBehaviour
                     //Apply Anim
                     if (prevPos.x < currentPos.x)
                     {
-                        Player2.GetComponent<Animator>().SetBool("grounded", false);
                         Player2.GetComponent<Animator>().SetFloat("velocityX", 1);
                     }
                     else if (prevPos.x == currentPos.x)
                     {
-                        Player2.GetComponent<Animator>().SetFloat("velocityX", 0);
                         Player2.GetComponent<Animator>().SetBool("grounded", true);
                     }
                     else
                     {
-                        Player2.GetComponent<Animator>().SetBool("grounded", false);
                         Player2.GetComponent<Animator>().SetFloat("velocityX", -1);
                     }
 
@@ -380,17 +369,14 @@ public class DataSerialization : MonoBehaviour
                                 interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
                                 if (prevPos.x < currentPos.x)
                                 {
-                                    Player3.GetComponent<Animator>().SetBool("grounded", false);
                                     Player3.GetComponent<Animator>().SetFloat("velocityX", 1);
                                 }
                                 else if (prevPos.x == currentPos.x)
                                 {
-                                    Player3.GetComponent<Animator>().SetFloat("velocityX", 0);
                                     Player3.GetComponent<Animator>().SetBool("grounded", true);
                                 }
                                 else
                                 {
-                                    Player3.GetComponent<Animator>().SetBool("grounded", false);
                                     Player3.GetComponent<Animator>().SetFloat("velocityX", -1);
                                 }
                                 Player3.transform.SetPositionAndRotation(interpolatedPos, newRotation);
@@ -404,17 +390,14 @@ public class DataSerialization : MonoBehaviour
                                 interpolatedPos = Vector3.Lerp(prevPos, currentPos, interpolationRatio);
                                 if (prevPos.x < currentPos.x)
                                 {
-                                    Player4.GetComponent<Animator>().SetBool("grounded", false);
                                     Player4.GetComponent<Animator>().SetFloat("velocityX", 1);
                                 }
                                 else if (prevPos.x == currentPos.x)
                                 {
-                                    Player4.GetComponent<Animator>().SetFloat("velocityX", 0);
                                     Player4.GetComponent<Animator>().SetBool("grounded", true);
                                 }
                                 else
                                 {
-                                    Player4.GetComponent<Animator>().SetBool("grounded", false);
                                     Player4.GetComponent<Animator>().SetFloat("velocityX", -1);
                                 }
                                 Player4.transform.SetPositionAndRotation(interpolatedPos, newRotation);
