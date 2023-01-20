@@ -168,30 +168,27 @@ public class DataSerialization : MonoBehaviour
         if (id == 0)//if is server
         {
             int u = reader.ReadInt32();
-            if (u < 4 && u > 0) 
+            float newPositionX = reader.ReadSingle();
+            //Debug.Log("position x: " + newPositionX);
+            float newPositionY = reader.ReadSingle();
+            //Debug.Log("position y: " + newPositionY);
+            switch (u)
             {
-                float newPositionX = reader.ReadSingle();
-                //Debug.Log("position x: " + newPositionX);
-                float newPositionY = reader.ReadSingle();
-                //Debug.Log("position y: " + newPositionY);
-                switch (u)
-                {
-                    case 0:
-                        pointsManager.player1Points = reader.ReadInt32();
-                        break;
-                    case 1:
-                        pointsManager.player2Points = reader.ReadInt32();
-                        break;
-                    case 2:
-                        pointsManager.player3Points = reader.ReadInt32();
-                        break;
-                }
-
-                clientList[u].clientPosition.Set(newPositionX, newPositionY, 0);
-
-                otherCoinsDestroyed[u] = reader.ReadInt32();
-                otherenemyDownID[u] = reader.ReadInt32();
+                case 0:
+                    pointsManager.player1Points = reader.ReadInt32();
+                    break;
+                case 1:
+                    pointsManager.player2Points = reader.ReadInt32();
+                    break;
+                case 2:
+                    pointsManager.player3Points = reader.ReadInt32();
+                    break;
             }
+            
+            clientList[u].clientPosition.Set(newPositionX, newPositionY,0);
+
+            otherCoinsDestroyed[u] = reader.ReadInt32();
+            otherenemyDownID[u]= reader.ReadInt32();
         }
         else//if is a client
         {
