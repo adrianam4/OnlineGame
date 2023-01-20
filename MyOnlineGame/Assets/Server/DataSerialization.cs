@@ -275,6 +275,7 @@ public class DataSerialization : MonoBehaviour
                             }
                             else if (prevPos.x == currentPos.x)
                             {
+                                Player2.GetComponent<Animator>().SetFloat("velocityX", 0);
                                 Player2.GetComponent<Animator>().SetBool("grounded", true);
                             }
                             else
@@ -295,6 +296,7 @@ public class DataSerialization : MonoBehaviour
                             }
                             else if (prevPos.x == currentPos.x)
                             {
+                                Player3.GetComponent<Animator>().SetFloat("velocityX", 0);
                                 Player3.GetComponent<Animator>().SetBool("grounded", true);
                             }
                             else
@@ -315,7 +317,7 @@ public class DataSerialization : MonoBehaviour
                             }
                             else if (prevPos.x == currentPos.x)
                             {
- 
+                                Player4.GetComponent<Animator>().SetFloat("velocityX", 0);
                                 Player4.GetComponent<Animator>().SetBool("grounded", true);
                             }
                             else
@@ -347,6 +349,7 @@ public class DataSerialization : MonoBehaviour
                     }
                     else if (prevPos.x == currentPos.x)
                     {
+                        Player2.GetComponent<Animator>().SetFloat("velocityX", 0);
                         Player2.GetComponent<Animator>().SetBool("grounded", true);
                     }
                     else
@@ -373,6 +376,7 @@ public class DataSerialization : MonoBehaviour
                                 }
                                 else if (prevPos.x == currentPos.x)
                                 {
+                                    Player3.GetComponent<Animator>().SetFloat("velocityX", 0);
                                     Player3.GetComponent<Animator>().SetBool("grounded", true);
                                 }
                                 else
@@ -394,6 +398,7 @@ public class DataSerialization : MonoBehaviour
                                 }
                                 else if (prevPos.x == currentPos.x)
                                 {
+                                    Player4.GetComponent<Animator>().SetFloat("velocityX", 0);
                                     Player4.GetComponent<Animator>().SetBool("grounded", true);
                                 }
                                 else
