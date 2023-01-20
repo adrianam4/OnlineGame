@@ -86,11 +86,12 @@ public class DataSerialization : MonoBehaviour
         }
         else//server
         {
+            writer.Write(clientList.Count);
             writer.Write(player_position.x);
             writer.Write(player_position.y);
             Debug.Log("position x: " + player_position.x);
             Debug.Log("position y: " + player_position.y);
-            writer.Write(clientList.Count);
+            
             for(int a=0;a< clientList.Count; a++)
             {
                 writer.Write(a);
@@ -192,21 +193,23 @@ public class DataSerialization : MonoBehaviour
         }
         else//if is a client
         {
-
-            float newPositionServerX = reader.ReadSingle();
-            float newPositionServerY = reader.ReadSingle();
-            
-            serverPos.Set(newPositionServerX, newPositionServerY, 0);
-
-            Debug.Log("position x: " + newPositionServerX);
-            Debug.Log("position y: " + newPositionServerY);
-
             int numberOfClient = reader.ReadInt32();
-            number = numberOfClient;
-            Debug.Log("--------------------------------number"+numberOfClient);
-            toMake = true;
-            if (numberOfClient > 0)
+            
+
+            
+            
+            if (numberOfClient > 0&& numberOfClient < 4)
             {
+                float newPositionServerX = reader.ReadSingle();
+                float newPositionServerY = reader.ReadSingle();
+
+                serverPos.Set(newPositionServerX, newPositionServerY, 0);
+
+                Debug.Log("position x: " + newPositionServerX);
+                Debug.Log("position y: " + newPositionServerY);
+                number = numberOfClient;
+                Debug.Log("--------------------------------number" + numberOfClient);
+                toMake = true;
                 for (int a = 0; a < numberOfClient; a++)
                 {
 
