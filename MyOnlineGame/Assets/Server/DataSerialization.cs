@@ -319,7 +319,7 @@ public class DataSerialization : MonoBehaviour
                             {
                                 Player3.GetComponent<Animator>().SetBool("grounded", true);
                             }
-                            else
+                            else if (prevPos.y != currentPos.y)
                             {
                                 Player3.GetComponent<Animator>().SetBool("grounded", false);
                             }
@@ -350,7 +350,7 @@ public class DataSerialization : MonoBehaviour
                             {
                                 Player4.GetComponent<Animator>().SetBool("grounded", true);
                             }
-                            else
+                            else if (prevPos.y != currentPos.y)
                             {
                                 Player4.GetComponent<Animator>().SetBool("grounded", false);
                             }
@@ -388,11 +388,11 @@ public class DataSerialization : MonoBehaviour
                         Player2.GetComponent<SpriteRenderer>().flipX = true;
                     }
 
-                    if (prevPos.y == currentPos.y)
+                    if (prevPos.y > currentPos.y)
                     {
                         Player2.GetComponent<Animator>().SetBool("grounded", true);
                     }
-                    else
+                    else if (prevPos.y < currentPos.y)
                     {
                         Player2.GetComponent<Animator>().SetBool("grounded", false);
                     }
@@ -425,11 +425,11 @@ public class DataSerialization : MonoBehaviour
                                     Player3.GetComponent<SpriteRenderer>().flipX = true;
                                 }
 
-                                if (prevPos.y == currentPos.y)
+                                if (prevPos.y > currentPos.y)
                                 {
                                     Player3.GetComponent<Animator>().SetBool("grounded", true);
                                 }
-                                else
+                                else if (prevPos.y < currentPos.y)
                                 {
                                     Player3.GetComponent<Animator>().SetBool("grounded", false);
                                 }
@@ -457,11 +457,11 @@ public class DataSerialization : MonoBehaviour
                                     Player4.GetComponent<SpriteRenderer>().flipX = true;
                                 }
 
-                                if (prevPos.y == currentPos.y)
+                                if (prevPos.y > currentPos.y)
                                 {
                                     Player4.GetComponent<Animator>().SetBool("grounded", true);
                                 }
-                                else
+                                else if (prevPos.y < currentPos.y)
                                 {
                                     Player4.GetComponent<Animator>().SetBool("grounded", false);
                                 }
