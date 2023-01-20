@@ -203,44 +203,50 @@ public class DataSerialization : MonoBehaviour
 
             int numberOfClient = reader.ReadInt32();
             number = numberOfClient;
+            Debug.Log("--------------------------------number"+numberOfClient);
             toMake = true;
-            for (int a = 0; a < numberOfClient; a++)
+            if (numberOfClient > 0)
             {
-                
-                
-                ///////////////////////////////////////////////////////////////////////////////
-                int player = reader.ReadInt32();
-                float newPositionX = reader.ReadSingle();
-                //Debug.Log("position x: " + newPositionX);
-                float newPositionY = reader.ReadSingle();
-                clientsToClient[a].clientPosition.Set(newPositionX, newPositionY,0);
-                clientsToClient[a].clientID = player;
-                
+                for (int a = 0; a < numberOfClient; a++)
+                {
+
+
+                    ///////////////////////////////////////////////////////////////////////////////
+                    int player = reader.ReadInt32();
+                    float newPositionX = reader.ReadSingle();
+                    //Debug.Log("position x: " + newPositionX);
+                    float newPositionY = reader.ReadSingle();
+                    clientsToClient[a].clientPosition.Set(newPositionX, newPositionY, 0);
+                    clientsToClient[a].clientID = player;
+
+
+                }
+
+                serverCoinDestroyed = reader.ReadInt32();
+
+                for (int b = 0; b < numberOfClient; b++)
+                {
+                    otherCoinsDestroyed[b] = reader.ReadInt32();
+                }
+                serverenemydoenID = reader.ReadInt32();
+                for (int b = 0; b < numberOfClient; b++)
+                {
+                    otherenemyDownID[b] = reader.ReadInt32();
+                }
+                //int cantOfenemys = reader.ReadInt32();
+                //for (int b = 0; b < cantOfenemys; b++)
+                //{
+                //    float x = reader.ReadSingle();
+                //    float y = reader.ReadSingle();
+                //    float enemyID = reader.ReadInt32();
+                //    player2[b].Set(x,y, enemyID);
+                //}
+                pointsManager.player1Points = reader.ReadInt32();
+                pointsManager.player2Points = reader.ReadInt32();
+                pointsManager.player3Points = reader.ReadInt32();
+
 
             }
-
-            serverCoinDestroyed = reader.ReadInt32();
-
-            for (int b = 0; b < numberOfClient; b++)
-            {
-                otherCoinsDestroyed[b] = reader.ReadInt32();
-            }
-            serverenemydoenID=reader.ReadInt32();
-            for (int b = 0; b < numberOfClient; b++)
-            {
-                otherenemyDownID[b] = reader.ReadInt32();
-            }
-            //int cantOfenemys = reader.ReadInt32();
-            //for (int b = 0; b < cantOfenemys; b++)
-            //{
-            //    float x = reader.ReadSingle();
-            //    float y = reader.ReadSingle();
-            //    float enemyID = reader.ReadInt32();
-            //    player2[b].Set(x,y, enemyID);
-            //}
-            pointsManager.player1Points = reader.ReadInt32();
-            pointsManager.player2Points = reader.ReadInt32();
-            pointsManager.player3Points = reader.ReadInt32();
         }
         deserialized = true;
     }
